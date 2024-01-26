@@ -91,3 +91,14 @@
 **CUDA**提供了高性能的并行计算平台，**cuDNN**加速了深度学习任务的计算，**TensorRT**优化深度学习模型的推理性能，三者共同促进了GPU在高性能计算和深度学习领域的广泛应用。
 
 ### 1.3 环境配置
+
+#### 1.3.1 版本选择：CUDA、cuDNN和TensorRT
+
+（1）CUDA：由于资源有限不知道安装哪个版本，因此安装网上有教程的低版本11.0.2。
+
+* 参考教程：
+  * [CUDA安装教程（超详细）-CSDN博客](https://blog.csdn.net/m0_45447650/article/details/123704930)
+* 安装记录：
+  * 下载CUDA toolkit（toolkit就是指工具包）
+    * [CUDA Toolkit Archive | NVIDIA Developer](https://developer.nvidia.com/cuda-toolkit-archive)
+    * 
