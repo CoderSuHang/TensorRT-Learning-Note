@@ -101,4 +101,4 @@
 * 安装记录：
   * 下载CUDA toolkit（toolkit就是指工具包）
     * [CUDA Toolkit Archive | NVIDIA Developer](https://developer.nvidia.com/cuda-toolkit-archive)
-    * 11.2
+    * 11.2。。。
