@@ -103,32 +103,3 @@
     * [CUDA Toolkit Archive | NVIDIA Developer](https://developer.nvidia.com/cuda-toolkit-archive)
     * 11.2。。。
 
-
-```c++
-class Solution {
-public:
-    int reverse(int x) {
-        int xsize = 0;
-        int xnum = x;
-        int a[10];
-        if (x == 0)
-            return 0;
-        if (x < INT_MIN || x > INT_MAX){
-            return 0;
-        }
-        else{
-            for (int i = 0; xnum != 0; i++){
-                a[i] = xnum % 10;
-                xnum = xnum / 10;
-                xsize = i;
-            }
-            xnum = a[0];
-            for (int i = 1; i <= xsize; i++){
-                xnum = xnum * 10 + a[i];
-            }
-            return xnum;
-        }
-    }
-};
-```
-
