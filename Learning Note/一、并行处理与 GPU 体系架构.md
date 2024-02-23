@@ -138,12 +138,12 @@
         * [Anaconda版本与Python3版本对应关系 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/393803977)
       * 选择Anaconda3 2021.05：
         * [Anaconda超简单安装教程，超简洁！！！（Windows/Linux/Mac环境下，亲测有效） - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/669733292)
-        * ![image-20240223172856643](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223172856643.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8a0bc42c-0a7b-4212-bc1c-cb2ab28939f4)
       * 其中有改动的是：
-        * ![image-20240223174456891](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223174456891.png)
-        * ![image-20240223174514717](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223174514717.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/25cc626f-dc91-433f-b96b-5e9e70799143)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ea469b31-1b41-445b-9f10-fb360db1ade7)
         * 检查环境变量并没有添加成功，因此在这里添加以下4个环境变量：
-          * ![image-20240223175128231](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223175128231.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/73bb8d6f-455c-405c-82dd-31575d4ead42)
           * 教程中是5个，其中（E:\Anaconda\Library\usr\bin）没有找到对应路径，后续如果报错可以检查。
       * 添加清华镜像：
         * 参考：
