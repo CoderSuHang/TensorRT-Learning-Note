@@ -159,11 +159,11 @@
         * [【手把手带你实战YOLOv5-入门篇】YOLOv5 环境安装（重置版）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1bg4y1R7cs/?spm_id_from=333.788&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
         * [深度学习环境搭建详解（Anaconda、Pycharm、Cuda、Pytorch）-CSDN博客](https://blog.csdn.net/m0_73228309/article/details/136187809)
       * （1）查看环境列表：**conda env list**
-        * ![image-20240223191333777](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223191333777.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/cc31ea2e-fa57-47cd-9ae8-3e0ec25fe1c3)
       * （2）创建环境：**conda create -n env_name python=3.8**
-        * ![image-20240223191345216](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223191345216.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ef9f183c-0caa-443e-98e2-083fc3f1fe50)
       * （3）激活环境：**conda activate env_name**
-        * ![image-20240223191558158](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223191558158.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8a7d0e20-09fd-44a8-83f8-c1a3e9de707d)
       * （4）退出环境：**conda deactivate**
         * 退出当前环境后才能删除该环境。
       * （5）删除环境：**conda remove -n env_name --all**
