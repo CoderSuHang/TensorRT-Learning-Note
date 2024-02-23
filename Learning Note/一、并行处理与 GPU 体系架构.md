@@ -99,7 +99,28 @@
 * 参考教程：
   * [CUDA安装教程（超详细）-CSDN博客](https://blog.csdn.net/m0_45447650/article/details/123704930)
 * 安装记录：
-  * 下载CUDA toolkit（toolkit就是指工具包）
+  * 1.下载CUDA toolkit（toolkit就是指工具包）
     * [CUDA Toolkit Archive | NVIDIA Developer](https://developer.nvidia.com/cuda-toolkit-archive)
-    * 11.2。。。
+    * 这里选择11.8.0，原因是自己的jetson开发板cuda环境是11.4.0，但是该版本没有win11支持，所以看到以下文章：
+      * [GPU版本的pytorch安装（显卡为3060ti，如何选择对应的cuda版本）_cuda版本怎么选-CSDN博客](https://blog.csdn.net/weixin_47250738/article/details/130170195?csdn_share_tail={"type"%3A"blog"%2C"rType"%3A"article"%2C"rId"%3A"130170195"%2C"source"%3A"sita1207"}&fromshare=blogdetail)
+        * 根据文章介绍，我的笔记本是RTX4060，算力=8.9：
+          * ![image-20240223110546019](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110546019.png)
+        * 对应版本为11.8：
+          * ![image-20240223110626493](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110626493.png)
+    * ![image-20240223110822394](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110822394.png)
+  * 2.这里没有安装 CUDA Samples，是因为11.8中没有相关安装选项，所以注册表也没有修改。
+    * ![image-20240223114043931](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223114043931.png)
+    * ![image-20240223123826757](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223123826757.png)
+    * ![image-20240223114055121](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223114055121.png)
+  * 3.按照教程检查一下注册表路径即可。
 
+（2）cuDNN：
+
+* 安装教程：
+  * 1.下载对应版本cuDNN（11.x最新）
+    * [cuDNN Archive | NVIDIA Developer](https://developer.nvidia.com/rdp/cudnn-archive)
+    * ![image-20240223111825964](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223111825964.png)
+  * 2.解压复制相应文件夹，并且在系统变量path中添加四个路径即可。
+    * ![image-20240223131439962](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223131439962.png)
+
+（3）TensorRT安装，极其复杂，需要搭建更复杂的环境：
