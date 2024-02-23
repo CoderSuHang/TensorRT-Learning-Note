@@ -148,7 +148,7 @@
       * 添加清华镜像：
         * 参考：
           * 【保姆级Anaconda安装教程】 https://www.bilibili.com/video/BV1ns4y1T7AP/?share_source=copy_web&vd_source=a0dbe312acd17ef7f1fb082726d496a7
-        * ![image-20240223180502709](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223180502709.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/20be593a-664a-4d0b-b5c6-e1509190f023)
   * 3.1.2 Pycharm安装
     * 参考：
       * [【手把手带你实战YOLOv5-拓展篇】Pycharm基本使用与AutoDL服务器连接_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Ns4y1p7Ry/?spm_id_from=333.788&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
