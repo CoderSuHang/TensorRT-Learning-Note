@@ -106,7 +106,7 @@
         * 根据文章介绍，我的笔记本是RTX4060，算力=8.9：
           * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/aaf12337-8bb3-4ebf-9c15-ef2324e97798)
         * 对应版本为11.8：
-          * ![image-20240223110626493](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110626493.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/732661e5-8c5c-4bf0-b652-991bf17fa0c1)
     * ![image-20240223110822394](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110822394.png)
   * 2.这里没有安装 CUDA Samples，是因为11.8中没有相关安装选项，所以注册表也没有修改。
     * ![image-20240223114043931](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223114043931.png)
