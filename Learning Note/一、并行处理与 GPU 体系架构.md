@@ -109,7 +109,7 @@
           * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/732661e5-8c5c-4bf0-b652-991bf17fa0c1)
     * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7dfb4c26-01e5-405f-971e-251913a823ad)
   * 2.这里没有安装 CUDA Samples，是因为11.8中没有相关安装选项，所以注册表也没有修改。
-    * ![image-20240223114043931](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223114043931.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4cd1c563-9f8a-4b06-84b2-2c5681d8f7d6)
     * ![image-20240223123826757](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223123826757.png)
     * ![image-20240223114055121](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223114055121.png)
   * 3.按照教程检查一下注册表路径即可。
