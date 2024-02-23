@@ -182,5 +182,5 @@
         * C:\Users\10482>conda activate Pytorch
         * (Pytorch) C:\Users\10482>pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
         * (Pytorch) C:\Users\10482>pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-      * ![image-20240223203311815](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223203311815.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d27c17a8-75ed-421b-afe0-2b59cadd75b8)
 * 3.2 根据cuda版本安装相对应版本的tensorRT
