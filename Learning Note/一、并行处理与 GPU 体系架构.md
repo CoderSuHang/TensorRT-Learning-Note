@@ -169,10 +169,10 @@
       * （5）删除环境：**conda remove -n env_name --all**
     * Pycharm环境配置（Anaconda目录下）
       * [深度学习环境搭建详解（Anaconda、Pycharm、Cuda、Pytorch）-CSDN博客](https://blog.csdn.net/m0_73228309/article/details/136187809)
-        * ![image-20240223194137463](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223194137463.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ee1398e0-606e-4bd2-962f-8b1c99a14334)
       * 之后可以在Pycharm和Anaconda中验证是否创建成功：
-        * ![image-20240223194423516](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223194423516.png)
-        * ![image-20240223194527941](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223194527941.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/06f2bc12-d8b2-491d-8aa7-dc424f916f76)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8c801113-0399-43b8-b4f0-fe5bfe38aa66)
   * 3.1.4 Pytorch安装
     * 参考：
       * [【手把手带你实战YOLOv5-入门篇】YOLOv5 环境安装（重置版）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1bg4y1R7cs/?spm_id_from=333.788&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
