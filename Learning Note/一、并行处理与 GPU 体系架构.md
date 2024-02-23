@@ -104,7 +104,7 @@
     * 这里选择11.8.0，原因是自己的jetson开发板cuda环境是11.4.0，但是该版本没有win11支持，所以看到以下文章：
       * [GPU版本的pytorch安装（显卡为3060ti，如何选择对应的cuda版本）_cuda版本怎么选-CSDN博客](https://blog.csdn.net/weixin_47250738/article/details/130170195?csdn_share_tail={"type"%3A"blog"%2C"rType"%3A"article"%2C"rId"%3A"130170195"%2C"source"%3A"sita1207"}&fromshare=blogdetail)
         * 根据文章介绍，我的笔记本是RTX4060，算力=8.9：
-          * ![image-20240223110546019](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110546019.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/aaf12337-8bb3-4ebf-9c15-ef2324e97798)
         * 对应版本为11.8：
           * ![image-20240223110626493](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110626493.png)
     * ![image-20240223110822394](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110822394.png)
