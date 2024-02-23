@@ -120,6 +120,6 @@
   * 1.下载对应版本cuDNN（11.x最新）
     *[cuDNN Archive | NVIDIA Developer](https://developer.nvidia.com/rdp/cudnn-archive)
     * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/1d4413c7-215b-4239-8bde-498cbb0c0e54)
-    * ![image-20240223131439962](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223131439962.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e6f055a8-ac7b-4097-9a79-c3fee2eb9a89)
 
 （3）TensorRT安装，极其复杂，需要搭建更复杂的环境：
