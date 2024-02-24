@@ -184,3 +184,4 @@
         * (Pytorch) C:\Users\10482>pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
       * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d27c17a8-75ed-421b-afe0-2b59cadd75b8)
 * 3.2 根据cuda版本安装相对应版本的tensorRT
+返程列车上根据yolov5
