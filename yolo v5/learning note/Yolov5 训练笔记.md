@@ -17,7 +17,7 @@
 修改yolov5源代码：
 
 * [Release v7.0 - YOLOv5 SOTA Realtime Instance Segmentation · ultralytics/yolov5 (github.com)](https://github.com/ultralytics/yolov5/releases/tag/v7.0)
-* ![image-20240227221643070](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240227221643070.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7fc91398-def1-405c-93a2-707b5326e5ef)
 
 安装yolov5：
 
