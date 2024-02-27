@@ -29,7 +29,7 @@
   * python detect.py
   * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5ef4ef96-7c7e-473b-aad4-3e08df6a8ffd)
 * 输出结果：
-  * ![bus](E:\AI\Package\yolov5-7.0\runs\detect\exp2\bus.jpg)
-  * ![zidane](E:\AI\Package\yolov5-7.0\runs\detect\exp2\zidane.jpg)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a840d15b-78ef-4514-a2cf-ee97d9ddce9b)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7c3c4896-075c-462a-8b63-73717dd2164c)
 
 ## 二、模型检测
