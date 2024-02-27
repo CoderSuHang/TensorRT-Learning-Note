@@ -21,7 +21,7 @@
 
 安装yolov5：
 
-* ![image-20240227221952988](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240227221952988.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7f325871-7aa7-459d-a02b-b64aca4a7f34)
 
 运行yolov5:
 
