@@ -12,7 +12,7 @@
 有变化的是安装了up主推荐的pytorch v1.8.2 cuda11.1版本：
 
 * 【【手把手带你实战YOLOv5-入门篇】YOLOv5 环境安装（重置版）】 【精准空降到 12:14】 https://www.bilibili.com/video/BV1bg4y1R7cs/?share_source=copy_web&vd_source=a0dbe312acd17ef7f1fb082726d496a7&t=734
-* ![image-20240227195048295](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240227195048295.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b6904c44-053a-4e8c-a5a6-61f0cd93d0d6)
 
 修改yolov5源代码：
 
