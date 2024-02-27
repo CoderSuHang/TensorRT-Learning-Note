@@ -27,7 +27,7 @@
 
 * 输入指令：
   * python detect.py
-  * ![image-20240227222445449](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240227222445449.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5ef4ef96-7c7e-473b-aad4-3e08df6a8ffd)
 * 输出结果：
   * ![bus](E:\AI\Package\yolov5-7.0\runs\detect\exp2\bus.jpg)
   * ![zidane](E:\AI\Package\yolov5-7.0\runs\detect\exp2\zidane.jpg)
