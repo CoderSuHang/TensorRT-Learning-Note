@@ -78,7 +78,8 @@
     (yolov5) E:\AI\Package\yolov5-7.0>python detect.py --weights yolov5s.pt --source data/images/bus.jpg
     ```
 
-    * ![image-20240228153003733](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228153003733.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2aa079da-c7f2-4e9d-a2e7-290f1e80623e)
+
 
 * conf-thres：置信度阈值，越低框越多，越高框越少
 
