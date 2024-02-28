@@ -33,3 +33,83 @@
   * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7c3c4896-075c-462a-8b63-73717dd2164c)
 
 ## 二、模型检测
+
+参考资料：
+
+​	[【手把手带你实战YOLOv5-入门篇】YOLOv5 模型检测_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1B8411c7ZN/?spm_id_from=333.788&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
+
+### 2.1 关键参数
+
+* weights：训练好的模型文件
+
+  * ![image-20240228122333216](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228122333216.png)
+
+  * 指令：
+
+    * ```python
+      (yolov5) E:\AI\Package\yolov5-7.0>python detect.py --weights yolov5s.pt
+      ```
+
+      * ![image-20240228122754959](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228122754959.png)
+
+    * ```python
+      (yolov5) E:\AI\Package\yolov5-7.0>python detect.py --weights yolov5x.pt
+      ```
+
+      * ![image-20240228123102594](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228123102594.png)
+
+* source：检测的目标，可以是单张图片、文件夹、屏幕或者是摄像头：
+
+  * ```python
+    python path/to/detect.py --weights yolov5s.pt --source 0              # webcam # 直播软件/电脑摄像头
+                                                           img.jpg        # image
+                                                           vid.mp4        # video
+            										   screen         # screenshot
+                                                           path/          # directory
+                    								    list.txt	   # list of images
+                        							   	list.streams   # list of streams
+                                                           'path/*.jpg'   # glob
+                                                           'https://youtu.be/Zgi9g1ksQHc'  # YouTube
+                                                           'rtsp://example.com/media.mp4'  # RTSP, RTMP, HTTP stream
+    ```
+
+  * ```python
+    (yolov5) E:\AI\Package\yolov5-7.0>python detect.py --weights yolov5s.pt --source data/images/bus.jpg
+    ```
+
+    * ![image-20240228153003733](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228153003733.png)
+
+* conf-thres：置信度阈值，越低框越多，越高框越少
+
+  * ![image-20240228153605515](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228153605515.png)
+
+* iou-thres：IOU阈值，越低框越少，越高框越多
+
+  * ![image-20240228154025110](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228154025110.png)
+
+
+
+2.2 使用torch
+
+* 安装方法按照视频里面教的来。
+
+* 代码示例：
+
+  * ```python
+    import torch
+    
+    # Model 加载本地的模型
+    model = torch.hub.load("./", "yolov5s", source="local")
+    
+    # Images 指定检测图片
+    img = "./data/images/zidane.jpg"
+    
+    # Inference
+    results = model(img)
+    
+    # Results
+    results.show()
+    ```
+
+  * ![image-20240228155155790](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228155156921.png)
+
