@@ -42,7 +42,7 @@
 
 * weights：训练好的模型文件
 
-  * ![image-20240228122333216](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228122333216.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b1c4101f-77d2-4478-975f-d5976e4793e1)
 
   * 指令：
 
