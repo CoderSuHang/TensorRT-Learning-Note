@@ -83,7 +83,8 @@
 
 * conf-thres：置信度阈值，越低框越多，越高框越少
 
-  * ![image-20240228153605515](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228153605515.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/135eba76-db14-4641-b440-edcb0b0bdf36)
+
 
 * iou-thres：IOU阈值，越低框越少，越高框越多
 
