@@ -56,7 +56,8 @@
       (yolov5) E:\AI\Package\yolov5-7.0>python detect.py --weights yolov5x.pt
       ```
 
-      * ![image-20240228123102594](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228123102594.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9edb1bc7-87a7-4e9a-a0bb-c0ccd5e71ed8)
+
 
 * source：检测的目标，可以是单张图片、文件夹、屏幕或者是摄像头：
 
