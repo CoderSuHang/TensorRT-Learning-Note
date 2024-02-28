@@ -50,7 +50,7 @@
       (yolov5) E:\AI\Package\yolov5-7.0>python detect.py --weights yolov5s.pt
       ```
 
-      * ![image-20240228122754959](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228122754959.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e7b55f08-e251-45f0-acd2-098c9fb01011)
 
     * ```python
       (yolov5) E:\AI\Package\yolov5-7.0>python detect.py --weights yolov5x.pt
