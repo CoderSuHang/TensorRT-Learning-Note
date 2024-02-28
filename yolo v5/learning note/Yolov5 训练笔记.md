@@ -115,5 +115,6 @@
     results.show()
     ```
 
-  * ![image-20240228155155790](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228155156921.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/fac33ca5-82e3-4edb-86c5-a7133d477ce1)
+
 
