@@ -88,7 +88,8 @@
 
 * iou-thres：IOU阈值，越低框越少，越高框越多
 
-  * ![image-20240228154025110](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240228154025110.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f6ddff23-48c9-4cb7-bea4-e9389a35b300)
+
 
 
 
