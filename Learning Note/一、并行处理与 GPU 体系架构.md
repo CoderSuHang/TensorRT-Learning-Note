@@ -94,7 +94,9 @@
 
 #### 1.3.1 版本选择：CUDA、cuDNN和TensorRT
 
-（1）CUDA：由于资源有限不知道安装哪个版本，因此安装网上有教程的低版本11.0.2。
+##### 1.3.1.1 CUDA
+
+由于资源有限不知道安装哪个版本，因此安装网上有教程的低版本11.0.2。
 
 * 参考教程：
   * [CUDA安装教程（超详细）-CSDN博客](https://blog.csdn.net/m0_45447650/article/details/123704930)
@@ -104,84 +106,132 @@
     * 这里选择11.8.0，原因是自己的jetson开发板cuda环境是11.4.0，但是该版本没有win11支持，所以看到以下文章：
       * [GPU版本的pytorch安装（显卡为3060ti，如何选择对应的cuda版本）_cuda版本怎么选-CSDN博客](https://blog.csdn.net/weixin_47250738/article/details/130170195?csdn_share_tail={"type"%3A"blog"%2C"rType"%3A"article"%2C"rId"%3A"130170195"%2C"source"%3A"sita1207"}&fromshare=blogdetail)
         * 根据文章介绍，我的笔记本是RTX4060，算力=8.9：
-          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/aaf12337-8bb3-4ebf-9c15-ef2324e97798)
+          * ![image-20240223110546019](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110546019.png)
         * 对应版本为11.8：
-          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/732661e5-8c5c-4bf0-b652-991bf17fa0c1)
-    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7dfb4c26-01e5-405f-971e-251913a823ad)
+          * ![image-20240223110626493](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110626493.png)
+    * ![image-20240223110822394](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110822394.png)
   * 2.这里没有安装 CUDA Samples，是因为11.8中没有相关安装选项，所以注册表也没有修改。
-    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4cd1c563-9f8a-4b06-84b2-2c5681d8f7d6)
-    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/732b106f-b90d-4d0d-904c-49f2dd3730cc)
-    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e0fe815a-de54-4395-95b5-b2fab8a7a3b9)
+    * ![image-20240223114043931](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223114043931.png)
+    * ![image-20240223123826757](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223123826757.png)
+    * ![image-20240223114055121](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223114055121.png)
   * 3.按照教程检查一下注册表路径即可。
 
-（2）cuDNN：
+##### 1.3.1.2 cuDNN
 
 * 安装教程：
   * 1.下载对应版本cuDNN（11.x最新）
-    *[cuDNN Archive | NVIDIA Developer](https://developer.nvidia.com/rdp/cudnn-archive)
-    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/1d4413c7-215b-4239-8bde-498cbb0c0e54)
-    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e6f055a8-ac7b-4097-9a79-c3fee2eb9a89)
+    * [cuDNN Archive | NVIDIA Developer](https://developer.nvidia.com/rdp/cudnn-archive)
+    * ![image-20240223111825964](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223111825964.png)
+  * 2.解压复制相应文件夹，并且在系统变量path中添加四个路径即可。
+    * ![image-20240223131439962](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223131439962.png)
 
-（3）TensorRT安装，极其复杂，需要搭建更复杂的环境：
+##### 1.3.1.3 TensorRT
+
+安装，极其复杂，需要搭建更复杂的环境：
 
 参考教程：[【模型部署】TensorRT的安装与使用_tensorrt部署-CSDN博客](https://blog.csdn.net/qq_44747572/article/details/129022225?ops_request_misc={"request_id"%3A"168990146916800180635406"%2C"scm"%3A"20140713.130102334.."}&request_id=168990146916800180635406&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-2-129022225-null-null.142^v90^koosearch_v1,239^v3^control&utm_term=tensorrt安装&spm=1018.2226.3001.4187)
 
-* 3.1 cuda/cudnn以及虚拟环境的创建：
-  * 这里是非常困难的地方，因为是新电脑，Anaconda、Pycharm等软件都没有安装，所以需要逐个安装。
-  * 参考教程：[【环境配置】AI各种环境配置（anaconda、pycharm、cuda/cudnn、torch/torchvision等）_ai运行环境-CSDN博客](https://blog.csdn.net/qq_44747572/article/details/122453926?spm=1001.2014.3001.5502)
-  * 3.1.1 Anaconda环境配置：
-    * 参考：
-      * [【Anaconda教程01】怎么安装Anaconda3 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/75717350)
-      * 【【手把手带你实战YOLOv5-入门篇】YOLOv5 环境安装】 https://www.bilibili.com/video/BV1G24y1G7qm/?share_source=copy_web&vd_source=a0dbe312acd17ef7f1fb082726d496a7
-    * 本次选用与python3.8.10对应的版本（原因与Jetson开发板一致）
-      * Anaconda版本与Python3版本对应关系：
-        * [Anaconda版本与Python3版本对应关系 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/393803977)
-      * 选择Anaconda3 2021.05：
-        * [Anaconda超简单安装教程，超简洁！！！（Windows/Linux/Mac环境下，亲测有效） - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/669733292)
-        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8a0bc42c-0a7b-4212-bc1c-cb2ab28939f4)
-      * 其中有改动的是：
-        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/25cc626f-dc91-433f-b96b-5e9e70799143)
-        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ea469b31-1b41-445b-9f10-fb360db1ade7)
-        * 检查环境变量并没有添加成功，因此在这里添加以下4个环境变量：
-          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/73bb8d6f-455c-405c-82dd-31575d4ead42)
-          * 教程中是5个，其中（E:\Anaconda\Library\usr\bin）没有找到对应路径，后续如果报错可以检查。
-      * 添加清华镜像：
-        * 参考：
-          * 【保姆级Anaconda安装教程】 https://www.bilibili.com/video/BV1ns4y1T7AP/?share_source=copy_web&vd_source=a0dbe312acd17ef7f1fb082726d496a7
-        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/20be593a-664a-4d0b-b5c6-e1509190f023)
-  * 3.1.2 Pycharm安装
-    * 参考：
-      * [【手把手带你实战YOLOv5-拓展篇】Pycharm基本使用与AutoDL服务器连接_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Ns4y1p7Ry/?spm_id_from=333.788&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
-    * 选择下载版本：2022.1.3（社区版），原因和B站UP主（专业版）一致，他有yolo v5&8的教程，但是专业版可以远程，我不需要，所以用社区版
-  * 3.1.3 Anaconda和Pycharm环境搭建
-    * Anacodna环境配置
+###### （1） cuda/cudnn以及虚拟环境的创建：
+
+* 这里是非常困难的地方，因为是新电脑，Anaconda、Pycharm等软件都没有安装，所以需要逐个安装。
+* 参考教程：[【环境配置】AI各种环境配置（anaconda、pycharm、cuda/cudnn、torch/torchvision等）_ai运行环境-CSDN博客](https://blog.csdn.net/qq_44747572/article/details/122453926?spm=1001.2014.3001.5502)
+* 3.1.1 Anaconda环境配置：
+  * 参考：
+    * [【Anaconda教程01】怎么安装Anaconda3 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/75717350)
+    * 【【手把手带你实战YOLOv5-入门篇】YOLOv5 环境安装】 https://www.bilibili.com/video/BV1G24y1G7qm/?share_source=copy_web&vd_source=a0dbe312acd17ef7f1fb082726d496a7
+  * 本次选用与python3.8.10对应的版本（原因与Jetson开发板一致）
+    * Anaconda版本与Python3版本对应关系：
+      * [Anaconda版本与Python3版本对应关系 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/393803977)
+    * 选择Anaconda3 2021.05：
+      * [Anaconda超简单安装教程，超简洁！！！（Windows/Linux/Mac环境下，亲测有效） - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/669733292)
+      * ![image-20240223172856643](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223172856643.png)
+    * 其中有改动的是：
+      * ![image-20240223174456891](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223174456891.png)
+      * ![image-20240223174514717](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223174514717.png)
+      * 检查环境变量并没有添加成功，因此在这里添加以下4个环境变量：
+        * ![image-20240223175128231](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223175128231.png)
+        * 教程中是5个，其中（E:\Anaconda\Library\usr\bin）没有找到对应路径，后续如果报错可以检查。
+    * 添加清华镜像：
       * 参考：
-        * [【手把手带你实战YOLOv5-入门篇】YOLOv5 环境安装（重置版）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1bg4y1R7cs/?spm_id_from=333.788&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
-        * [深度学习环境搭建详解（Anaconda、Pycharm、Cuda、Pytorch）-CSDN博客](https://blog.csdn.net/m0_73228309/article/details/136187809)
-      * （1）查看环境列表：**conda env list**
-        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/cc31ea2e-fa57-47cd-9ae8-3e0ec25fe1c3)
-      * （2）创建环境：**conda create -n env_name python=3.8**
-        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ef9f183c-0caa-443e-98e2-083fc3f1fe50)
-      * （3）激活环境：**conda activate env_name**
-        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8a7d0e20-09fd-44a8-83f8-c1a3e9de707d)
-      * （4）退出环境：**conda deactivate**
-        * 退出当前环境后才能删除该环境。
-      * （5）删除环境：**conda remove -n env_name --all**
-    * Pycharm环境配置（Anaconda目录下）
-      * [深度学习环境搭建详解（Anaconda、Pycharm、Cuda、Pytorch）-CSDN博客](https://blog.csdn.net/m0_73228309/article/details/136187809)
-        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ee1398e0-606e-4bd2-962f-8b1c99a14334)
-      * 之后可以在Pycharm和Anaconda中验证是否创建成功：
-        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/06f2bc12-d8b2-491d-8aa7-dc424f916f76)
-        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8c801113-0399-43b8-b4f0-fe5bfe38aa66)
-  * 3.1.4 Pytorch安装
+        * 【保姆级Anaconda安装教程】 https://www.bilibili.com/video/BV1ns4y1T7AP/?share_source=copy_web&vd_source=a0dbe312acd17ef7f1fb082726d496a7
+      * ![image-20240223180502709](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223180502709.png)
+* 3.1.2 Pycharm安装
+  * 参考：
+    * [【手把手带你实战YOLOv5-拓展篇】Pycharm基本使用与AutoDL服务器连接_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Ns4y1p7Ry/?spm_id_from=333.788&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
+  * 选择下载版本：2022.1.3（社区版），原因和B站UP主（专业版）一致，他有yolo v5&8的教程，但是专业版可以远程，我不需要，所以用社区版
+* 3.1.3 Anaconda和Pycharm环境搭建
+  * Anacodna环境配置
     * 参考：
       * [【手把手带你实战YOLOv5-入门篇】YOLOv5 环境安装（重置版）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1bg4y1R7cs/?spm_id_from=333.788&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
       * [深度学习环境搭建详解（Anaconda、Pycharm、Cuda、Pytorch）-CSDN博客](https://blog.csdn.net/m0_73228309/article/details/136187809)
-    * 这里版本选择11.8：
-      * 在Anaconda中输入如下指令：
+    * （1）查看环境列表：**conda env list**
+      * ![image-20240223191333777](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223191333777.png)
+    * （2）创建环境：**conda create -n env_name python=3.8**
+      * ![image-20240223191345216](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223191345216.png)
+    * （3）激活环境：**conda activate env_name**
+      * ![image-20240223191558158](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223191558158.png)
+    * （4）退出环境：**conda deactivate**
+      * 退出当前环境后才能删除该环境。
+    * （5）删除环境：**conda remove -n env_name --all**
+  * Pycharm环境配置（Anaconda目录下）
+    * [深度学习环境搭建详解（Anaconda、Pycharm、Cuda、Pytorch）-CSDN博客](https://blog.csdn.net/m0_73228309/article/details/136187809)
+      * ![image-20240223194137463](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223194137463.png)
+    * 之后可以在Pycharm和Anaconda中验证是否创建成功：
+      * ![image-20240223194423516](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223194423516.png)
+      * ![image-20240223194527941](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223194527941.png)
+* 3.1.4 Pytorch安装
+  * 参考：
+    * [【手把手带你实战YOLOv5-入门篇】YOLOv5 环境安装（重置版）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1bg4y1R7cs/?spm_id_from=333.788&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
+    * [深度学习环境搭建详解（Anaconda、Pycharm、Cuda、Pytorch）-CSDN博客](https://blog.csdn.net/m0_73228309/article/details/136187809)
+  * 这里版本选择11.8：
+    * 在Anaconda中输入如下指令：
+      * 激活Pytorch虚拟环境：
         * C:\Users\10482>conda activate Pytorch
+      * 使用清华镜像源：
         * (Pytorch) C:\Users\10482>pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+      * 安装Pytorch11.8：
         * (Pytorch) C:\Users\10482>pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d27c17a8-75ed-421b-afe0-2b59cadd75b8)
-* 3.2 根据cuda版本安装相对应版本的tensorRT
-返程列车上根据yolov5
+    * ![image-20240223203311815](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223203311815.png)
+
+* 3.2 根据 cuda 版本安装相对应版本的TensorRT
+
+这里已经安装完成了CUDA 11.8、cuDNN 11.X:
+
+* CUDA Toolkit 11.8
+* cuDNN v8.9.7 for CUDA 11.x
+
+现在安装TensorRT和zlibwapo.dll：
+
+###### （2） TensorRT安装
+
+ （a）安装包下载
+
+* 网址：[NVIDIA TensorRT Download | NVIDIA Developer](https://developer.nvidia.com/tensorrt-download)
+* 选择TensorRT 8.5 GA：
+  * ![image-20240319105814442](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319105814442.png)
+  * ![image-20240319110323383](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319110323383.png)
+
+（b）根据自己的python版本安装
+
+* 查看python版本3.8.18：
+  * ![image-20240319112851216](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319112851216.png)
+* 安装对应版本的.whl文件：
+  * ![image-20240319112931635](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319112931635.png)
+  * ![image-20240319113643265](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319113643265.png)
+* 将【lib】文件夹下的动态链接库拷贝至CUDA安装位置的【bin】文件夹中：
+  * ![image-20240319113901641](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319113901641.png)
+  * ![image-20240319114017174](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319114017174.png)
+
+###### （3）zlibwapi.dll安装
+
+（安装cu116版本的pytorch可以避免此问题）
+
+（a）安装包下载
+
+* 网址：[ZLIB DLL Home Page (winimage.com)](http://www.winimage.com/zLibDll/)
+  * ![image-20240319114530210](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319114530210.png)
+
+（b）解压将dll文件复制道CUDA的【bin】文件夹内：
+
+* ![image-20240319114740558](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319114740558.png)
+* ![image-20240319114946695](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319114946695.png)
