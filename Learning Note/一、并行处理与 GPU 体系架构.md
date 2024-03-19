@@ -127,9 +127,11 @@
 * 安装教程：
   * 1.下载对应版本cuDNN（11.x最新）
     * [cuDNN Archive | NVIDIA Developer](https://developer.nvidia.com/rdp/cudnn-archive)
-    * ![image-20240223111825964](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223111825964.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2712b0eb-b70e-47a8-a270-c5e861e490ff)
+
   * 2.解压复制相应文件夹，并且在系统变量path中添加四个路径即可。
-    * ![image-20240223131439962](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223131439962.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/dbb019c5-e22f-4fee-896d-0d81b3a5aa37)
+
 
 ##### 1.3.1.3 TensorRT
 
@@ -150,17 +152,22 @@
       * [Anaconda版本与Python3版本对应关系 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/393803977)
     * 选择Anaconda3 2021.05：
       * [Anaconda超简单安装教程，超简洁！！！（Windows/Linux/Mac环境下，亲测有效） - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/669733292)
-      * ![image-20240223172856643](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223172856643.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c7e3e01e-3fe2-41bb-8bac-007a451ead3f)
+
     * 其中有改动的是：
-      * ![image-20240223174456891](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223174456891.png)
-      * ![image-20240223174514717](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223174514717.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/424460ce-046b-45b5-895a-813677f54b1a)
+
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8a487582-fadb-450e-b5ef-dd819b7204ae)
+
       * 检查环境变量并没有添加成功，因此在这里添加以下4个环境变量：
-        * ![image-20240223175128231](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223175128231.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4c3b9a25-2296-474a-98b9-ab3879811697)
+
         * 教程中是5个，其中（E:\Anaconda\Library\usr\bin）没有找到对应路径，后续如果报错可以检查。
     * 添加清华镜像：
       * 参考：
         * 【保姆级Anaconda安装教程】 https://www.bilibili.com/video/BV1ns4y1T7AP/?share_source=copy_web&vd_source=a0dbe312acd17ef7f1fb082726d496a7
-      * ![image-20240223180502709](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223180502709.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b730078a-0c25-4005-a689-6e68b2915cc7)
+
 * 3.1.2 Pycharm安装
   * 参考：
     * [【手把手带你实战YOLOv5-拓展篇】Pycharm基本使用与AutoDL服务器连接_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1Ns4y1p7Ry/?spm_id_from=333.788&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
