@@ -106,14 +106,20 @@
     * 这里选择11.8.0，原因是自己的jetson开发板cuda环境是11.4.0，但是该版本没有win11支持，所以看到以下文章：
       * [GPU版本的pytorch安装（显卡为3060ti，如何选择对应的cuda版本）_cuda版本怎么选-CSDN博客](https://blog.csdn.net/weixin_47250738/article/details/130170195?csdn_share_tail={"type"%3A"blog"%2C"rType"%3A"article"%2C"rId"%3A"130170195"%2C"source"%3A"sita1207"}&fromshare=blogdetail)
         * 根据文章介绍，我的笔记本是RTX4060，算力=8.9：
-          * ![image-20240223110546019](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110546019.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/51369f7b-36c0-4976-afa0-f0accc0c9da6)
+
         * 对应版本为11.8：
-          * ![image-20240223110626493](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110626493.png)
-    * ![image-20240223110822394](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110822394.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/46d278a5-f31a-46a1-b649-8a971823af87)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/67bfed92-0274-47cc-86bc-26454af3558d)
+
   * 2.这里没有安装 CUDA Samples，是因为11.8中没有相关安装选项，所以注册表也没有修改。
-    * ![image-20240223114043931](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223114043931.png)
-    * ![image-20240223123826757](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223123826757.png)
-    * ![image-20240223114055121](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223114055121.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/94102372-80fa-41dd-8f49-74a3a70fa1fe)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0247fefe-a5d2-4581-8f2e-feef5e2daebd)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d1912310-ec09-418e-acaf-65aa89358a82)
+
   * 3.按照教程检查一下注册表路径即可。
 
 ##### 1.3.1.2 cuDNN
