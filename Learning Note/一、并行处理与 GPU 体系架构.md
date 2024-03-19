@@ -228,19 +228,26 @@
 
 * 网址：[NVIDIA TensorRT Download | NVIDIA Developer](https://developer.nvidia.com/tensorrt-download)
 * 选择TensorRT 8.5 GA：
-  * ![image-20240319105814442](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319105814442.png)
-  * ![image-20240319110323383](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319110323383.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7292ed7c-d3d1-4f73-9bce-496107e8720c)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f89768e8-a172-470d-ac56-714ba2b3ecec)
+
 
 （b）根据自己的python版本安装
 
 * 查看python版本3.8.18：
-  * ![image-20240319112851216](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319112851216.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9d7acdbb-35cf-4b3e-95d7-06e894550e3a)
+
 * 安装对应版本的.whl文件：
-  * ![image-20240319112931635](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319112931635.png)
-  * ![image-20240319113643265](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319113643265.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b2c32ad7-661e-477d-8fe1-3d71e6ac175d)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8394ac9c-17f9-472d-b7bf-16ea25971ceb)
+
 * 将【lib】文件夹下的动态链接库拷贝至CUDA安装位置的【bin】文件夹中：
-  * ![image-20240319113901641](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319113901641.png)
-  * ![image-20240319114017174](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319114017174.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6f66dcc3-9111-4161-a1c1-3d66c8d433e1)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a737a747-1461-4fe2-a864-6bdb3e085c0d)
+
 
 ###### （3）zlibwapi.dll安装
 
@@ -249,9 +256,12 @@
 （a）安装包下载
 
 * 网址：[ZLIB DLL Home Page (winimage.com)](http://www.winimage.com/zLibDll/)
-  * ![image-20240319114530210](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319114530210.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8d522fd2-6098-4ce8-99f9-d2df1991a32f)
+
 
 （b）解压将dll文件复制道CUDA的【bin】文件夹内：
 
-* ![image-20240319114740558](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319114740558.png)
-* ![image-20240319114946695](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319114946695.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c2dbe355-1f4f-45ee-b229-abeeb3e9c70f)
+
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b56af18b-0b0a-4419-9be2-0bb031fe811a)
+
