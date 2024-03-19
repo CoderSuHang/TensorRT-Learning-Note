@@ -178,20 +178,26 @@
       * [【手把手带你实战YOLOv5-入门篇】YOLOv5 环境安装（重置版）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1bg4y1R7cs/?spm_id_from=333.788&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
       * [深度学习环境搭建详解（Anaconda、Pycharm、Cuda、Pytorch）-CSDN博客](https://blog.csdn.net/m0_73228309/article/details/136187809)
     * （1）查看环境列表：**conda env list**
-      * ![image-20240223191333777](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223191333777.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/530b1df5-13a2-460f-9725-8d3038a887a1)
+
     * （2）创建环境：**conda create -n env_name python=3.8**
-      * ![image-20240223191345216](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223191345216.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ef72d4b8-37af-43da-aa55-baaf50fc65a7)
+
     * （3）激活环境：**conda activate env_name**
-      * ![image-20240223191558158](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223191558158.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/68d6f739-0faa-4e63-8c1e-e0977cd6cf74)
+
     * （4）退出环境：**conda deactivate**
       * 退出当前环境后才能删除该环境。
     * （5）删除环境：**conda remove -n env_name --all**
   * Pycharm环境配置（Anaconda目录下）
     * [深度学习环境搭建详解（Anaconda、Pycharm、Cuda、Pytorch）-CSDN博客](https://blog.csdn.net/m0_73228309/article/details/136187809)
-      * ![image-20240223194137463](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223194137463.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/fdb297e8-5c81-451d-88bd-70756c274bb1)
+
     * 之后可以在Pycharm和Anaconda中验证是否创建成功：
-      * ![image-20240223194423516](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223194423516.png)
-      * ![image-20240223194527941](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223194527941.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/35eb4fe7-67ce-48cd-b9b1-d5ce5e7e303f)
+
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/59a82b1e-1958-43bf-90f9-765cdedcdc96)
+
 * 3.1.4 Pytorch安装
   * 参考：
     * [【手把手带你实战YOLOv5-入门篇】YOLOv5 环境安装（重置版）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1bg4y1R7cs/?spm_id_from=333.788&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
@@ -204,7 +210,8 @@
         * (Pytorch) C:\Users\10482>pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
       * 安装Pytorch11.8：
         * (Pytorch) C:\Users\10482>pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-    * ![image-20240223203311815](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223203311815.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/319327ce-5b12-47a1-af34-3db5c81eddec)
+
 
 * 3.2 根据 cuda 版本安装相对应版本的TensorRT
 
