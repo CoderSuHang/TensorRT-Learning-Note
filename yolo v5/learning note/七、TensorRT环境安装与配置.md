@@ -64,7 +64,8 @@ onnx类似于适配器，模型需要用原始状态借助oonx这个桥梁转成
     python export.py --weights yolov5s.pt --include engine --device 0
     ```
 
-  * ![image-20240319165954529](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319165954529.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f97e62b4-57bd-4c74-9817-38116c0df5b0)
+
 
     * 报错：
 
@@ -72,20 +73,25 @@ onnx类似于适配器，模型需要用原始状态借助oonx这个桥梁转成
         TensorRT: export failure  0.0s: [WinError 127]
         ```
 
-      * ![image-20240319170036839](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319170036839.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a8733180-f6c9-4860-b74a-5a15de4886fd)
+
 
     * 解决方案：
 
       * [Why my model export into TensorRT engine but response with an OS Error? · Issue #10706 · ultralytics/yolov5 (github.com)](https://github.com/ultralytics/yolov5/issues/10706)
       * 使用annconda虚拟环境中的cublas64_11.dll文件替换掉cuda环境中的cublas64_11.dll文件。
-      * ![image-20240319171610287](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319171610287.png)
-      * ![image-20240319171758645](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319171758645.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d757e308-2893-4d05-aea4-f3e8a892bd9f)
+
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/adff3140-9202-46c7-9114-a90edbdf4779)
+
 
 * 运行成功：
 
-  * ![image-20240319172338641](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319172338641.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0d433480-a834-46f4-ba71-c177690497ea)
+
 
 * 在【detect.py】中运行TensorRT的模型：
 
   * python detect.py --weights yolov5s.engine
-  * ![image-20240319172819399](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240319172819399.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/95381639-c92c-4dcb-a548-246e9ffa704c)
+
