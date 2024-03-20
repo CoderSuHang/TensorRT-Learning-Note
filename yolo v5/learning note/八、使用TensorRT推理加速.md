@@ -112,7 +112,8 @@
     python detect.py --weights yolov5s-fp16.engine --imgsz 384 640 --half
     ```
 
-  * ![image-20240320104946439](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240320104946439.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/33533d2a-10b1-4b52-b13f-f4080b773193)
+
 
   * ```python
     # PT
@@ -171,7 +172,8 @@
   python detect.py --weights yolov5s-halfsize.engine --imgsz 192 320 --half
   ```
 
-* ![image-20240320111318123](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240320111318123.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3e9736ec-c113-4849-834c-c7f6d973768c)
+
 
 * ```python
   # PT
