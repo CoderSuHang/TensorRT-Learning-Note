@@ -158,10 +158,9 @@
     Results saved to runs\detect\exp18
     ```
 
-（2）如果不要求精度，还可以按照图像比例，进一步缩小imgsz维度：
+#### 8.2.2 如果不要求精度，还可以按照图像比例，进一步缩小imgsz维度：
 
 推理：
-
 * ```python
   python export.py --weights yolov5s.pt --include engine --device 0 --img 192 320 --half
   ```
