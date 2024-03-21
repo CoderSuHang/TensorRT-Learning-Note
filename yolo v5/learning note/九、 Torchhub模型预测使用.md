@@ -44,7 +44,8 @@
     results.print()		# 文本结果
     ```
 
-  * ![image-20240321114943113](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240321114943113.png)
+  * ![Uploading image.png…]()
+
 
 * results.panda()方法：
 
