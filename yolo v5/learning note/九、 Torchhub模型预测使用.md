@@ -44,7 +44,7 @@
     results.print()		# 文本结果
     ```
 
-  * ![Uploading image.png…]()
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b8fb3066-75ff-4cd5-9e2a-611661d3855e)
 
 
 * results.panda()方法：
