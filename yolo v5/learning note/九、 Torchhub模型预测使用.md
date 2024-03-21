@@ -78,7 +78,8 @@
 
   * 类别名称消失：
 
-    * ![image-20240321122928345](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240321122928345.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0c08167b-cd2e-4657-a0ee-ec7db1063dd8)
+
 
     * 原因：在模型检测是调用了判断模型类型的函数：
 
