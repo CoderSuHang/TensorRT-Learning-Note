@@ -59,7 +59,8 @@
 
 * results.print()方法：
 
-  * ![image-20240321122040208](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240321122040208.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/84ac15f0-7af0-4481-8e2e-9f598da9e731)
+
 
 ### 9.4 使用TensorRT模型预测
 
