@@ -54,7 +54,8 @@
 
 * results.crop()方法：
 
-  * ![image-20240321122055441](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240321122055441.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a5fde659-2136-48b5-a37e-aa202d9e2c18)
+
 
 * results.print()方法：
 
