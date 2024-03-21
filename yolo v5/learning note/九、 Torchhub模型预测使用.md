@@ -83,7 +83,8 @@
 
     * 原因：在模型检测是调用了判断模型类型的函数：
 
-      * ![image-20240321123149383](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240321123149383.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e9b79862-0062-4155-9a2d-1fdadfb2df54)
+
 
       * ![image-20240321123513083](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240321123513083.png)
 
