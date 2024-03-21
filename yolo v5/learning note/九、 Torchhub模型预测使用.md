@@ -99,4 +99,5 @@
             model.names = {0: "person", 27: "tie"}
             ```
 
-          * ![image-20240321155542579](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240321155542579.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/85f84a9c-6faa-4837-a209-59455d266b6f)
+
