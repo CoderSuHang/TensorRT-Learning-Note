@@ -89,7 +89,7 @@
       * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0724ac1c-0359-44a7-a4cf-e01c36368978)
 
 
-      * ![image-20240321123628356](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240321123628356.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f11ec980-cc11-48b6-ad0b-1bc8cee429f3)
 
         * 如果没有names就要从yaml文件中寻找，否则便从0-999生成一系列的class。
 
