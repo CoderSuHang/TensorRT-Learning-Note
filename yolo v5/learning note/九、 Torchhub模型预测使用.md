@@ -86,7 +86,8 @@
       * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e9b79862-0062-4155-9a2d-1fdadfb2df54)
 
 
-      * ![image-20240321123513083](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240321123513083.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0724ac1c-0359-44a7-a4cf-e01c36368978)
+
 
       * ![image-20240321123628356](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240321123628356.png)
 
