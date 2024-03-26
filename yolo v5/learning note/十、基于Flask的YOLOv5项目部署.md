@@ -4,7 +4,8 @@
 utils/flask_rest_api 中为官方示例
 ```
 
-![image-20240326193418914](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326193418914.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a7fb8b36-6ac5-4c46-89b3-56291bb20ff1)
+
 
 * 加载本地模型：
   * ![image-20240326193734705](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326193734705.png)
