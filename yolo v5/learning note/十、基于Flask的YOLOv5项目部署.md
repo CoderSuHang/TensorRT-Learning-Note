@@ -29,7 +29,8 @@ utils/flask_rest_api 中为官方示例
       * 未安装flask，pip指令安装一下即可：
       * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2b90c9f1-ffb5-49b5-8ea6-b2c4a7f7a790)
 
-    * ![image-20240326200611384](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326200611384.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c081e084-522a-407e-b933-d4933159a7c7)
+
   * （5）接着运行【example_request.py】：
     * ![image-20240326200555403](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326200555403.png)
     * 即可看到预测结果。
