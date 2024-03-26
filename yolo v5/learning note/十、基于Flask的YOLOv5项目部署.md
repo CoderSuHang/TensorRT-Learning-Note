@@ -12,10 +12,13 @@ utils/flask_rest_api 中为官方示例
 
 * 实现步骤：
   * （1）将flask中的两个py文件粘贴到yolov5的根目录下：
-    * ![image-20240326194042380](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326194042380.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d4af8c3b-d689-43c1-8cc7-34ea8331129d)
+
   * （2）修改【example_request.py】文件：
     * 修改图片文件位置信息：
-      * ![image-20240326200453343](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326200453343.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/90783e9e-8171-4cc0-b491-c21f19194744)
+
+
   * （3）修改【restapi.py】文件：
     * 模型加载目录修改为当前目录下：
       * ![image-20240326194917073](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326194917073.png)
