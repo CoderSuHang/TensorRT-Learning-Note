@@ -8,7 +8,8 @@ utils/flask_rest_api 中为官方示例
 
 
 * 加载本地模型：
-  * ![image-20240326193734705](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326193734705.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c1a1e7db-66ad-4407-92e4-d6c467fc1905)
+
 * 实现步骤：
   * （1）将flask中的两个py文件粘贴到yolov5的根目录下：
     * ![image-20240326194042380](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326194042380.png)
