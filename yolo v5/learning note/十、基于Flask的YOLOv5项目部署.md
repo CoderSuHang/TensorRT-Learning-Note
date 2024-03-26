@@ -32,7 +32,8 @@ utils/flask_rest_api 中为官方示例
     * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c081e084-522a-407e-b933-d4933159a7c7)
 
   * （5）接着运行【example_request.py】：
-    * ![image-20240326200555403](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326200555403.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4197762f-e92f-46ba-bed5-985d8830934d)
+
     * 即可看到预测结果。
 
 ### 10.2 基于图像的预测方式
