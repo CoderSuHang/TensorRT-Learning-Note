@@ -18,10 +18,10 @@ utils/flask_rest_api 中为官方示例
     * 修改图片文件位置信息：
       * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/90783e9e-8171-4cc0-b491-c21f19194744)
 
-
   * （3）修改【restapi.py】文件：
     * 模型加载目录修改为当前目录下：
-      * ![image-20240326194917073](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326194917073.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/183c3c45-b987-4647-b718-8c48ab61bca5)
+
   * （4）启动【restapi.py】：
     * 报错：
       * ![image-20240326195104280](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326195104280.png)
