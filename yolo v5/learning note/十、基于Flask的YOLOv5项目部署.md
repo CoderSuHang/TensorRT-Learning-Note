@@ -24,7 +24,8 @@ utils/flask_rest_api 中为官方示例
 
   * （4）启动【restapi.py】：
     * 报错：
-      * ![image-20240326195104280](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326195104280.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0123d86e-816c-4d20-bd45-84f09da22d61)
+
       * 未安装flask，pip指令安装一下即可：
       * ![image-20240326200111907](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326200111907.png)
     * ![image-20240326200611384](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240326200611384.png)
