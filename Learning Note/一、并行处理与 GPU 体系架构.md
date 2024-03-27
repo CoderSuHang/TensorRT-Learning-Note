@@ -265,3 +265,25 @@
 
 * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b56af18b-0b0a-4419-9be2-0bb031fe811a)
 
+#### 1.3.2 VMware虚拟机安装Ubuntu22.04.2
+
+##### 1.3.2.1 VMware
+
+（1）安装网址：
+
+* [VMware - Delivering a Digital Foundation For Businesses](https://www.vmware.com/)
+
+（2）下载安装：
+
+* 参考CSDN：
+  * [安装虚拟机（VMware）保姆级教程（附安装包）_vmware虚拟机-CSDN博客](https://blog.csdn.net/weixin_74195551/article/details/127288338?ops_request_misc=%7B%22request%5Fid%22%3A%22171149993816800227423899%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=171149993816800227423899&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-2-127288338-null-null.142^v100^pc_search_result_base5&utm_term=vmware虚拟机安装教程&spm=1018.2226.3001.4187)
+* 参考B站：
+  * [两分半钟完成VMware安装及Linux-Ubuntu安装（全程无废话）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1W34y1k7ge/?spm_id_from=333.337.search-card.all.click&vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
+
+##### 1.3.2.2 Ubuntu
+
+（1）下载网址：
+
+* http://mirrors.zju.edu.cn/ubuntu-releases/20.04/
+
+（2）安装20.04
