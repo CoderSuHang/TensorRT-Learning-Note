@@ -296,3 +296,5 @@
 操作系统这里卡了我很久，现在整明白了，需要Windows主机 + Ubuntu服务器，用 SSH 连接。这里参考下面的教程进行配置：
 
 [VsCode通过SSH连接Ubuntu虚拟机_vscode ssh ubuntu-CSDN博客](https://blog.csdn.net/qq_51607131/article/details/131309223?ops_request_misc=%7B%22request%5Fid%22%3A%22171163374416800222852293%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=171163374416800222852293&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-131309223-null-null.142^v100^pc_search_result_base5&utm_term=vscode用ssh连接ubuntu&spm=1018.2226.3001.4187)
+
+
