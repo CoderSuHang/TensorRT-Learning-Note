@@ -295,6 +295,40 @@
 
 操作系统这里卡了我很久，现在整明白了，需要Windows主机 + Ubuntu服务器，用 SSH 连接。这里参考下面的教程进行配置：
 
-[VsCode通过SSH连接Ubuntu虚拟机_vscode ssh ubuntu-CSDN博客](https://blog.csdn.net/qq_51607131/article/details/131309223?ops_request_misc=%7B%22request%5Fid%22%3A%22171163374416800222852293%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=171163374416800222852293&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-131309223-null-null.142^v100^pc_search_result_base5&utm_term=vscode用ssh连接ubuntu&spm=1018.2226.3001.4187)
+* [VsCode通过SSH连接Ubuntu虚拟机_vscode ssh ubuntu-CSDN博客](https://blog.csdn.net/qq_51607131/article/details/131309223?ops_request_misc=%7B%22request%5Fid%22%3A%22171163374416800222852293%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=171163374416800222852293&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-131309223-null-null.142^v100^pc_search_result_base5&utm_term=vscode用ssh连接ubuntu&spm=1018.2226.3001.4187)
 
+详细配置看视频：
 
+* 【vscode远程连接ubuntu】 https://www.bilibili.com/video/BV1MN411T71b/?share_source=copy_web&vd_source=a0dbe312acd17ef7f1fb082726d496a7
+
+设置免密远程可参考下面视频：
+
+* 【VS Code通过SSH连接Ubuntu进行远程开发，让老电脑起死回生，在局域网中做代码服务器】 https://www.bilibili.com/video/BV15D4y177Ko/?share_source=copy_web&vd_source=a0dbe312acd17ef7f1fb082726d496a7
+
+#### 1.3.4 WinSCP
+
+##### （1）安装教程
+
+* [实用工具系列-WinSCP安装下载与使用-CSDN博客](https://blog.csdn.net/Passerby_Wang/article/details/124913219?ops_request_misc=%7B%22request%5Fid%22%3A%22171179212916800226546693%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=171179212916800226546693&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-2-124913219-null-null.142^v100^pc_search_result_base5&utm_term=winscp&spm=1018.2226.3001.4187)
+
+##### （2）连接教程
+
+* [文件传输工具WinSCP下载安装教程_winscp安装教程-CSDN博客](https://blog.csdn.net/qq_26383975/article/details/120220823?ops_request_misc=%7B%22request%5Fid%22%3A%22171179212916800226546693%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=171179212916800226546693&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-120220823-null-null.142^v100^pc_search_result_base5&utm_term=winscp&spm=1018.2226.3001.4187)
+* 【WinSCP连接远程服务器传输文件】 https://www.bilibili.com/video/BV1v24y1t7RS/?share_source=copy_web&vd_source=a0dbe312acd17ef7f1fb082726d496a7
+* 【WinSCP轻松实现文件由Windows传输到Linux】 https://www.bilibili.com/video/BV1tb4y1h71b/?share_source=copy_web&vd_source=a0dbe312acd17ef7f1fb082726d496a7
+
+#### 1.3.5 自动环境配置
+
+##### （1）虚拟环境中的python
+
+* 首先要在虚拟机环境中安装好Python，这里安装了Python3.8
+* [ubuntu 安装python3.8 - CSDN文库](https://wenku.csdn.net/answer/c2c5f58574df7e8844fe0d898eaecabd)
+* [Ubuntu 安装Python3.8_ubuntu python3.8-CSDN博客](https://blog.csdn.net/xiaowang_lj/article/details/135679468)
+
+安装指令
+
+* ```python
+  pip install trtpy -U
+  ```
+
+* 
