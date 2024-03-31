@@ -335,7 +335,8 @@
 ##### （3）配置快捷指令
 
 * 这里我安装的是python3，所以不能使用python -m trtpy，应改成python3 -m trtpy使用。
-* ![image-20240331213200476](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240331213200476.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ae2416c3-8469-485e-8d01-3120904a8f5b)
+
 
 * ```python
   echo alias tetpy=\"python3 -m trtpy\" >> ~
