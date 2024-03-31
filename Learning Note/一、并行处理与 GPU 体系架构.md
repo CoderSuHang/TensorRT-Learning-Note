@@ -321,14 +321,24 @@
 
 ##### （1）虚拟环境中的python
 
-* 首先要在虚拟机环境中安装好Python，这里安装了Python3.8
+* 【首先要在虚拟机环境中安装好Python，这里安装了Python3.8】这里进了很多坑，终于重新安装了一个Ubuntu18.04的虚拟机，并且通过安装pip3实现了trtpy的自动环境安装，来之不易，先这样往后做叭！
+  * [在 Ubuntu 上安装 pip的方法_ubuntu pip-CSDN博客](https://blog.csdn.net/baidu_41617231/article/details/135296235)
 * [ubuntu 安装python3.8 - CSDN文库](https://wenku.csdn.net/answer/c2c5f58574df7e8844fe0d898eaecabd)
 * [Ubuntu 安装Python3.8_ubuntu python3.8-CSDN博客](https://blog.csdn.net/xiaowang_lj/article/details/135679468)
 
-安装指令
+##### （2）安装指令
 
 * ```python
-  pip install trtpy -U
+  pip3 install trtpy -U
+  ```
+
+##### （3）配置快捷指令
+
+* 这里我安装的是python3，所以不能使用python -m trtpy，应改成python3 -m trtpy使用。
+* ![image-20240331213200476](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240331213200476.png)
+
+* ```python
+  echo alias tetpy=\"python3 -m trtpy\" >> ~
   ```
 
 * 
