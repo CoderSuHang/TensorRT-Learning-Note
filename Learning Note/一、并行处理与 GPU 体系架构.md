@@ -269,11 +269,14 @@
 
   * [Release Notes :: NVIDIA Deep Learning TensorRT Documentation](https://docs.nvidia.com/deeplearning/tensorrt/release-notes/index.html#rel-8-5-1)
 
-  * ![image-20240401152030560](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401152030560.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6d7a168f-5a8b-43c2-8553-dee6885ecb3c)
 
-  * ![image-20240401152132378](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401152132378.png)
 
-  * ![image-20240401153028634](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401153028634.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7c253dc9-2d5a-42ad-b49f-e503bbb85634)
+
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d8860a45-e52f-4732-aefd-3f6b7bd2125d)
+
 
   * 运行指令：
 
@@ -293,23 +296,28 @@
         suhang@Y9000P:/mnt/c/Users/10482$ cd packages
         ```
 
-    * ![image-20240401155530245](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401155530245.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b77c9e7d-a18a-4525-82c6-624e83960272)
 
     * 切换下载位置：
 
-      * ![image-20240401160103514](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401160103514.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/14fefaf9-6ac2-4d58-abdc-b9f8d70314f4)
+
 
 * 运行安装包
 
-  * ![image-20240401162430319](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401162430319.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bc1a7513-c07b-4318-b1ff-6e6a4c0e351f)
+
 
   * 报错，用--override进行忽略：
 
-  * ![image-20240401162842135](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401162842135.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8398a0d2-a9fb-4227-ba86-feb22ba2d8fc)
 
-  * ![image-20240401163718775](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401163718775.png)
 
-  * ![image-20240401164025182](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401164025182.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/28bc3665-bc74-475d-b10a-b097879de48d)
+
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/1ea2bd4a-0525-45c0-8928-3e74c71513cd)
+
 
     * 这表示 NVIDIA Driver 和 CUDA Toolkit 已安装完毕。后半段安装信息提示我们修改[环境变量](https://link.zhihu.com/?target=https%3A//blog.csdn.net/dlutbrucezhang/article/details/8811456) PATH 和 LD_LIBRARY_PATH. 在 ~/.bashrc 文件中写入
 
@@ -328,7 +336,8 @@
             suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ vim ~/.bashrc
             ```
 
-          * ![image-20240401180022769](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401180022769.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3813252d-7962-460d-9a3d-1ee898b2b1de)
+
 
         * 在文件最后一行加入下面指令：
 
@@ -346,7 +355,8 @@
               ```
 
 * 查看安装版本：
-  * ![image-20240401165429026](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401165429026.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/af305e07-3c36-4e5b-ae08-0d818dd95ea1)
+
 
 ##### （4）cuDNN 8.6.0 安装下载
 
