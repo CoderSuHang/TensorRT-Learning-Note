@@ -90,7 +90,265 @@
 
 **CUDA**提供了高性能的并行计算平台，**cuDNN**加速了深度学习任务的计算，**TensorRT**优化深度学习模型的推理性能，三者共同促进了GPU在高性能计算和深度学习领域的广泛应用。
 
-### 1.3 环境配置
+### 1.3 环境配置new
+
+![image-20240401100512616](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401100512616.png)
+
+#### 1.3.1 WSL2安装
+
+参考视频教程：
+
+【Windows11安装WSL2】 https://www.bilibili.com/video/BV1n14y1x7Y7/?share_source=copy_web&vd_source=a0dbe312acd17ef7f1fb082726d496a7
+
+##### （1）搜索功能勾选【适用于Linux的Windows子系统】和【虚拟机平台】
+
+* ![image-20240401102338011](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401102338011.png)
+
+##### （2）点击立即重新启动
+
+* ![image-20240401102442883](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401102442883.png)
+
+##### （3）安装Linux发行版，打开微软商店，安装Ubuntu 22.04
+
+* ![image-20240401102907465](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401102907465.png)
+* ![image-20240401103328008](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401103328008.png)
+
+##### （4）报错：
+
+* ![image-20240401105628416](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401105628416.png)
+* 使用powershell进行更新：
+  * ![image-20240401105805189](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401105805189.png)
+
+##### （5）安装Terminal
+
+* ![image-20240401110445122](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401110445122.png)
+
+##### （6）启动Ubuntu
+
+* ![image-20240401111714571](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401111714571.png)
+
+##### （7）其他
+
+* ![image-20240401110937976](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401110937976.png)
+* ![image-20240401114038156](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401114038156.png)
+
+##### （8）WSL2安装位置迁移，因为原文件安装在C盘，导致C盘空间不足
+
+* ```c++
+  C:\Users\10482\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu22.04LTS_79rhkp1fndgsc\LocalState
+  ```
+
+* 参考连接：
+
+  * [WSL2安装 迁移 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/593297123)
+
+#### 1.3.1 版本选择：CUDA、cuDNN和TensorRT 
+
+##### （1）查看本机版本：
+
+* ![image-20240401120934075](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401120934075.png)
+* Ubuntu：22.04.3
+* Driver Version：551.86
+* CUDA Version：12.4（是能够兼容的最大CUDA版本）
+
+##### （2）TensorRT 8.5.1 安装下载
+
+* 下载连接：
+
+  * [Installation Guide :: NVIDIA Deep Learning TensorRT Documentation](https://docs.nvidia.com/deeplearning/tensorrt/archives/tensorrt-851/install-guide/index.html#downloading)
+  * ![image-20240401151156254](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401151156254.png)
+  * ![image-20240401151224960](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401151224960.png)
+  * ![image-20240401151345302](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401151345302.png)
+  * ![image-20240401151541374](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401151541374.png)
+  * ![image-20240401151644856](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401151644856.png)
+  * ![image-20240401151810092](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401151810092.png)
+
+* 配置环境变量：
+
+  * 输入【vim ~/.bashrc】打开vim编辑器：
+
+    * ```python
+      suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ vim ~/.bashrc
+      ```
+
+    * ![image-20240401180022769](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401180022769.png)
+
+  * 在文件最后一行加入下面指令：
+
+    * ```python
+      export PATH=/mnt/e/Software/LinuxOS/wsl2/packages/TensorRT-8.5.1.7/bin:$PATH
+      export LD_LIBRARY_PATH=/mnt/e/Software/LinuxOS/wsl2/packages/TensorRT-8.5.1.7/lib:$LD_LIBRARY_PATH
+      export LIBRARY_PATH=/mnt/e/Software/LinuxOS/wsl2/packages/TensorRT-8.5.1.7/lib:$LIBRARY_PATH
+      ```
+
+    * 按下【ESC】输入【:w】保存，并输入【:q】退出
+
+    * 在终端输入【source ~/.bashrc】，保存后刷新环境变量。
+
+      * ```python
+        suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ source ~/.bashrc
+        ```
+
+* 运行检查，输入【trtexec】
+
+  * ![image-20240401185245405](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401185245405.png)
+  * ![image-20240401185253822](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401185253822.png)
+
+* 运行一个例程试试：
+
+  * ```python
+    suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages/TensorRT-8.5.1.7/samples/sampleOnnxMNIST$ make -j16
+    ```
+
+  * 报错：
+
+    * ![image-20240401203921873](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401203921873.png)
+
+    * 原因是没有安装g++，运行安装指令即可：
+
+      * ```python
+        sudo apt-get install g++
+        ```
+
+      * ![image-20240401204013669](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401204013669.png)
+
+  * 重新运行：
+
+    * ![image-20240401204132431](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401204132431.png)
+
+    * ![image-20240401204305125](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401204305125.png)
+
+    * 报错：
+
+      * ![image-20240401204647873](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401204647873.png)
+
+      * ```c++
+        Could not load library libcudnn_cnn_infer.so.8. Error: libcuda.so: cannot open shared object file: No such file or directory
+        ```
+
+      * 这是因为没有加入cuDNN路径，在bashrc文件中添加即可：
+
+        * ```python
+          export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64/stubs/:/usr/local/cuda-11.7/lib64:/usr/local/cuda-11.7/cudnn/lib:$LD_LIBRARY_PATH
+          ```
+
+        * ![image-20240401205930008](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401205930008.png)
+
+    * 再次运行：
+
+      * ![image-20240401210106306](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401210106306.png)
+      * ![image-20240401210123006](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401210123006.png)
+
+##### （3）CUDA11.7 安装下载
+
+* 下载连接：
+
+  * [Release Notes :: NVIDIA Deep Learning TensorRT Documentation](https://docs.nvidia.com/deeplearning/tensorrt/release-notes/index.html#rel-8-5-1)
+
+  * ![image-20240401152030560](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401152030560.png)
+
+  * ![image-20240401152132378](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401152132378.png)
+
+  * ![image-20240401153028634](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401153028634.png)
+
+  * 运行指令：
+
+    * ```python
+      wget https://developer.download.nvidia.com/compute/cuda/11.7.0/local_installers/cuda_11.7.0_515.43.04_linux.run
+      ```
+
+    * 首先要在Ubuntu中新建文件夹：
+
+      * ```python
+        suhang@Y9000P:/mnt/c/Users/10482$ mkdir packages
+        ```
+
+    * 打开文件夹：
+
+      * ```python
+        suhang@Y9000P:/mnt/c/Users/10482$ cd packages
+        ```
+
+    * ![image-20240401155530245](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401155530245.png)
+
+    * 切换下载位置：
+
+      * ![image-20240401160103514](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401160103514.png)
+
+* 运行安装包
+
+  * ![image-20240401162430319](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401162430319.png)
+
+  * 报错，用--override进行忽略：
+
+  * ![image-20240401162842135](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401162842135.png)
+
+  * ![image-20240401163718775](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401163718775.png)
+
+  * ![image-20240401164025182](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401164025182.png)
+
+    * 这表示 NVIDIA Driver 和 CUDA Toolkit 已安装完毕。后半段安装信息提示我们修改[环境变量](https://link.zhihu.com/?target=https%3A//blog.csdn.net/dlutbrucezhang/article/details/8811456) PATH 和 LD_LIBRARY_PATH. 在 ~/.bashrc 文件中写入
+
+      * 注意当使用如下指令时，添加的路径成为临时路径，如果关闭终端再次打开，会无法启动CUDA：
+
+        * ```python
+          suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ export PATH=$PATH:/usr/local/cuda-11.7/bin
+          suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.7/lib64
+          ```
+
+      * 解决办法：
+
+        * 输入【vim ~/.bashrc】打开vim编辑器：
+
+          * ```python
+            suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ vim ~/.bashrc
+            ```
+
+          * ![image-20240401180022769](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401180022769.png)
+
+        * 在文件最后一行加入下面指令：
+
+          * ```python
+            export PATH=/usr/local/cuda-11.7/bin:$PATH
+            export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64:$LD_LIBRARY_PATH
+            ```
+
+          * 按下【ESC】输入【:w】保存，并输入【:q】退出
+
+          * 在终端输入【source ~/.bashrc】，保存后刷新环境变量。
+
+            * ```python
+              suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ source ~/.bashrc
+              ```
+
+* 查看安装版本：
+  * ![image-20240401165429026](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401165429026.png)
+
+##### （4）cuDNN 8.6.0 安装下载
+
+* 下载网址：
+  * [cuDNN Archive | NVIDIA Developer](https://developer.nvidia.com/rdp/cudnn-archive)
+  * ![image-20240401160325915](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401160325915.png)
+* 解压所有压缩包：
+  * ![image-20240401161305552](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401161305552.png)
+
+* 在当前目录下运行如下指令
+
+  * ```python
+    sudo cp cudnn-*-archive/include/cudnn*.h /usr/local/cuda/include 
+    sudo cp -P cudnn-*-archive/lib/libcudnn* /usr/local/cuda/lib64 
+    sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
+    ```
+
+  * ![image-20240401170223387](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401170223387.png)
+
+* 检查
+
+  * ![image-20240401170423388](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401170423388.png)
+  * ![image-20240401171034375](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401171034375.png)
+  * ![image-20240401170908677](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401170908677.png)
+
+### 1.x 环境配置
 
 #### 1.3.1 版本选择：CUDA、cuDNN和TensorRT
 
