@@ -102,35 +102,42 @@
 
 ##### （1）搜索功能勾选【适用于Linux的Windows子系统】和【虚拟机平台】
 
-* ![image-20240401102338011](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401102338011.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6b3b5294-730d-4f5a-afcf-a1075e3ea75b)
 
 ##### （2）点击立即重新启动
 
-* ![image-20240401102442883](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401102442883.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/77197e48-8e29-433e-94e1-e63c50ceff12)
+
 
 ##### （3）安装Linux发行版，打开微软商店，安装Ubuntu 22.04
 
-* ![image-20240401102907465](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401102907465.png)
-* ![image-20240401103328008](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401103328008.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8e29f278-bdc0-4b6a-add8-4f53732414ba)
+
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/940b5072-7ec8-4762-8e62-d3fb4cb10b49)
+
 
 ##### （4）报错：
 
-* ![image-20240401105628416](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401105628416.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a02fdc9f-1a56-42d1-82e6-dd5418988497)
+
 * 使用powershell进行更新：
-  * ![image-20240401105805189](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401105805189.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2369a1a6-d430-4053-a448-242a0ccf4c88)
+
 
 ##### （5）安装Terminal
 
-* ![image-20240401110445122](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401110445122.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/89058a3a-4637-4abf-a031-f35e0d1b1ac2)
+
 
 ##### （6）启动Ubuntu
 
-* ![image-20240401111714571](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401111714571.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9faa16cb-3d1b-4b09-aeb9-3e1a401ab881)
+
 
 ##### （7）其他
 
-* ![image-20240401110937976](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401110937976.png)
-* ![image-20240401114038156](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401114038156.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/024c6cde-675a-4414-bad6-fc278a35610f)
+
 
 ##### （8）WSL2安装位置迁移，因为原文件安装在C盘，导致C盘空间不足
 
