@@ -153,7 +153,8 @@
 
 ##### （1）查看本机版本：
 
-* ![image-20240401120934075](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401120934075.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0dcafa00-7a31-44ac-8128-e4b8163f6066)
+
 * Ubuntu：22.04.3
 * Driver Version：551.86
 * CUDA Version：12.4（是能够兼容的最大CUDA版本）
@@ -163,12 +164,17 @@
 * 下载连接：
 
   * [Installation Guide :: NVIDIA Deep Learning TensorRT Documentation](https://docs.nvidia.com/deeplearning/tensorrt/archives/tensorrt-851/install-guide/index.html#downloading)
-  * ![image-20240401151156254](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401151156254.png)
-  * ![image-20240401151224960](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401151224960.png)
-  * ![image-20240401151345302](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401151345302.png)
-  * ![image-20240401151541374](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401151541374.png)
-  * ![image-20240401151644856](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401151644856.png)
-  * ![image-20240401151810092](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401151810092.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/931cb207-923f-43c2-a059-aa01f7505572)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2374e480-bc35-4651-bbd7-10fe0a1ce8ac)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e63daeaa-b211-4577-9851-8f336c453491)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e400f54d-8e8a-4e6d-8db0-fcdc571bf28a)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/50663b63-2b38-48df-abd1-93e288c5ffbe)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/91bada89-f520-4e90-b2fa-f4881f7b15a8)
 
 * 配置环境变量：
 
@@ -178,7 +184,8 @@
       suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ vim ~/.bashrc
       ```
 
-    * ![image-20240401180022769](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401180022769.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/acdba0f3-c75a-4b28-86ba-43101d4afd08)
+
 
   * 在文件最后一行加入下面指令：
 
@@ -198,8 +205,10 @@
 
 * 运行检查，输入【trtexec】
 
-  * ![image-20240401185245405](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401185245405.png)
-  * ![image-20240401185253822](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401185253822.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5758142e-91f2-4841-8974-f63fe4b156d8)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/acd72465-d875-4629-a71e-c009a1a6071d)
+
 
 * 运行一个例程试试：
 
@@ -209,7 +218,8 @@
 
   * 报错：
 
-    * ![image-20240401203921873](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401203921873.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b429fb3e-5570-4e6c-819d-cc3ce22b0f77)
+
 
     * 原因是没有安装g++，运行安装指令即可：
 
@@ -217,17 +227,21 @@
         sudo apt-get install g++
         ```
 
-      * ![image-20240401204013669](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401204013669.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a146262c-88d6-4fb8-9bf1-91df9636c539)
+
 
   * 重新运行：
 
-    * ![image-20240401204132431](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401204132431.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f113cd3c-d1a9-4f32-8d88-26a52349d625)
 
-    * ![image-20240401204305125](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401204305125.png)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9e22d507-7e92-44a5-ae76-5e2be48ee83a)
+
 
     * 报错：
 
-      * ![image-20240401204647873](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401204647873.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9eb3ee8f-25dd-4bcc-8b29-73ec43870970)
+
 
       * ```c++
         Could not load library libcudnn_cnn_infer.so.8. Error: libcuda.so: cannot open shared object file: No such file or directory
@@ -239,12 +253,15 @@
           export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64/stubs/:/usr/local/cuda-11.7/lib64:/usr/local/cuda-11.7/cudnn/lib:$LD_LIBRARY_PATH
           ```
 
-        * ![image-20240401205930008](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401205930008.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/095a421b-eb9b-4d42-b52e-ae5f3e2c174a)
+
 
     * 再次运行：
 
-      * ![image-20240401210106306](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401210106306.png)
-      * ![image-20240401210123006](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401210123006.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/699cb68a-f5db-4818-9e1e-88b2e64fb5eb)
+
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f95d1d11-b55e-4178-96e7-67b5a0f771bf)
+
 
 ##### （3）CUDA11.7 安装下载
 
