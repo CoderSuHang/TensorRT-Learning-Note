@@ -362,9 +362,11 @@
 
 * 下载网址：
   * [cuDNN Archive | NVIDIA Developer](https://developer.nvidia.com/rdp/cudnn-archive)
-  * ![image-20240401160325915](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401160325915.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9075c3b1-16ed-4abb-b17a-1f1ddf1d9e54)
+
 * 解压所有压缩包：
-  * ![image-20240401161305552](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401161305552.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d8702034-f081-4790-a657-d5563abd0007)
+
 
 * 在当前目录下运行如下指令
 
@@ -374,13 +376,17 @@
     sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
     ```
 
-  * ![image-20240401170223387](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401170223387.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/fcc0c4a9-c08d-446b-9db1-0ceb950c9bb1)
+
 
 * 检查
 
-  * ![image-20240401170423388](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401170423388.png)
-  * ![image-20240401171034375](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401171034375.png)
-  * ![image-20240401170908677](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401170908677.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/02de7c51-55b4-465b-933d-abb936a16d7c)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/16febd65-42f0-4f9b-9ccb-4646b98583da)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ea8eb5d0-4e28-4186-9738-351c3c544812)
+
 
 ### 1.x 环境配置
 
