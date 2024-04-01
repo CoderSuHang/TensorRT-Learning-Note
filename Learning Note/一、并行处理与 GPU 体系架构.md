@@ -92,7 +92,7 @@
 
 ### 1.3 环境配置new
 
-![image-20240401100512616](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240401100512616.png)
+本次选择使用 Windows terminal + wsl2 来运行 Ubuntu 系统，使用 vscode作为编辑器， 服务器选择 Ubuntu22.04 + docker。
 
 #### 1.3.1 WSL2安装
 
