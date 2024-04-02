@@ -388,6 +388,238 @@
   * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ea8eb5d0-4e28-4186-9738-351c3c544812)
 
 
+#### 1.3.3 fish shell安装
+
+是一款功能强大的命令行工具，它具有自动补全、语法高亮和更友好的用户界面等特性。
+
+##### （1）参考教程
+
+* [如何在 Ubuntu 中安装和配置 Fish Shell？(1) - 芒果文档 (imangodoc.com)](https://imangodoc.com/NFwcPLBy.html)
+
+##### （2）安装 Fish Shell
+
+* ```python
+  sudo apt install fish
+  ```
+
+* ![image-20240402100550114](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402100550114.png)
+
+* ![image-20240402100555986](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402100555986.png)
+
+##### （3）运行fish
+
+* ```python
+  suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ fish
+  ```
+
+* fish的其他用法：
+
+  * [Fish Shell 入门体验 - Eslzzyl - 博客园 (cnblogs.com)](https://www.cnblogs.com/eslzzyl/p/16902538.html)
+
+##### （4）安装fisher包
+
+* 参考教程
+  * [小知识点系列：终端下如何安装 Fisher_fish插件-CSDN博客](https://blog.csdn.net/puchunwei/article/details/131295476)
+
+* ```python
+  suhang@Y9000P /m/e/S/L/w/packages> curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+  ```
+
+* ![image-20240402103607091](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402103607091.png)
+
+（5）快捷跳转指令Z
+
+* 需要在实体机上安装，这里有教程，以后有机会尝试：
+  * [【干货】你不知道的 Linux 命令使用技巧_linux快捷跳转类似mac的z命令-CSDN博客](https://blog.csdn.net/XMWS_IT/article/details/119108005)
+
+#### 1.3.4 exa使用
+
+exa可以使让终端显示更具体的文件夹列表，有助于我们查找文件
+
+##### （1）参考教程
+
+* [exa · a modern replacement for ls](https://the.exa.website/)
+
+##### （2）安装exa
+
+* ```python
+  suhang@Y9000P /m/e/S/L/w/packages [100]> sudo apt install exa
+  ```
+
+* ![image-20240402104518426](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402104518426.png)
+
+##### （3）使用exa
+
+* ```python
+  suhang@Y9000P /m/e/S/L/w/packages> exa -l
+  ```
+
+* ![image-20240402104600833](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402104600833.png)
+
+* 可以创建快捷方式ll，但是我无法打开fish内部文件，以后有办法再打开吧，参考视频1.3.3 中的05:10的内容。这个可能需要一个Ubuntu实体机才行。wsl我能root但是找不到文件。
+
+  * ```python
+    suhang@Y9000P /m/e/S/L/w/packages> vim ~/.config/fish/
+    ```
+
+  * ![image-20240402105348847](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402105348847.png)
+
+#### 1.3.5 tmux使用
+
+安装tmux进行多window多session的管理
+
+##### （1）安装教程
+
+* [Linux安装tmux_linux 安装tmux-CSDN博客](https://blog.csdn.net/qq_35985044/article/details/131820250)
+
+##### （2）运行在线安装指令
+
+* ```python
+  sudo apt-get install tmux
+  ```
+
+* ![image-20240402114130537](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402114130537.png)
+
+#### 1.3.6 netron使用
+
+安装netron进行DNN网络架构图的分析
+
+##### （1）运行在线安装指令
+
+* ```python
+  suhang@Y9000P /m/e/S/L/w/packages> pip3 install netron
+  ```
+
+* ![image-20240402115223542](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402115223542.png)
+
+### 1.4 服务器环境配置
+
+![image-20240402164649235](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402164649235.png)
+
+#### 1.4.1 安装NVIDIA Container Toolkit
+
+##### （1）参考教程
+
+* [sudo apt-get install -y nvidia-container-toolkit-base执行报错解决方案_unable to locate package nvidia-container-toolkit--CSDN博客](https://blog.csdn.net/qq_28593347/article/details/131471058)
+
+##### （2）运行指令安装
+
+* 配置apt源
+
+  * ```python
+    distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+    
+    curl -s -L https://nvidia.github.io/libnvidia-container/gpgkey | sudo apt-key add -
+    
+    curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+    ```
+
+* 安装nvidia-container-toolkit
+
+  * ```python
+    sudo apt-get update
+    
+    sudo apt-get install -y nvidia-container-toolkit-base
+    ```
+
+* ![image-20240402170325181](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402170325181.png)
+
+##### （3）根据官网指令检查
+
+* ```python
+  suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ nvidia-ctk --version
+  
+  suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ sudo nvidia-ctk cdi generate --output=/etc/cdi/nvdia.yaml
+  
+  suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ grep "  name:" /etc/cdi/nvdia.yaml
+  ```
+
+* ![image-20240402170852149](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402170852149.png)
+
+* ![image-20240402170901494](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402170901494.png)
+
+#### 1.4.2 安装Docker
+
+##### （1）参考链接
+
+* [ubuntu安装nvidia-docker_ubuntu_icodekang-华为云开发者联盟 (csdn.net)](https://huaweicloud.csdn.net/638db459dacf622b8df8c9eb.html)
+
+##### （2）安装docker
+
+* ```python
+  curl https://get.docker.com | sh \
+    && sudo systemctl --now enable docker
+  ```
+
+* ![image-20240402215226978](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402215226978.png)
+
+##### （3）设置源
+
+* ```python
+  distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+     && curl -fsSL https://nvidia.github.io/libnvidia-docker/gpgkey | sudo apt-key add - \
+     && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+  ```
+
+* ![image-20240402215226978](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402215226978.png)
+
+* 安装失败，待解决：
+
+  * ![image-20240402223812815](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402223812815.png)
+  * Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+
+![image-20240402212039447](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402212039447.png)
+
+```python
+suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ curl https://get.docker.com | sh \
+  && sudo systemctl --now enable docker
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 21927  100 21927    0     0  21449      0  0:00:01  0:00:01 --:--:-- 21454
+# Executing docker install script, commit: e5543d473431b782227f8908005543bb4389b8de
+
+WSL DETECTED: We recommend using Docker Desktop for Windows.
+Please get Docker Desktop from https://www.docker.com/products/docker-desktop/
+
+
+You may press Ctrl+C now to abort this script.
++ sleep 20
++ sudo -E sh -c apt-get update -qq >/dev/null
+[sudo] password for suhang:
+W: https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+W: https://nvidia.github.io/nvidia-container-runtime/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+W: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+W: https://nvidia.github.io/nvidia-docker/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
++ sudo -E sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq apt-transport-https ca-certificates curl >/dev/null
++ sudo -E sh -c install -m 0755 -d /etc/apt/keyrings
++ sudo -E sh -c curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg
++ sudo -E sh -c chmod a+r /etc/apt/keyrings/docker.gpg
++ sudo -E sh -c echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable" > /etc/apt/sources.list.d/docker.list
++ sudo -E sh -c apt-get update -qq >/dev/null
+W: https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+W: https://nvidia.github.io/nvidia-container-runtime/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+W: https://nvidia.github.io/nvidia-docker/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+W: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
++ sudo -E sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin >/dev/null
+E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/containerd.io_1.6.28-2_amd64.deb  Connection timed out [IP: 13.224.163.81 443]
+E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/docker-buildx-plugin_0.13.1-1%7eubuntu.22.04%7ejammy_amd64.deb  Connection timed out [IP: 13.224.163.81 443]
+E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/docker-ce_26.0.0-1%7eubuntu.22.04%7ejammy_amd64.deb  Connection timed out [IP: 13.224.163.23 443]
+E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/docker-ce-rootless-extras_26.0.0-1%7eubuntu.22.04%7ejammy_amd64.deb  Connection timed out [IP: 13.224.163.23 443]
+E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/docker-compose-plugin_2.25.0-1%7eubuntu.22.04%7ejammy_amd64.deb  Connection timed out [IP: 13.224.163.23 443]
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$
+```
+
+
+
+curl https://get.docker.com \ sh
+
+
+
+
+
+
+
 ### 1.x 环境配置
 
 #### 1.3.1 版本选择：CUDA、cuDNN和TensorRT
