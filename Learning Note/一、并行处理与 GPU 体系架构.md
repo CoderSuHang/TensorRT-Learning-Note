@@ -402,9 +402,10 @@
   sudo apt install fish
   ```
 
-* ![image-20240402100550114](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402100550114.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/48791055-27a8-48c4-9989-4c61d0e68490)
 
-* ![image-20240402100555986](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402100555986.png)
+
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/06b6af61-5fea-48ee-9e37-d65d0b971c52)
 
 ##### （3）运行fish
 
@@ -425,7 +426,8 @@
   suhang@Y9000P /m/e/S/L/w/packages> curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
   ```
 
-* ![image-20240402103607091](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402103607091.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/98746c5a-2898-4c9f-85e1-4cc9e29e17d0)
+
 
 （5）快捷跳转指令Z
 
@@ -446,7 +448,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
   suhang@Y9000P /m/e/S/L/w/packages [100]> sudo apt install exa
   ```
 
-* ![image-20240402104518426](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402104518426.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8493395f-c26e-462d-bb22-645d11f0713a)
+
 
 ##### （3）使用exa
 
@@ -454,7 +457,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
   suhang@Y9000P /m/e/S/L/w/packages> exa -l
   ```
 
-* ![image-20240402104600833](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402104600833.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/830bbdc4-d0a5-4041-bbd1-970d1d4a29f7)
+
 
 * 可以创建快捷方式ll，但是我无法打开fish内部文件，以后有办法再打开吧，参考视频1.3.3 中的05:10的内容。这个可能需要一个Ubuntu实体机才行。wsl我能root但是找不到文件。
 
@@ -462,7 +466,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     suhang@Y9000P /m/e/S/L/w/packages> vim ~/.config/fish/
     ```
 
-  * ![image-20240402105348847](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402105348847.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/723aed7c-0f2b-4175-8c04-980a096adb22)
+
 
 #### 1.3.5 tmux使用
 
@@ -478,7 +483,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
   sudo apt-get install tmux
   ```
 
-* ![image-20240402114130537](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402114130537.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bb35dc2b-5e50-45fd-bed0-ab56f4435af2)
+
 
 #### 1.3.6 netron使用
 
@@ -490,11 +496,13 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
   suhang@Y9000P /m/e/S/L/w/packages> pip3 install netron
   ```
 
-* ![image-20240402115223542](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402115223542.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/afc5395d-7ad4-4a70-af26-09d7325f9113)
+
 
 ### 1.4 服务器环境配置
 
-![image-20240402164649235](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402164649235.png)
+
+
 
 #### 1.4.1 安装NVIDIA Container Toolkit
 
@@ -522,7 +530,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     sudo apt-get install -y nvidia-container-toolkit-base
     ```
 
-* ![image-20240402170325181](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402170325181.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0b73aaaf-63ed-4569-ba41-148e7abb32f3)
+
 
 ##### （3）根据官网指令检查
 
@@ -534,9 +543,11 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
   suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ grep "  name:" /etc/cdi/nvdia.yaml
   ```
 
-* ![image-20240402170852149](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402170852149.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/26d44425-a818-4551-8114-585aa01394ed)
 
-* ![image-20240402170901494](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402170901494.png)
+
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ee6835d8-0360-4c14-9be9-834f7d42bae3)
+
 
 #### 1.4.2 安装Docker
 
@@ -551,7 +562,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     && sudo systemctl --now enable docker
   ```
 
-* ![image-20240402215226978](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402215226978.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e7f639c2-4022-4894-8e5f-f536b170c275)
+
 
 ##### （3）设置源
 
@@ -561,14 +573,17 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
      && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
   ```
 
-* ![image-20240402215226978](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402215226978.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9c64b94a-f956-4a4c-a235-ac8ce55635fe)
+
 
 * 安装失败，待解决：
 
-  * ![image-20240402223812815](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402223812815.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/df2fc707-3357-4266-af6e-1228bd0f8abb)
+
   * Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
 
-![image-20240402212039447](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402212039447.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/cc18ab26-d65e-4656-bc76-9dc9bf70e401)
+
 
 ```python
 suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ curl https://get.docker.com | sh \
