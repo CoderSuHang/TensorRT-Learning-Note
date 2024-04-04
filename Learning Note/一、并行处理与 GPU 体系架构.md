@@ -562,8 +562,7 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     && sudo systemctl --now enable docker
   ```
 
-* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e7f639c2-4022-4894-8e5f-f536b170c275)
-
+* ![image-20240402215226978](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402215226978.png)
 
 ##### （3）设置源
 
@@ -573,61 +572,675 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
      && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
   ```
 
-* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9c64b94a-f956-4a4c-a235-ac8ce55635fe)
-
+* ![image-20240402215226978](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402215226978.png)
 
 * 安装失败，待解决：
 
-  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/df2fc707-3357-4266-af6e-1228bd0f8abb)
+  * ![image-20240402223812815](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402223812815.png)
 
   * Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
 
-![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/cc18ab26-d65e-4656-bc76-9dc9bf70e401)
+  * ```python
+    W: https://mirrors.tuna.tsinghua.edu.cn/ubuntu/dists/bionic/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+    W: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+    W: https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+    W: https://nvidia.github.io/nvidia-container-runtime/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+    W: https://nvidia.github.io/nvidia-docker/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+    ```
+
+  * 问题未解决，但影响后续
+
+    * ![image-20240402212039447](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402212039447.png)
+
+    * ```python
+      suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ curl https://get.docker.com | sh \
+        && sudo systemctl --now enable docker
+        % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                       Dload  Upload   Total   Spent    Left  Speed
+      100 21927  100 21927    0     0  21449      0  0:00:01  0:00:01 --:--:-- 21454
+      # Executing docker install script, commit: e5543d473431b782227f8908005543bb4389b8de
+      
+      WSL DETECTED: We recommend using Docker Desktop for Windows.
+      Please get Docker Desktop from https://www.docker.com/products/docker-desktop/
+      
+      
+      You may press Ctrl+C now to abort this script.
+      + sleep 20
+      + sudo -E sh -c apt-get update -qq >/dev/null
+      [sudo] password for suhang:
+      W: https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+      W: https://nvidia.github.io/nvidia-container-runtime/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+      W: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+      W: https://nvidia.github.io/nvidia-docker/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+      + sudo -E sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq apt-transport-https ca-certificates curl >/dev/null
+      + sudo -E sh -c install -m 0755 -d /etc/apt/keyrings
+      + sudo -E sh -c curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg
+      + sudo -E sh -c chmod a+r /etc/apt/keyrings/docker.gpg
+      + sudo -E sh -c echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable" > /etc/apt/sources.list.d/docker.list
+      + sudo -E sh -c apt-get update -qq >/dev/null
+      W: https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+      W: https://nvidia.github.io/nvidia-container-runtime/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+      W: https://nvidia.github.io/nvidia-docker/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+      W: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+      + sudo -E sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin >/dev/null
+      E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/containerd.io_1.6.28-2_amd64.deb  Connection timed out [IP: 13.224.163.81 443]
+      E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/docker-buildx-plugin_0.13.1-1%7eubuntu.22.04%7ejammy_amd64.deb  Connection timed out [IP: 13.224.163.81 443]
+      E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/docker-ce_26.0.0-1%7eubuntu.22.04%7ejammy_amd64.deb  Connection timed out [IP: 13.224.163.23 443]
+      E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/docker-ce-rootless-extras_26.0.0-1%7eubuntu.22.04%7ejammy_amd64.deb  Connection timed out [IP: 13.224.163.23 443]
+      E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/docker-compose-plugin_2.25.0-1%7eubuntu.22.04%7ejammy_amd64.deb  Connection timed out [IP: 13.224.163.23 443]
+      E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+      suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$
+      ```
+
+##### （4）重复一下官网教程
+
+* [Installing the NVIDIA Container Toolkit — NVIDIA Container Toolkit 1.14.5 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installing-with-apt)
+* ![image-20240404155017474](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404155017474.png)
+
+##### （5）验证
+
+我们可以启动一个container查看nvidia-smi的运行状况：
+
+* ```python
+  sudo docker run --rm --runtime=nvidia --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+  ```
+
+* 报错：
+
+  * ```python
+    Failed to initialize NVML: GPU access blocked by the operating system
+    Failed to properly shut down NVML: GPU access blocked by the operating system
+    ```
+
+  * ![image-20240404155554561](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404155554561.png)
+
+* 解决办法：把rootless模式下的配置全部无效掉
+
+  * 参考博客：
+
+    * [docker run时出现的Failed to initialize NVML: GPU access blocked by the operating system问题-CSDN博客](https://blog.csdn.net/weixin_46146538/article/details/136368447)
+
+  * ```python
+    sudo nvidia-ctk config --set nvidia-container-cli.no-cgroups=false --in-place
+    rm $HOME/.config/docker/daemon.json
+    sudo systemctl --user restart docker
+    ```
+
+  * ![image-20240404155935181](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404155935181.png)
+
+##### （6）使用docker images报错
+
+* ```python
+  docker images
+  ```
+
+* ![image-20240404160116837](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404160116837.png)
+
+* 在指令前加入sudo来执行
+
+##### （7）其他指令
+
+* 【--rm】如果我们在验证指令那里没有用到"--rm"，这时候就会在本地docker里创建当前镜像，并不会删除：
+
+  * ```python
+    sudo docker run --runtime=nvidia --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+    ```
+
+  * 这是便可以用下面指令查看存在的镜像容器：
+
+    * ```python
+      sudo docker ps -a
+      ```
+
+    * ![image-20240404161759405](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404161759405.png)
+
+  * 使用下面指令可以删除这个镜像容器（记得输入目标容器的ID前四位）：
+
+    * ```python
+      sudo docker rm 0601
+      ```
+
+    * ![image-20240404162021629](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404162021629.png)
+
+##### （8）免去【sudo】指令执行
+
+* 可以将docker加入用户群组当中，但是我没成功：
+  * ![image-20240404162555884](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404162555884.png)
+
+#### 1.4.3 从NVIDIA NGC中的官方release note寻找对应版本
+
+创建镜像的时候我们需要通过TAG来创建，但是TAG是否满足主机环境需要在官方文档中确定，并根据自己显卡驱动要求的CUDA最大版本，以及需要运行的模型所需要环境来选择。
+
+##### （1）官方网址
+
+* 官方文档介绍页面
+  * [:: (nvidia.com)](https://docs.nvidia.com/deeplearning/tensorrt/container-release-notes/index.html)
+  * ![image-20240404163651763](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404163651763.png)
+* TAG文件提供页面（创建镜像需要根据它来创建）：
+  * [:: (nvidia.com)](https://docs.nvidia.com/deeplearning/tensorrt/container-release-notes/index.html)
+  * ![image-20240404163547110](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404163547110.png)
+
+##### （2）查看环境所需配置
+
+* BEVFusion：
+  * ![image-20240404164216344](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404164216344.png)
+* Host：
+  * ![image-20240404164354080](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404164354080.png)
+* 这里我们选择【TensorRT Release 22.08】，虽然BEVFusion环境要求TensorRT版本要大于8.5.0，但是我们可以在创建容器的时候，将路径变换到指定目录下，实现TAG的运行
+  * ![image-20240404164812382](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404164812382.png)
+
+##### （3）下载TAG
+
+* 拷贝镜像：
+
+  * ![image-20240404165103214](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404165103214.png)
+
+* ```python
+  nvcr.io/nvidia/tensorrt:22.08-py3
+  ```
+
+* 等待创建dockerfile时候使用
+
+  * ![image-20240404171728675](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404171728675.png)
+
+#### 1.4.4 根据需求自行创建dockerfile
+
+##### （1）导入TAG镜像
+
+* 选择你要使用的TAG
+
+* ```python
+  # For more detail, check NGC
+  FROM nvcr.io/nvidia/tensorrt:22.08-py3
+  ```
+
+##### （2）设置时区
+
+* 设置自己的时区，注意要和自己所在时区一致
+
+* ```python
+  ENV TZ=Asia/Beijing
+  ARG user=suhang
+  
+  # Set timezone in case of interation during installation
+  RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+  ```
+
+##### （3）配置opencv
+
+* 安装opencv需要的依赖包：
+
+  * ```python
+    # install packages for opencv
+    RUN apt-get update
+    RUN apt install -y --no-install-recommends \
+      build-essential cmake git pkg-config libgtk-3-dev \
+      libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev \
+      libjpeg-dev libpng-dev libtiff-dev gfortran openexr libatlas-base-dev \
+      python3-dev python3-numpy libtbb2 libtbb-dev libdc1394-22-dev \
+      build-essential cmake git pkg-config libgtk-3-dev libavcodec-dev \
+      libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev \
+      libjpeg-dev libpng-dev libtiff-dev gfortran openexr libatlas-base-dev python3-dev \
+      python3-numpy libtbb2 libtbb-dev libdc1394-22-dev 
+    RUN apt-get -y clean && rm -rf /var/lib/apt/lists/*
+    ```
+
+* 创建opencv，可以在opencv官网中查看
+
+  * ```python
+    #Build opencv4.5.5
+    RUN mkdir /root/opencv_build
+    WORKDIR /root/opencv_build/
+    RUN git clone https://github.com/opencv/opencv.git && git clone https://github.com/opencv/opencv_contrib.git && \
+      cd /root/opencv_build/opencv && git checkout 4.5.5 && \
+      cd /root/opencv_build/opencv_contrib && git checkout 4.5.5 && \
+      cd /root/opencv_build/opencv && mkdir build
+    
+    WORKDIR /root/opencv_build/opencv/build
+    RUN cmake -D OPENCV_GENERATE_PKGCONFIG=ON \
+      -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
+      -D WITH_GSTREAMER=ON \
+      -D WITH_LIBV4L=ON \
+      -D BUILD_opencv_python2=ON \
+      -D BUILD_opencv_python3=ON \
+      -D BUILD_TESTS=OFF \
+      -D BUILD_PERF_TESTS=OFF \
+      -D BUILD_EXAMPLES=OFF \
+      -D CMAKE_BUILD_TYPE=RELEASE \
+      -D PYTHON3_PACKAGES_PATH=/usr/lib/python3/dist-packages \
+      -D CMAKE_INSTALL_PREFIX=/usr/local ..
+    RUN make -j16 && make install
+    WORKDIR /root
+    RUN rm -rf opencv_build
+    ```
+
+##### （3）安装推理所需安装包
+
+* 安装和配置：
+
+  * ```python
+    # install packages that are used for trt inferences
+    RUN apt-get update && apt install -y --no-install-recommends \
+      sudo libgflags-dev libboost-dev libxml2-dev \
+      libyaml-cpp-dev sqlite3 libsqlite3-dev libboost-all-dev \
+      fish lsb-release peco feh fim openssh-server tmux curl
+    RUN apt-get -y clean && rm -rf /var/lib/apt/lists/*
+    
+    # install netron to show model structure
+    RUN pip install netron
+    
+    # set up fish shell and exa
+    RUN curl -Lo exa.zip "https://github.com/ogham/exa/releases/latest/download/exa-linux-x86_64-v0.10.1.zip" && \
+      sudo unzip -q exa.zip bin/exa -d /usr/local && rm exa.zip
+    ```
+
+##### （4）创建用户组
+
+* 将系统默认创建到root目录进行修改：
+
+  * ```python
+    # set userinfo
+    RUN useradd -rm -c ${user} -u 1000 -d /home/${user} -s /bin/bash -G sudo ${user}
+    SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+    RUN echo "$user   ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+    
+    RUN apt-get update
+    ```
+
+##### （5）拷贝同级目录中的文件夹到容器当中去
+
+* ```python
+  # copy dotfiles
+  COPY my_dot_files/tmux/* /home/${user}/
+  COPY my_dot_files/fish/ /home/${user}/.config/fish
+  ```
+
+* ![image-20240404173436070](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404173436070.png)
+
+##### （6）配置工作目录
+
+* ```python
+  # set working directory of trt webinar
+  RUN mkdir -p /home/${user}/workspace/
+  RUN chown -R ${user}:users /home/${user}
+  ```
+
+##### （7）配置openssh-server
+
+* ```python
+  # ssh setting
+  RUN systemctl enable ssh
+  ```
+
+##### （8）更改默认启动目录，启动用户
+
+* ```python
+  # set default working directory and user
+  WORKDIR /home/${user}
+  USER ${user}
+  ```
+
+#### 1.4.6 运行docker
+
+##### （1）创建image
+
+使用脚本创建docker，在当前目录下的dockerfile创建image：
+
+* 脚本在【scripts】文件夹下：
+  * ![image-20240404180600583](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404180600583.png)
+  * ![image-20240404180512760](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404180512760.png)
+
+运行脚本创建image指令：
+
+* ```python
+  sudo bash scripts/build-docker.sh v1.x
+  ```
+
+  * v1.x自己设定
+  * 等待后台创建完成。
+
+* 报错：
+
+  * ```python
+    ERROR: failed to solve: process "/bin/sh -c curl -Lo exa.zip \"https://github.com/ogham/exa/releases/latest/download/exa-linux-x86_64-v0.10.1.zip\" &&   sudo unzip -q exa.zip bin/exa -d /usr/local && rm exa.zip" did not complete successfully: exit code: 28
+    ```
+
+  * ![image-20240404193303279](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404193303279.png)
+
+* 原因是没法成功下载exa的安装包，按照这个网址跟踪了一下，发现安装包的网址已经更新，因此在dockerfile中安装exa的指令网址更新即可：
+
+  * 新的网址：
+    * https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip
+  * ![image-20240404193508199](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404193508199.png)
+
+运行完毕：
+
+* ![image-20240404193827871](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404193827871.png)
+
+查看创建完成的image：
+
+* ``` python
+  sudo docker images
+  ```
+
+* ![image-20240404193904194](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404193904194.png)
+
+##### （2）创建容器
+
+使用脚本根据创建好的image去创建一个容器
+
+* 脚本在【scripts】文件夹下：
+
+  * ![image-20240404181038346](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404181038346.png)
+
+  * ```python
+    #!/bin/sh/
+    
+    docker run -it \
+    	--name trt_starter_${1} \
+      --gpus all \
+    	-v /tmp/.X11-unix:/tmp/.X11-unix \
+    	-v /home/suhang/Code:/home/suhang/Code \
+      -p 8090:22 \
+    	-e DISPLAY=:1 \
+    	trt_starter:cuda11.4-cudnn8-tensorrt8.2_${1} \
+      fish
+    ```
+
+    * 其中：
+      * 【docker run -it】让用户能够和dockers container交互
+      * 【--name trt_starter_${1}】指定一个名字
+      * 【--gpus all】让你能够访问到主机端的GPU
+      * 【-v /tmp/.X11-unix:/tmp/.X11-unix】让你能从终端打开容器container里的gui操作
+      * 【-v /home/suhang/Code:/home/suhang/Code】是将主机端文件夹与容器端文件夹绑定
+      * 【-p 8090:22】开放端口，能直接ssh进入容器中
+      * 【-e DISPLAY=:1】
+      * 【trt_starter:cuda11.4-cudnn8-tensorrt8.2_${1}】对应的docker容器的镜像版本
+
+* 运行脚本创建指令：
+
+  * ```python
+    sudo bash scripts/run-docker.sh v1.2
+    ```
+
+  * ![image-20240404182314070](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404182314070.png)
+
+  * 报错：
+
+    * NVIDIA驱动不匹配：
+
+      * ```python
+        suhang@Y9000P /m/e/S/L/w/t/c/1.0-build-environment> sudo bash scripts/run-docker.sh v1.2
+        
+        =====================
+        == NVIDIA TensorRT ==
+        =====================
+        
+        NVIDIA Release 22.08 (build 42105201)
+        NVIDIA TensorRT Version 8.4.2
+        Copyright (c) 2016-2022, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+        
+        Container image Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+        
+        https://developer.nvidia.com/tensorrt
+        
+        Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+        
+        This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+        By pulling and using the container, you accept the terms and conditions of this license:
+        https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+        
+        To install Python sample dependencies, run /opt/tensorrt/python/python_setup.sh
+        
+        To install the open-source samples corresponding to this TensorRT release version
+        run /opt/tensorrt/install_opensource.sh.  To build the open source parsers,
+        plugins, and samples for current top-of-tree on master or a different branch,
+        run /opt/tensorrt/install_opensource.sh -b <branch>
+        See https://github.com/NVIDIA/TensorRT for more information.
+        WARNING: Detected NVIDIA NVIDIA GeForce RTX 4060 Laptop GPU GPU, which is not yet supported in this version of the container
+        ERROR: No supported GPU(s) detected to run this container
+        
+        ~/.config/fish/config.fish (line 92):
+        conda activate trt-starter
+        ^
+        from sourcing file ~/.config/fish/config.fish
+                called during startup
+        welcome back!!
+        ```
+
+      * ![image-20240404194920070](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404194920070.png)
+
+        * 解决办法：可能是路径设置问题，在这里先不管了，继续看看再说。
+
+  * 报错：重启之后再次run这个docker会说你已经有容器使用这个了。必须删除（或重命名）该容器才能重用该名称。
+
+    * ```python
+      suhang@Y9000P /m/e/S/L/w/t/c/1.0-build-environment [125]> sudo bash scripts/run-docker.sh v1.2
+      docker: Error response from daemon: Conflict. The container name "/trt_starter_v1.2" is already in use by container "16393009b5733f4b9e4de4cc8daecb019e7c798c78764dc85badfa24d5682b43". You have to remove (or rename) that container to be able to reuse that name.
+      See 'docker run --help'.
+      ```
+
+    * ![image-20240404200224789](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404200224789.png)
+
+    * 解决办法：
+
+      * 查看运行的容器：
+
+        * ```python
+          suhang@Y9000P /m/e/S/L/w/t/c/1.0-build-environment [125]> sudo docker ps -a
+          CONTAINER ID   IMAGE                                          COMMAND                  CREATED          STATUS                     PORTS     NAMES
+          16393009b573   trt_starter:cuda11.4-cudnn8-tensorrt8.2_v1.2   "/opt/nvidia/nvidia_…"   19 minutes ago   Exited (0) 9 minutes ago             trt_starter_v1.2
+          ```
+
+        * ![image-20240404200332094](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404200332094.png)
+
+      * 删除该容器：
+
+        * ```python
+          suhang@Y9000P /m/e/S/L/w/t/c/1.0-build-environment> sudo docker rm 1639
+          1639
+          suhang@Y9000P /m/e/S/L/w/t/c/1.0-build-environment> sudo docker ps -a
+          CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+          ```
+
+        * ![image-20240404200449917](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404200449917.png)
+
+（3）运行nvidia-smi确认可执行：
+
+* ![image-20240404201226432](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404201226432.png)
+
+### 1.5 服务器环境配置
+
+#### 1.5.1 创建compile_commands.json
+
+##### （1）第一次可以安装一个Bear插件
+
+* Bear是一个自动创建compile_commands.json的插件
+
+* 官方网址：
+
+  * [rizsotto/Bear: Bear is a tool that generates a compilation database for clang tooling. (github.com)](https://github.com/rizsotto/Bear)
+
+* 安装过程：
+
+  * 在终端中输入
+
+    * ```python
+      sudo apt-get install bear
+      ```
+
+    * ![image-20240404205547300](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404205547300.png)
+
+* 使用过程：
+
+  * 输入
+
+    * ```python
+      bear -- make -j16
+      ```
+
+    * ![image-20240404205912630](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404205912630.png)
+
+    * 报错：找不到【cuda_runtime.h】
+
+      * ```
+        src/utils.hpp:4:10: fatal error: cuda_runtime.h: No such file or directory
+        ```
+
+      * ![image-20240404210402788](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404210402788.png)
+
+      * 解决办法：
+
+        * 加入新的路径：
+          * [【已解决】 fatal error: cuda_runtime.h: 没有那个文件或目录_fatal error: cuda_runtime_api.h: 没有那个文件或目录-CSDN博客](https://blog.csdn.net/weixin_45617478/article/details/116209903)
+        * 并且指定cuda版本：
+          * ![image-20240404222348634](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222348634.png)
+
+    * 但是有有了新的问题：
+
+      * ![image-20240404222448577](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222448577.png)
+
+      * 这个问题说找不到Makefile.config文件，问了ChatGPT说是因为在Makefile中指定了路径位置，但是没有在当前文件位置的前两级目录中找到：
+
+        * ![image-20240404222843655](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222843655.png)
+        * ![image-20240404222859066](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222859066.png)
+
+      * 我按照ChatGPT提供的建议修改了Makfile，虽然问题能够解决，但是本质问题依旧存在：
+
+        * ![image-20240404223008763](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404223008763.png)
+        * ![image-20240404223017497](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404223017497.png)
+
+      * 因此我又重新看了下博主的工程文档，发现博主有说明需要git他的工程，进而配置config文件：
+
+        * [kalfazed/tensorrt_starter：这个存储库提供了从头开始学习 CUDA 和 TensorRT 的指南。 (github.com)](https://github.com/kalfazed/tensorrt_starter?tab=readme-ov-file#chapter2-cuda-programming)
+
+        * ![image-20240404223155980](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404223155980.png)
+
+          * git的时候报错可以看这个文档解决：
+
+            * ![image-20240404225808049](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404225808049.png)
+
+            * 非公开内容：
+
+              * ```python
+                suhang@Y9000P /m/e/S/L/wsl2> git clone git@github.com:kalfazed/tensorrt_starter.git
+                Cloning into 'tensorrt_starter'...
+                The authenticity of host 'github.com (20.205.243.166)' can't be established.
+                ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.
+                This key is not known by any other names
+                Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+                Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
+                git@github.com: Permission denied (publickey).
+                fatal: Could not read from remote repository.
+                
+                Please make sure you have the correct access rights
+                and the repository exists.
+                suhang@Y9000P /m/e/S/L/wsl2 [128]> git config --global user.name "CoderSuHang"
+                suhang@Y9000P /m/e/S/L/wsl2> git config --global user.email "1048227620@qq.com"
+                suhang@Y9000P /m/e/S/L/wsl2> git config --global credential.helper store
+                suhang@Y9000P /m/e/S/L/wsl2> git config --list
+                user.name=CoderSuHang
+                user.email=1048227620@qq.com
+                credential.helper=store
+                
+                suhang@Y9000P /usr> cd /mnt/e/Software/LinuxOS/wsl2
+                suhang@Y9000P /m/e/S/L/wsl2> ssh-keygen -t rsa -C "1048227620@qq.com"
+                Generating public/private rsa key pair.
+                Enter file in which to save the key (/home/suhang/.ssh/id_rsa):
+                Enter passphrase (empty for no passphrase):
+                Enter same passphrase again:
+                Your identification has been saved in /home/suhang/.ssh/id_rsa
+                Your public key has been saved in /home/suhang/.ssh/id_rsa.pub
+                The key fingerprint is:
+                SHA256:o0XnKXjUJprYQxwXWtqph9LoF9G2A9o+KNY3bo5geqM 1048227620@qq.com
+                The key's randomart image is:
+                +---[RSA 3072]----+
+                |      . +.       |
+                |     . O o       |
+                |      B O +      |
+                |     O % * .     |
+                |    = % S o      |
+                |   o + B +       |
+                |  = + B          |
+                | +oo =.o         |
+                |Eo ..oo          |
+                +----[SHA256]-----+
+                suhang@Y9000P /m/e/S/L/wsl2> /home/suhang/.ssh
+                suhang@Y9000P ~/.ssh> ll
+                total 12K
+                -rw------- 1 suhang suhang 2.6K Apr  4 22:49 id_rsa
+                -rw-r--r-- 1 suhang suhang  571 Apr  4 22:49 id_rsa.pub
+                -rw-r--r-- 1 suhang suhang  142 Apr  4 22:34 known_hosts
+                suhang@Y9000P ~/.ssh> vim id_rsa.pub
+                ```
+
+      * 根据本机安装的情况，新建Makefile.config文件：
+
+        * ```python
+          # Please change the cuda version if needed
+          # In default, cuDNN library is located in /usr/local/cuda/lib64
+          CXX                         :=  g++
+          CUDA_VER                    :=  11.7
+          
+          # Please modify the opencv and tensorrt install directory
+          OPENCV_INSTALL_DIR          :=  /usr/local/include/opencv4
+          TENSORRT_INSTALL_DIR        :=  /mnt/e/Software/LinuxOS/wsl2/packages/TensorRT-8.5.1.7
+          ```
+
+        * 位置放在了工程目录下：
+
+          * E:\Software\LinuxOS\wsl2\tensorrt_starter\config\Makefile.config
+
+  * 运行成功：
+
+    * ![image-20240404232356065](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404232356065.png)
 
 
-```python
-suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ curl https://get.docker.com | sh \
-  && sudo systemctl --now enable docker
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100 21927  100 21927    0     0  21449      0  0:00:01  0:00:01 --:--:-- 21454
-# Executing docker install script, commit: e5543d473431b782227f8908005543bb4389b8de
 
-WSL DETECTED: We recommend using Docker Desktop for Windows.
-Please get Docker Desktop from https://www.docker.com/products/docker-desktop/
+#### 1.5.2 安装必要的插件
 
+##### （1）SSH
 
-You may press Ctrl+C now to abort this script.
-+ sleep 20
-+ sudo -E sh -c apt-get update -qq >/dev/null
-[sudo] password for suhang:
-W: https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
-W: https://nvidia.github.io/nvidia-container-runtime/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
-W: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
-W: https://nvidia.github.io/nvidia-docker/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
-+ sudo -E sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq apt-transport-https ca-certificates curl >/dev/null
-+ sudo -E sh -c install -m 0755 -d /etc/apt/keyrings
-+ sudo -E sh -c curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" | gpg --dearmor --yes -o /etc/apt/keyrings/docker.gpg
-+ sudo -E sh -c chmod a+r /etc/apt/keyrings/docker.gpg
-+ sudo -E sh -c echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable" > /etc/apt/sources.list.d/docker.list
-+ sudo -E sh -c apt-get update -qq >/dev/null
-W: https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
-W: https://nvidia.github.io/nvidia-container-runtime/stable/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
-W: https://nvidia.github.io/nvidia-docker/ubuntu18.04/amd64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
-W: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
-+ sudo -E sh -c DEBIAN_FRONTEND=noninteractive apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin >/dev/null
-E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/containerd.io_1.6.28-2_amd64.deb  Connection timed out [IP: 13.224.163.81 443]
-E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/docker-buildx-plugin_0.13.1-1%7eubuntu.22.04%7ejammy_amd64.deb  Connection timed out [IP: 13.224.163.81 443]
-E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/docker-ce_26.0.0-1%7eubuntu.22.04%7ejammy_amd64.deb  Connection timed out [IP: 13.224.163.23 443]
-E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/docker-ce-rootless-extras_26.0.0-1%7eubuntu.22.04%7ejammy_amd64.deb  Connection timed out [IP: 13.224.163.23 443]
-E: Failed to fetch https://download.docker.com/linux/ubuntu/dists/jammy/pool/stable/amd64/docker-compose-plugin_2.25.0-1%7eubuntu.22.04%7ejammy_amd64.deb  Connection timed out [IP: 13.224.163.23 443]
-E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
-suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$
-```
+如果要远程Ubuntu主机，则需要用SSH插件，我这里是在主机安装的wsl2子系统，所以不需要远程。
+
+![image-20240404201957347](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404201957347.png)
+
+##### （2）WSL
+
+![image-20240404202932265](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404202932265.png)
+
+您可以通过打开 WSL 终端、导航到您选择的文件夹并键入【code .】来启动连接到 WSL 的 VS Code 新实例
+
+[如何使用Windows的VScode编辑WSL系统内的文件，Windows与WSL混合交互。（直接使用版）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1S34y1P7KC/?vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
+
+* 在目标目录下也可以code对应文件夹：
+  * ![image-20240404204532958](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404204532958.png)
+
+#### 1.5.3 设置c_cpp_properties.json
+
+##### （1）参考教程
 
 
 
-curl https://get.docker.com \ sh
+
+
+#### 1.5.4 设置tasks.json
+
+##### （1）参考教程
+
+
+
+#### 1.5.5 设置launch.json
+
+##### （1）参考教程
+
+
+
+
+
+#### 1.5.6 设置setting.json
+
+##### （1）参考教程
 
 
 
