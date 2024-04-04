@@ -1100,7 +1100,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
       sudo apt-get install bear
       ```
 
-    * ![image-20240404205547300](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404205547300.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/29658af9-d597-4cdb-a579-caafd6aeb269)
+
 
 * 使用过程：
 
@@ -1110,7 +1111,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
       bear -- make -j16
       ```
 
-    * ![image-20240404205912630](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404205912630.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/23e88eb4-ea68-4aa8-b1a1-1cb1ba723e74)
+
 
     * 报错：找不到【cuda_runtime.h】
 
@@ -1118,23 +1120,28 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
         src/utils.hpp:4:10: fatal error: cuda_runtime.h: No such file or directory
         ```
 
-      * ![image-20240404210402788](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404210402788.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ea0143bb-744b-4913-b80f-97dbb29f2865)
+
 
       * 解决办法：
 
         * 加入新的路径：
           * [【已解决】 fatal error: cuda_runtime.h: 没有那个文件或目录_fatal error: cuda_runtime_api.h: 没有那个文件或目录-CSDN博客](https://blog.csdn.net/weixin_45617478/article/details/116209903)
         * 并且指定cuda版本：
-          * ![image-20240404222348634](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222348634.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2b1d1d97-05b2-4bb4-a81f-16c6e211a819)
+
 
     * 但是有有了新的问题：
 
-      * ![image-20240404222448577](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222448577.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a9911d4a-3f75-4aeb-ac00-967114695115)
+
 
       * 这个问题说找不到Makefile.config文件，问了ChatGPT说是因为在Makefile中指定了路径位置，但是没有在当前文件位置的前两级目录中找到：
 
-        * ![image-20240404222843655](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222843655.png)
-        * ![image-20240404222859066](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222859066.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/645b2447-171b-43cc-8438-26561a3399eb)
+
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8df79209-c12b-48e7-b00f-264b4a58b6b9)
+
 
       * 我按照ChatGPT提供的建议修改了Makfile，虽然问题能够解决，但是本质问题依旧存在：
 
