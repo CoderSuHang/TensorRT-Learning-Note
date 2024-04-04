@@ -1,4 +1,4 @@
-# 深度学习模型部署TensorRT加速
+# CUDA与TensorRT部署
 
 ## 一、并行处理与 GPU 体系架构
 
