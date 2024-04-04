@@ -1145,18 +1145,22 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
       * 我按照ChatGPT提供的建议修改了Makfile，虽然问题能够解决，但是本质问题依旧存在：
 
-        * ![image-20240404223008763](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404223008763.png)
-        * ![image-20240404223017497](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404223017497.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/17ced40d-6adb-4ba1-bf33-28530dd5d9d1)
+
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/1b477111-a2e5-4380-b895-eff55c165452)
+
 
       * 因此我又重新看了下博主的工程文档，发现博主有说明需要git他的工程，进而配置config文件：
 
         * [kalfazed/tensorrt_starter：这个存储库提供了从头开始学习 CUDA 和 TensorRT 的指南。 (github.com)](https://github.com/kalfazed/tensorrt_starter?tab=readme-ov-file#chapter2-cuda-programming)
 
-        * ![image-20240404223155980](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404223155980.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5e9b9a2c-2722-4311-ac72-2a6aa6e84055)
+
 
           * git的时候报错可以看这个文档解决：
 
-            * ![image-20240404225808049](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404225808049.png)
+            * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/603f0064-dfae-4621-ac35-4666f14b58f9)
+
 
             * 非公开内容：
 
