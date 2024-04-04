@@ -905,8 +905,10 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 使用脚本创建docker，在当前目录下的dockerfile创建image：
 
 * 脚本在【scripts】文件夹下：
-  * ![image-20240404180600583](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404180600583.png)
-  * ![image-20240404180512760](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404180512760.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d7917919-e28c-4532-ae5a-ea308a6d2a5c)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/686bd873-f38b-4e5b-ab14-16c3dac690ab)
+
 
 运行脚本创建image指令：
 
@@ -923,17 +925,20 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     ERROR: failed to solve: process "/bin/sh -c curl -Lo exa.zip \"https://github.com/ogham/exa/releases/latest/download/exa-linux-x86_64-v0.10.1.zip\" &&   sudo unzip -q exa.zip bin/exa -d /usr/local && rm exa.zip" did not complete successfully: exit code: 28
     ```
 
-  * ![image-20240404193303279](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404193303279.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f3bd60c1-d0c0-47f7-b7ee-554c6ab6ff81)
+
 
 * 原因是没法成功下载exa的安装包，按照这个网址跟踪了一下，发现安装包的网址已经更新，因此在dockerfile中安装exa的指令网址更新即可：
 
   * 新的网址：
     * https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip
-  * ![image-20240404193508199](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404193508199.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a247f764-c2f4-43bb-bef2-dbc70da57bb2)
+
 
 运行完毕：
 
-* ![image-20240404193827871](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404193827871.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/460bd426-0597-4e55-b52e-294801b22c55)
+
 
 查看创建完成的image：
 
@@ -941,7 +946,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
   sudo docker images
   ```
 
-* ![image-20240404193904194](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404193904194.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f1d04e1d-7593-4b72-8631-3c761583235d)
+
 
 ##### （2）创建容器
 
@@ -949,7 +955,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
 * 脚本在【scripts】文件夹下：
 
-  * ![image-20240404181038346](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404181038346.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a9344bed-4ed3-4da7-895a-c09f84964b29)
+
 
   * ```python
     #!/bin/sh/
@@ -981,7 +988,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     sudo bash scripts/run-docker.sh v1.2
     ```
 
-  * ![image-20240404182314070](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404182314070.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5dbadef7-5f08-4c1b-bf7a-ca599eb9296c)
+
 
   * 报错：
 
@@ -1026,7 +1034,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
         welcome back!!
         ```
 
-      * ![image-20240404194920070](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404194920070.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/46135723-fb03-43d9-8b1c-82860c552560)
+
 
         * 解决办法：可能是路径设置问题，在这里先不管了，继续看看再说。
 
@@ -1038,7 +1047,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
       See 'docker run --help'.
       ```
 
-    * ![image-20240404200224789](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404200224789.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2354b979-0b47-4d07-ac2a-037c87bedd47)
+
 
     * 解决办法：
 
@@ -1050,7 +1060,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
           16393009b573   trt_starter:cuda11.4-cudnn8-tensorrt8.2_v1.2   "/opt/nvidia/nvidia_…"   19 minutes ago   Exited (0) 9 minutes ago             trt_starter_v1.2
           ```
 
-        * ![image-20240404200332094](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404200332094.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6c331c93-18de-4449-b122-fc8a83fd6610)
+
 
       * 删除该容器：
 
@@ -1061,11 +1072,13 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
           CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
           ```
 
-        * ![image-20240404200449917](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404200449917.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b2791881-3bfa-467f-b27d-94170c0616f0)
+
 
 （3）运行nvidia-smi确认可执行：
 
-* ![image-20240404201226432](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404201226432.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0d6ab0fb-0cf3-4974-a91f-bdcac20d9af5)
+
 
 ### 1.5 服务器环境配置
 
