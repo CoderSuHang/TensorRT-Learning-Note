@@ -725,25 +725,31 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
 * 官方文档介绍页面
   * [:: (nvidia.com)](https://docs.nvidia.com/deeplearning/tensorrt/container-release-notes/index.html)
-  * ![image-20240404163651763](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404163651763.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/81d2abb2-3c5f-49b5-b6e1-934715a16960)
+
 * TAG文件提供页面（创建镜像需要根据它来创建）：
   * [:: (nvidia.com)](https://docs.nvidia.com/deeplearning/tensorrt/container-release-notes/index.html)
-  * ![image-20240404163547110](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404163547110.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/fe6ebbeb-9838-4c8f-b39c-69d78a1f8b90)
+
 
 ##### （2）查看环境所需配置
 
 * BEVFusion：
-  * ![image-20240404164216344](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404164216344.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ab8fde9b-8599-4276-857b-2bdd8c759308)
+
 * Host：
-  * ![image-20240404164354080](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404164354080.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c5d28b59-252d-44aa-829e-4c2c1666afc2)
+
 * 这里我们选择【TensorRT Release 22.08】，虽然BEVFusion环境要求TensorRT版本要大于8.5.0，但是我们可以在创建容器的时候，将路径变换到指定目录下，实现TAG的运行
-  * ![image-20240404164812382](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404164812382.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9722af93-ad2c-40eb-b79a-172a5e30497a)
+
 
 ##### （3）下载TAG
 
 * 拷贝镜像：
 
-  * ![image-20240404165103214](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404165103214.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0480cfc0-ec10-4939-a7c1-31be9ba891a1)
+
 
 * ```python
   nvcr.io/nvidia/tensorrt:22.08-py3
@@ -751,7 +757,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
 * 等待创建dockerfile时候使用
 
-  * ![image-20240404171728675](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404171728675.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/981bb771-c5ee-4638-8743-d246a5f117e7)
+
 
 #### 1.4.4 根据需求自行创建dockerfile
 
@@ -824,7 +831,7 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     RUN rm -rf opencv_build
     ```
 
-##### （3）安装推理所需安装包
+##### （4）安装推理所需安装包
 
 * 安装和配置：
 
@@ -844,7 +851,7 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
       sudo unzip -q exa.zip bin/exa -d /usr/local && rm exa.zip
     ```
 
-##### （4）创建用户组
+##### （5）创建用户组
 
 * 将系统默认创建到root目录进行修改：
 
@@ -857,7 +864,7 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     RUN apt-get update
     ```
 
-##### （5）拷贝同级目录中的文件夹到容器当中去
+##### （6）拷贝同级目录中的文件夹到容器当中去
 
 * ```python
   # copy dotfiles
@@ -865,9 +872,10 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
   COPY my_dot_files/fish/ /home/${user}/.config/fish
   ```
 
-* ![image-20240404173436070](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404173436070.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/65ebda22-423a-4734-b589-6bdbdbb9873d)
 
-##### （6）配置工作目录
+
+##### （7）配置工作目录
 
 * ```python
   # set working directory of trt webinar
