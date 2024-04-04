@@ -562,7 +562,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     && sudo systemctl --now enable docker
   ```
 
-* ![image-20240402215226978](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402215226978.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ecab39e1-7581-450f-9592-537d8a455606)
+
 
 ##### （3）设置源
 
@@ -572,11 +573,13 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
      && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
   ```
 
-* ![image-20240402215226978](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402215226978.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/762d1872-61fb-400a-a468-195d37808d48)
+
 
 * 安装失败，待解决：
 
-  * ![image-20240402223812815](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402223812815.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2a32182b-b6b3-4968-a869-ab4b5f70208f)
+
 
   * Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
 
@@ -590,7 +593,7 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
   * 问题未解决，但影响后续
 
-    * ![image-20240402212039447](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240402212039447.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/48ee61a5-0181-41cc-9527-3cc4628f8e74)
 
     * ```python
       suhang@Y9000P:/mnt/e/Software/LinuxOS/wsl2/packages$ curl https://get.docker.com | sh \
@@ -635,7 +638,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 ##### （4）重复一下官网教程
 
 * [Installing the NVIDIA Container Toolkit — NVIDIA Container Toolkit 1.14.5 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installing-with-apt)
-* ![image-20240404155017474](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404155017474.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3ca0b6d5-f890-4e69-b9db-41f02f2d9ba8)
+
 
 ##### （5）验证
 
@@ -652,7 +656,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     Failed to properly shut down NVML: GPU access blocked by the operating system
     ```
 
-  * ![image-20240404155554561](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404155554561.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0a42fd28-818c-4559-8dab-2fe3758c8c54)
+
 
 * 解决办法：把rootless模式下的配置全部无效掉
 
