@@ -671,7 +671,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     sudo systemctl --user restart docker
     ```
 
-  * ![image-20240404155935181](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404155935181.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/fdd32060-1ce1-4b3d-8cd8-c17472501924)
+
 
 ##### （6）使用docker images报错
 
@@ -679,7 +680,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
   docker images
   ```
 
-* ![image-20240404160116837](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404160116837.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/db53eec8-952e-44b6-9368-ff24ec33b8ff)
+
 
 * 在指令前加入sudo来执行
 
@@ -697,7 +699,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
       sudo docker ps -a
       ```
 
-    * ![image-20240404161759405](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404161759405.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/37a7e87b-d48f-4704-951f-5a4693900246)
+
 
   * 使用下面指令可以删除这个镜像容器（记得输入目标容器的ID前四位）：
 
@@ -705,12 +708,14 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
       sudo docker rm 0601
       ```
 
-    * ![image-20240404162021629](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404162021629.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2f71a39d-382b-4f2a-96d9-c08cf56e4715)
+
 
 ##### （8）免去【sudo】指令执行
 
 * 可以将docker加入用户群组当中，但是我没成功：
-  * ![image-20240404162555884](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404162555884.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7e750061-6c43-4871-a537-ea74c0ceee05)
+
 
 #### 1.4.3 从NVIDIA NGC中的官方release note寻找对应版本
 
