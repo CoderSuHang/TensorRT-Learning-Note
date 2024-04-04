@@ -1177,16 +1177,13 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
                 
                 Please make sure you have the correct access rights
                 and the repository exists.
-                suhang@Y9000P /m/e/S/L/wsl2 [128]> git config --global user.name "CoderSuHang"
-                suhang@Y9000P /m/e/S/L/wsl2> git config --global user.email "1048227620@qq.com"
+                suhang@Y9000P /m/e/S/L/wsl2 [128]> git config --global user.name "xxxxx"
+                suhang@Y9000P /m/e/S/L/wsl2> git config --global user.email "xxxxx@xx.com"
                 suhang@Y9000P /m/e/S/L/wsl2> git config --global credential.helper store
                 suhang@Y9000P /m/e/S/L/wsl2> git config --list
-                user.name=CoderSuHang
-                user.email=1048227620@qq.com
-                credential.helper=store
                 
                 suhang@Y9000P /usr> cd /mnt/e/Software/LinuxOS/wsl2
-                suhang@Y9000P /m/e/S/L/wsl2> ssh-keygen -t rsa -C "1048227620@qq.com"
+                suhang@Y9000P /m/e/S/L/wsl2> ssh-keygen -t rsa -C "xxxxx@xx.com"
                 Generating public/private rsa key pair.
                 Enter file in which to save the key (/home/suhang/.ssh/id_rsa):
                 Enter passphrase (empty for no passphrase):
@@ -1194,7 +1191,7 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
                 Your identification has been saved in /home/suhang/.ssh/id_rsa
                 Your public key has been saved in /home/suhang/.ssh/id_rsa.pub
                 The key fingerprint is:
-                SHA256:o0XnKXjUJprYQxwXWtqph9LoF9G2A9o+KNY3bo5geqM 1048227620@qq.com
+                SHA256:o0XnKXjUJprYQxwXWtqph9LoF9G2A9o+KNY3bo5geqM xxxxx@xx.com
                 The key's randomart image is:
                 +---[RSA 3072]----+
                 |      . +.       |
@@ -1235,7 +1232,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
   * 运行成功：
 
-    * ![image-20240404232356065](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404232356065.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/76dbb329-0767-4739-884d-b20c7fea2180)
+
 
 
 
@@ -1245,18 +1243,21 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
 如果要远程Ubuntu主机，则需要用SSH插件，我这里是在主机安装的wsl2子系统，所以不需要远程。
 
-![image-20240404201957347](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404201957347.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d5b6651f-c39b-4aeb-a227-9d48b8a61c8e)
+
 
 ##### （2）WSL
 
-![image-20240404202932265](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404202932265.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/178c7b6d-e4c8-4899-8add-9bce8804d561)
+
 
 您可以通过打开 WSL 终端、导航到您选择的文件夹并键入【code .】来启动连接到 WSL 的 VS Code 新实例
 
 [如何使用Windows的VScode编辑WSL系统内的文件，Windows与WSL混合交互。（直接使用版）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1S34y1P7KC/?vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
 
 * 在目标目录下也可以code对应文件夹：
-  * ![image-20240404204532958](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404204532958.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/373c7fec-f121-498a-9b0b-6ae9faecd99f)
+
 
 #### 1.5.3 设置c_cpp_properties.json
 
