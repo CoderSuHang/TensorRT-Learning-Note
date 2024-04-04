@@ -1,4 +1,4 @@
-# CUDA与TensorRT部11
+# CUDA与TensorRT部署
 
 ## 一、并行处理与 GPU 体系架构
 
