@@ -1080,7 +1080,426 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0d6ab0fb-0cf3-4974-a91f-bdcac20d9af5)
 
 
-### 1.5 服务器环境配置
+### 1.5 编辑器环境配置
+
+这个博主记录的很好：
+
+* [配置VScode开发环境-CUDA编程_vscode cuda-CSDN博客](https://blog.csdn.net/qq_45032341/article/details/133843192)
+
+#### 1.5.1 创建compile_commands.json
+
+##### （1）第一次可以安装一个Bear插件
+
+* Bear是一个自动创建compile_commands.json的插件
+
+* 官方网址：
+
+  * [rizsotto/Bear: Bear is a tool that generates a compilation database for clang tooling. (github.com)](https://github.com/rizsotto/Bear)
+
+* 安装过程：
+
+  * 在终端中输入
+
+    * ```python
+      sudo apt-get install bear
+      ```
+
+    * ![image-20240404205547300](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404205547300.png)
+
+* 使用过程：
+
+  * 输入
+
+    * ```python
+      bear -- make -j16
+      ```
+
+    * ![image-20240404205912630](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404205912630.png)
+
+    * 报错：找不到【cuda_runtime.h】
+
+      * ```
+        src/utils.hpp:4:10: fatal error: cuda_runtime.h: No such file or directory
+        ```
+
+      * ![image-20240404210402788](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404210402788.png)
+
+      * 解决办法：
+
+        * 加入新的路径：
+          * [【已解决】 fatal error: cuda_runtime.h: 没有那个文件或目录_fatal error: cuda_runtime_api.h: 没有那个文件或目录-CSDN博客](https://blog.csdn.net/weixin_45617478/article/details/116209903)
+        * 并且指定cuda版本：
+          * ![image-20240404222348634](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222348634.png)
+
+    * 但是有有了新的问题：
+
+      * ![image-20240404222448577](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222448577.png)
+
+      * 这个问题说找不到Makefile.config文件，问了ChatGPT说是因为在Makefile中指定了路径位置，但是没有在当前文件位置的前两级目录中找到：
+
+        * ![image-20240404222843655](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222843655.png)
+        * ![image-20240404222859066](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222859066.png)
+
+      * 我按照ChatGPT提供的建议修改了Makfile，虽然问题能够解决，但是本质问题依旧存在：
+
+        * ![image-20240404223008763](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404223008763.png)
+        * ![image-20240404223017497](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404223017497.png)
+
+      * 因此我又重新看了下博主的工程文档，发现博主有说明需要git他的工程，进而配置config文件：
+
+        * [kalfazed/tensorrt_starter：这个存储库提供了从头开始学习 CUDA 和 TensorRT 的指南。 (github.com)](https://github.com/kalfazed/tensorrt_starter?tab=readme-ov-file#chapter2-cuda-programming)
+
+        * ![image-20240404223155980](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404223155980.png)
+
+          * git的时候报错可以看这个文档解决：
+
+            * ![image-20240404225808049](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404225808049.png)
+
+            * 非公开内容：
+
+              * ```python
+                suhang@Y9000P /m/e/S/L/wsl2> git clone git@github.com:kalfazed/tensorrt_starter.git
+                Cloning into 'tensorrt_starter'...
+                The authenticity of host 'github.com (20.205.243.166)' can't be established.
+                ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.
+                This key is not known by any other names
+                Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+                Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
+                git@github.com: Permission denied (publickey).
+                fatal: Could not read from remote repository.
+                
+                Please make sure you have the correct access rights
+                and the repository exists.
+                suhang@Y9000P /m/e/S/L/wsl2 [128]> git config --global user.name "CoderSuHang"
+                suhang@Y9000P /m/e/S/L/wsl2> git config --global user.email "1048227620@qq.com"
+                suhang@Y9000P /m/e/S/L/wsl2> git config --global credential.helper store
+                suhang@Y9000P /m/e/S/L/wsl2> git config --list
+                user.name=CoderSuHang
+                user.email=1048227620@qq.com
+                credential.helper=store
+                
+                suhang@Y9000P /usr> cd /mnt/e/Software/LinuxOS/wsl2
+                suhang@Y9000P /m/e/S/L/wsl2> ssh-keygen -t rsa -C "1048227620@qq.com"
+                Generating public/private rsa key pair.
+                Enter file in which to save the key (/home/suhang/.ssh/id_rsa):
+                Enter passphrase (empty for no passphrase):
+                Enter same passphrase again:
+                Your identification has been saved in /home/suhang/.ssh/id_rsa
+                Your public key has been saved in /home/suhang/.ssh/id_rsa.pub
+                The key fingerprint is:
+                SHA256:o0XnKXjUJprYQxwXWtqph9LoF9G2A9o+KNY3bo5geqM 1048227620@qq.com
+                The key's randomart image is:
+                +---[RSA 3072]----+
+                |      . +.       |
+                |     . O o       |
+                |      B O +      |
+                |     O % * .     |
+                |    = % S o      |
+                |   o + B +       |
+                |  = + B          |
+                | +oo =.o         |
+                |Eo ..oo          |
+                +----[SHA256]-----+
+                suhang@Y9000P /m/e/S/L/wsl2> /home/suhang/.ssh
+                suhang@Y9000P ~/.ssh> ll
+                total 12K
+                -rw------- 1 suhang suhang 2.6K Apr  4 22:49 id_rsa
+                -rw-r--r-- 1 suhang suhang  571 Apr  4 22:49 id_rsa.pub
+                -rw-r--r-- 1 suhang suhang  142 Apr  4 22:34 known_hosts
+                suhang@Y9000P ~/.ssh> vim id_rsa.pub
+                ```
+
+      * 根据本机安装的情况，新建Makefile.config文件：
+
+        * ```python
+          # Please change the cuda version if needed
+          # In default, cuDNN library is located in /usr/local/cuda/lib64
+          CXX                         :=  g++
+          CUDA_VER                    :=  11.7
+          
+          # Please modify the opencv and tensorrt install directory
+          OPENCV_INSTALL_DIR          :=  /usr/local/include/opencv4
+          TENSORRT_INSTALL_DIR        :=  /mnt/e/Software/LinuxOS/wsl2/packages/TensorRT-8.5.1.7
+          ```
+
+        * 位置放在了工程目录下：
+
+          * E:\Software\LinuxOS\wsl2\tensorrt_starter\config\Makefile.config
+
+  * 运行成功：
+
+    * ![image-20240405111655054](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405111655054.png)
+
+##### （2）配置vsCode
+
+* 打开【main.cpp】文件。在键盘中输入【ctrl+shift+p】调出搜索栏，搜索**configurations(JSON)**：
+
+  * ![image-20240405112145898](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405112145898.png)
+
+* 在【c_cpp_properties.json】文件中加入下面两条指令：
+
+  * ```python
+    "configurationProvider": "ms-vscode.makefile-tools",
+     "compileCommands": "${workspaceFolder}/compile_commands.json"
+    ```
+
+  * ![image-20240405112644829](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405112644829.png)
+
+* 配置language mode
+
+  *  在键盘中输入【ctrl+shift+p】调出搜索栏，搜索**language mode**：
+
+    * 确定C++ --> cpp，CUDA C++ --> cuda-cpp
+
+      * ![image-20240405113254402](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113254402.png)
+
+    * 如果不是，需要进如vscode language identifier网站查看：
+
+      * [Visual Studio Code language identifiers](https://code.visualstudio.com/docs/languages/identifiers)
+      * ![image-20240405113621383](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113621383.png)
+      * ![image-20240405113606627](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113606627.png)
+
+    * 复制第一条指令，进入刚生成的【.vscode】文件目录下创建【settings.json】文件：
+
+      * ```python
+        cd .vscode/
+        touch settings.json
+        ```
+
+    * 设置cu结尾的文件用cuda-cpp语法：
+
+      * ```python
+        {
+            "files.associations": {
+                "*.cu": "cuda-cpp"
+            }
+        }
+        ```
+
+      * ![image-20240405114129893](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405114129893.png)
+
+* 这样就可以在程序中进行跳转：
+
+  * ![image-20240405114342275](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405114342275.png)
+
+#### 1.5.2 安装必要的插件
+
+##### （1）SSH
+
+如果要远程Ubuntu主机，则需要用SSH插件，我这里是在主机安装的wsl2子系统，所以不需要远程。
+
+![image-20240404201957347](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404201957347.png)
+
+##### （2）WSL
+
+![image-20240404202932265](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404202932265.png)
+
+您可以通过打开 WSL 终端、导航到您选择的文件夹并键入【code .】来启动连接到 WSL 的 VS Code 新实例
+
+[如何使用Windows的VScode编辑WSL系统内的文件，Windows与WSL混合交互。（直接使用版）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1S34y1P7KC/?vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
+
+* 在目标目录下也可以code对应文件夹：
+  * ![image-20240404204532958](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404204532958.png)
+
+##### （3）C/C++
+
+![image-20240405170620229](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405170620229.png)
+
+##### （4）C/C++ Extension Pack
+
+![image-20240405170635873](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405170635873.png)
+
+##### （5）vscode-cudacpp
+
+![image-20240405170801458](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405170801458.png)
+
+
+
+##### 1.5.3 设置c_cpp_properties.json
+
+##### （1）同1.5.1
+
+* 打开【main.cpp】文件。在键盘中输入【ctrl+shift+p】调出搜索栏，搜索**configurations(JSON)**：
+
+  * ![image-20240405112145898](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405112145898.png)
+
+* 在【c_cpp_properties.json】文件中加入下面两条指令：
+
+  * ```python
+    "configurationProvider": "ms-vscode.makefile-tools",
+     "compileCommands": "${workspaceFolder}/compile_commands.json"
+    ```
+
+  * ![image-20240405112644829](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405112644829.png)
+
+* 配置language mode
+
+  *  在键盘中输入【ctrl+shift+p】调出搜索栏，搜索**language mode**：
+
+    * 确定C++ --> cpp，CUDA C++ --> cuda-cpp
+
+      * ![image-20240405113254402](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113254402.png)
+
+    * 如果不是，需要进如vscode language identifier网站查看：
+
+      * [Visual Studio Code language identifiers](https://code.visualstudio.com/docs/languages/identifiers)
+      * ![image-20240405113621383](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113621383.png)
+      * ![image-20240405113606627](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113606627.png)
+
+    * 复制第一条指令，进入刚生成的【.vscode】文件目录下创建【settings.json】文件：
+
+      * ```python
+        cd .vscode/
+        touch settings.json
+        ```
+
+    * 设置cu结尾的文件用cuda-cpp语法：
+
+      * ```python
+        {
+            "files.associations": {
+                "*.cu": "cuda-cpp"
+            }
+        }
+        ```
+
+      * ![image-20240405114129893](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405114129893.png)
+
+* 这样就可以在程序中进行跳转：
+
+  * ![image-20240405114342275](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405114342275.png)
+
+#### 1.5.4 设置tasks.json
+
+在我们想要使用GDB调试的时候，是希望在用make执行时候，能够把我们改过的东西同步上去的。
+
+##### （1）创建tasks.json
+
+* 在键盘中输入【ctrl+shift+p】调出搜索栏，搜索**configure task**：
+  * ![image-20240405115212805](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405115212805.png)
+  * 点击【使用模板创建json文件】，选择【others】：
+    * ![image-20240405115339940](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405115339940.png)
+    * ![image-20240405115415384](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405115415384.png)
+
+##### （2）编辑tasks.json
+
+* 在【tasks.json】文件中修改指令：
+
+  * ```python
+    {
+        // See https://go.microsoft.com/fwlink/?LinkId=733558
+        // for the documentation about the tasks.json format
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "make",
+                "type": "shell",
+                "command": "make -j16"
+            }
+        ]
+    }
+    ```
+
+  * ![image-20240405115816978](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405115816978.png)
+
+#### 1.5.5 设置launch.json
+
+##### （1）设置debug
+
+* 在键盘中输入【ctrl+shift+p】调出搜索栏，搜索**debug: Add Configuration**：
+  * ![image-20240405162244501](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405162244501.png)
+* 选择【CUDA C++(CUDA-GDB)】选项
+  * ![image-20240405162034519](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405162034519.png)
+  * 这时候没有【CUDA C++(CUDA-GDB)】选项，原因是没有安装CUDA包，安装下面这个包即可：
+    * ![image-20240405163853389](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405163853389.png)
+  * 选择即可创建【launch.json】文件
+    * ![image-20240405163839009](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405163839009.png)
+    * ![image-20240405164050042](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405164050042.png)
+
+##### （2）修改launch.json
+
+* 在program中加入**可执行文件**路径：
+
+  * ```python
+    {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "CUDA C++: Launch",
+                "type": "cuda-gdb",
+                "request": "launch",
+                "program": "${workspaceFolder}/trt-cuda"
+            },
+            {
+                "name": "CUDA C++: Attach",
+                "type": "cuda-gdb",
+                "request": "attach"
+            }
+        ]
+    }
+    ```
+
+  * ![image-20240405164634907](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405164634907.png)
+
+#### 1.5.6 设置setting.json
+
+##### （1）同1.5.1
+
+* 配置language mode
+
+  *  在键盘中输入【ctrl+shift+p】调出搜索栏，搜索**language mode**：
+
+    * 确定C++ --> cpp，CUDA C++ --> cuda-cpp
+
+      * ![image-20240405113254402](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113254402.png)
+
+    * 如果不是，需要进如vscode language identifier网站查看：
+
+      * [Visual Studio Code language identifiers](https://code.visualstudio.com/docs/languages/identifiers)
+      * ![image-20240405113621383](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113621383.png)
+      * ![image-20240405113606627](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113606627.png)
+
+    * 复制第一条指令，进入刚生成的【.vscode】文件目录下创建【settings.json】文件：
+
+      * ```python
+        cd .vscode/
+        touch settings.json
+        ```
+
+    * 设置cu结尾的文件用cuda-cpp语法：
+
+      * ```python
+        {
+            "files.associations": {
+                "*.cu": "cuda-cpp"
+            }
+        }
+        ```
+
+      * ![image-20240405114129893](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405114129893.png)
+
+* 这样就可以在程序中进行跳转：
+
+  * ![image-20240405114342275](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405114342275.png)
+
+#### 1.5.7 DEBUG
+
+* 用GDB调试main.cpp文件里的断点时，出现以下错误：
+
+  * ```
+    No source file named /mnt/e/Software/LinuxOS/wsl2/tensorrt_starter/chapter2-cuda-programming/2.3-matmul-basic/src/main.cpp.
+    ```
+
+  * ![image-20240405220749662](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405220749662.png)
+
+  * 问题原因不太清楚，不过这个问题让我知道可执行文件是trt-cuda不是main.cpp
+
+  * 解决办法：
+
+    * 在终端make clean，然后用make DEBUG=1之后可以调试了！
+    * ![image-20240405220932173](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405220932173.png)
+    * ![image-20240405220946774](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405220946774.png)
+
 
 
 
