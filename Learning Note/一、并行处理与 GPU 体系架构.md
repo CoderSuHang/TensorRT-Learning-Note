@@ -1443,14 +1443,19 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 ##### （1）设置debug
 
 * 在键盘中输入【ctrl+shift+p】调出搜索栏，搜索**debug: Add Configuration**：
-  * ![image-20240405162244501](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405162244501.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f2b6d968-57dc-48b0-87ba-759c7b48385e)
+
 * 选择【CUDA C++(CUDA-GDB)】选项
-  * ![image-20240405162034519](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405162034519.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/92e14b66-cef5-420f-aa04-6150b979848c)
+
   * 这时候没有【CUDA C++(CUDA-GDB)】选项，原因是没有安装CUDA包，安装下面这个包即可：
-    * ![image-20240405163853389](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405163853389.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/afca33a3-886d-4d82-8693-3a509fe5d456)
+
   * 选择即可创建【launch.json】文件
-    * ![image-20240405163839009](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405163839009.png)
-    * ![image-20240405164050042](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405164050042.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2fcdeb02-6111-4069-925d-7427212d2887)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c1bbc6ce-c069-463c-8058-9162679a02d5)
+
 
 ##### （2）修改launch.json
 
@@ -1475,7 +1480,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     }
     ```
 
-  * ![image-20240405164634907](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405164634907.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6c85695a-5a8e-4cf0-8841-ab8c067a0ebc)
+
 
 #### 1.5.6 设置setting.json
 
