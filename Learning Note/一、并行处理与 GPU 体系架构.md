@@ -1104,7 +1104,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
       sudo apt-get install bear
       ```
 
-    * ![image-20240404205547300](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404205547300.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bac6fd31-23a6-41a2-88b6-f1361eebecfd)
+
 
 * 使用过程：
 
@@ -1114,7 +1115,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
       bear -- make -j16
       ```
 
-    * ![image-20240404205912630](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404205912630.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c55cc46b-ecf4-4b8f-a6c8-fa3c3bd0259c)
+
 
     * 报错：找不到【cuda_runtime.h】
 
@@ -1122,34 +1124,43 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
         src/utils.hpp:4:10: fatal error: cuda_runtime.h: No such file or directory
         ```
 
-      * ![image-20240404210402788](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404210402788.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/95b6843a-f0f1-4c59-b162-80e20b3e090d)
+
 
       * 解决办法：
 
         * 加入新的路径：
           * [【已解决】 fatal error: cuda_runtime.h: 没有那个文件或目录_fatal error: cuda_runtime_api.h: 没有那个文件或目录-CSDN博客](https://blog.csdn.net/weixin_45617478/article/details/116209903)
         * 并且指定cuda版本：
-          * ![image-20240404222348634](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222348634.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0b3111a9-9165-4275-821b-b3ef7680fba7)
+
 
     * 但是有有了新的问题：
 
-      * ![image-20240404222448577](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222448577.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d34d7d80-1140-41e7-a0cd-f3e5f268065b)
+
+
 
       * 这个问题说找不到Makefile.config文件，问了ChatGPT说是因为在Makefile中指定了路径位置，但是没有在当前文件位置的前两级目录中找到：
 
-        * ![image-20240404222843655](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222843655.png)
-        * ![image-20240404222859066](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404222859066.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/10c81078-a5f0-42d3-a58a-e8bab489fc50)
+
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8c2f39d7-1876-45dc-96f2-4cb027f14c37)
+
 
       * 我按照ChatGPT提供的建议修改了Makfile，虽然问题能够解决，但是本质问题依旧存在：
 
-        * ![image-20240404223008763](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404223008763.png)
-        * ![image-20240404223017497](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404223017497.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e7eb57a0-087c-40d5-97ce-efeac07ce78e)
+
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3ac5401a-50a3-4889-940a-28a05cbba2c1)
+
 
       * 因此我又重新看了下博主的工程文档，发现博主有说明需要git他的工程，进而配置config文件：
 
         * [kalfazed/tensorrt_starter：这个存储库提供了从头开始学习 CUDA 和 TensorRT 的指南。 (github.com)](https://github.com/kalfazed/tensorrt_starter?tab=readme-ov-file#chapter2-cuda-programming)
 
-        * ![image-20240404223155980](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404223155980.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/47c7745f-9e70-4879-8202-b3c9da6a8a63)
+
 
           * git的时候报错可以看这个文档解决：
 
