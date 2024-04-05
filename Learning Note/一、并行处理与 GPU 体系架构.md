@@ -1164,7 +1164,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
           * git的时候报错可以看这个文档解决：
 
-            * ![image-20240404225808049](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404225808049.png)
+            * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/46f4861a-a03f-4bcc-85e3-304ec8e776f7)
+
 
             * 非公开内容：
 
@@ -1239,7 +1240,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
   * 运行成功：
 
-    * ![image-20240405111655054](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405111655054.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/88a5a24c-b1e2-4d61-9895-003a12f3a91b)
+
 
 ##### （2）配置vsCode
 
