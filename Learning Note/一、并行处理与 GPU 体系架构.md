@@ -1408,10 +1408,13 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 ##### （1）创建tasks.json
 
 * 在键盘中输入【ctrl+shift+p】调出搜索栏，搜索**configure task**：
-  * ![image-20240405115212805](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405115212805.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5aff0877-32dd-4e2d-974c-9a1aa4f1d095)
+
   * 点击【使用模板创建json文件】，选择【others】：
-    * ![image-20240405115339940](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405115339940.png)
-    * ![image-20240405115415384](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405115415384.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/863e86c9-60b3-4330-b44f-ac648d2b6774)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/cd7aa935-b0b3-4611-88a9-e6a1403a1d46)
+
 
 ##### （2）编辑tasks.json
 
@@ -1432,7 +1435,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     }
     ```
 
-  * ![image-20240405115816978](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405115816978.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/78e410bb-4e67-46a6-8208-c6e724126217)
+
 
 #### 1.5.5 设置launch.json
 
