@@ -1537,15 +1537,18 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
     No source file named /mnt/e/Software/LinuxOS/wsl2/tensorrt_starter/chapter2-cuda-programming/2.3-matmul-basic/src/main.cpp.
     ```
 
-  * ![image-20240405220749662](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405220749662.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/250e42f7-8b1f-4ab5-ac46-f064d540979f)
+
 
   * 问题原因不太清楚，不过这个问题让我知道可执行文件是trt-cuda不是main.cpp
 
   * 解决办法：
 
     * 在终端make clean，然后用make DEBUG=1之后可以调试了！
-    * ![image-20240405220932173](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405220932173.png)
-    * ![image-20240405220946774](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405220946774.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6246ce9d-0d17-41ae-bd41-405bb08870f3)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b8787692-10ac-49eb-9ff8-3f9e3b08c2e1)
+
 
 
 
