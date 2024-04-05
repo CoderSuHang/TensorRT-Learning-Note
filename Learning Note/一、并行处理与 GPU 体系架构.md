@@ -1493,13 +1493,16 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
     * 确定C++ --> cpp，CUDA C++ --> cuda-cpp
 
-      * ![image-20240405113254402](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113254402.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a0d46e7c-9e09-4b46-8361-6390cfc24f77)
+
 
     * 如果不是，需要进如vscode language identifier网站查看：
 
       * [Visual Studio Code language identifiers](https://code.visualstudio.com/docs/languages/identifiers)
-      * ![image-20240405113621383](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113621383.png)
-      * ![image-20240405113606627](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113606627.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/12467649-0f8b-435a-bc0f-efe86f4fdda5)
+
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5c7e54c3-a86a-432a-93f3-3902d69542ab)
+
 
     * 复制第一条指令，进入刚生成的【.vscode】文件目录下创建【settings.json】文件：
 
@@ -1518,11 +1521,13 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
         }
         ```
 
-      * ![image-20240405114129893](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405114129893.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/14bbc024-2011-4087-a9db-da639c8905e5)
+
 
 * 这样就可以在程序中进行跳转：
 
-  * ![image-20240405114342275](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405114342275.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ec45cb6d-e7e8-44a9-a23d-a249f6ef2c10)
+
 
 #### 1.5.7 DEBUG
 
