@@ -1247,7 +1247,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
 * 打开【main.cpp】文件。在键盘中输入【ctrl+shift+p】调出搜索栏，搜索**configurations(JSON)**：
 
-  * ![image-20240405112145898](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405112145898.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/db57a368-0e88-4455-a637-488d6e7a17c3)
+
 
 * 在【c_cpp_properties.json】文件中加入下面两条指令：
 
@@ -1256,7 +1257,8 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
      "compileCommands": "${workspaceFolder}/compile_commands.json"
     ```
 
-  * ![image-20240405112644829](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405112644829.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f6b35bf5-ffba-4141-b2c0-fc780d362527)
+
 
 * 配置language mode
 
@@ -1264,13 +1266,16 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
     * 确定C++ --> cpp，CUDA C++ --> cuda-cpp
 
-      * ![image-20240405113254402](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113254402.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e4e54904-afbe-417d-8616-a6261eaab262)
+
 
     * 如果不是，需要进如vscode language identifier网站查看：
 
       * [Visual Studio Code language identifiers](https://code.visualstudio.com/docs/languages/identifiers)
-      * ![image-20240405113621383](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113621383.png)
-      * ![image-20240405113606627](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405113606627.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f6641901-db06-47e0-aa06-c8e91c14d68f)
+
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c31f7202-2ca0-4664-a5e1-a8931bb71d31)
+
 
     * 复制第一条指令，进入刚生成的【.vscode】文件目录下创建【settings.json】文件：
 
@@ -1289,11 +1294,13 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
         }
         ```
 
-      * ![image-20240405114129893](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405114129893.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8e226a5f-3e62-4308-b8c5-10bf9f86ef75)
+
 
 * 这样就可以在程序中进行跳转：
 
-  * ![image-20240405114342275](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405114342275.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/225e39d8-0109-4c42-9b15-66374458b074)
+
 
 #### 1.5.2 安装必要的插件
 
