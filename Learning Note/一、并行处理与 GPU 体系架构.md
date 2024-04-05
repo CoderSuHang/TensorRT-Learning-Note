@@ -1308,30 +1308,36 @@ exa可以使让终端显示更具体的文件夹列表，有助于我们查找�
 
 如果要远程Ubuntu主机，则需要用SSH插件，我这里是在主机安装的wsl2子系统，所以不需要远程。
 
-![image-20240404201957347](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404201957347.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c11840e7-8315-4927-9fbd-13a725f19743)
+
 
 ##### （2）WSL
 
-![image-20240404202932265](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404202932265.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/483a5056-53ef-40ce-bc50-b4b1efec13bf)
+
 
 您可以通过打开 WSL 终端、导航到您选择的文件夹并键入【code .】来启动连接到 WSL 的 VS Code 新实例
 
 [如何使用Windows的VScode编辑WSL系统内的文件，Windows与WSL混合交互。（直接使用版）_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1S34y1P7KC/?vd_source=0d02ed2f63507c727ce90624d9bd5e6a)
 
 * 在目标目录下也可以code对应文件夹：
-  * ![image-20240404204532958](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240404204532958.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0397e4e8-309b-483b-abe0-3e65c0d105da)
+
 
 ##### （3）C/C++
 
-![image-20240405170620229](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405170620229.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/fc9b23d1-377b-46c4-8ac4-038471d5a88b)
+
 
 ##### （4）C/C++ Extension Pack
 
-![image-20240405170635873](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405170635873.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b04e00ec-1a2a-4dd6-9b04-a522616f8deb)
+
 
 ##### （5）vscode-cudacpp
 
-![image-20240405170801458](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240405170801458.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d403eb77-d8bf-48c0-ab93-fc5b6bc439a1)
+
 
 
 
