@@ -1202,7 +1202,8 @@
 
   * 意味着可以以【main.cpp】为接口，用c++编译器去编译它，从它里面调用print_index函数
 
-    * ![image-20240409171614651](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409171614651.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d62cd926-1fe6-40ea-aba2-639fee68d61a)
+
 
     * main.cpp中不会涉及跟cuda相关的函数，但是会有相关函数的接口（比如print_one_dim）：
 
@@ -1270,7 +1271,8 @@
         #endif //__PRINT_INDEX_HPP
         ```
 
-      * ![image-20240409173210174](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409173210174.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3755465a-afb1-46c9-8e6e-606411658ff2)
+
 
     * CUDA_CHECK是一种CUDA程序的排查错误的手段（error handler）。
 
@@ -1294,7 +1296,8 @@
         #endif //__UTILS__HPP__
         ```
 
-      * ![image-20240409173733463](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409173733463.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a34f1d88-46a0-4e3f-ae02-b76f746910ed)
+
 
   * ```python
     CONFIG        :=  ../../config/Makefile.config
