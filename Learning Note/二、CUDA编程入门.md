@@ -171,13 +171,17 @@
 
   * 输出：
 
-    * ![image-20240409120414407](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409120414407.png)
-    * ![image-20240409120526483](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409120526483.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7baea5e8-8754-4a8f-9b6c-7424afa1cdc6)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7e3328c3-0461-47a5-a71c-5e9b1fe28163)
+
 
 * 二维索引：
 
-  * ![image-20240409120620884](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409120620884.png)
-  * ![image-20240409120657815](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409120657815.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/cf24bc1e-3035-42f4-839f-5989b2cc8b57)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/fae47454-e66b-47ba-a82d-0264dd556592)
+
 
 ##### （3）cudaDeviceSynchronize
 
@@ -214,7 +218,8 @@
 
 * 如果不适用这个同步函数，执行代码的结果：
 
-  * ![image-20240409120017459](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409120017459.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f5c247ad-c46c-4778-964c-62650f1bb10f)
+
 
 （4）print_cord();
 
