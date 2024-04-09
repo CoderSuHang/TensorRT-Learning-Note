@@ -240,8 +240,10 @@
     }
     ```
 
-    * ![image-20240409121100691](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409121100691.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b45f989c-36cd-426b-b479-c79fa81cd99f)
+
 
   * 输出：
 
-    * ![image-20240409121017816](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409121017816.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4884d66f-bc8e-4439-a1f9-0bd4bcc5ce57)
+
