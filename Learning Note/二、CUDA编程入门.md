@@ -1104,7 +1104,8 @@
 
 * (.cu)文件下的Makefile：
 
-  * ![image-20240409171449938](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409171449938.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/13076fb7-3e06-445d-948a-56f81ca90a74)
+
 
   * ```python
     # 可以包含其他目录下的文件
