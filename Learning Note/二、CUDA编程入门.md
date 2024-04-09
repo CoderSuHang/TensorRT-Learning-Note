@@ -11,16 +11,19 @@
 ##### （2）make
 
 * 在终端中先make
-  * ![image-20240409102422551](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409102422551.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7bfac5a7-c68f-44ad-aa0e-f8d06ac212d5)
+
 
 ##### （3）trt-cuda
 
 * 再运行trt-cuda的可执行文件
-  * ![image-20240409102447198](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409102447198.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/90b928e4-f5e0-47d6-8d75-61570fdc1bff)
+
 
 #### 2.1.2 理解CUDA中的Grid和Block
 
-![image-20240409102528215](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409102528215.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/54cbc931-44eb-4c4a-892a-93005e48be8b)
+
 
 * 其中Host相当于我们的CPU，Device相当于GPU，我们一般写程序的时候是从CPU开始执行的，Kernel是一个核函数（以线程为单位计算的函数），它会调用Device中的Grid。
 * 一个Kernel对应一个Grid，一个Grid对应多个Block，一个Block中又对应多个Thread
@@ -41,7 +44,8 @@
 
   * 例如：把一个8个数据大小的数组分为两个block进行访问，一个block有四个不用的thread的访问地址：
 
-  * ![image-20240409110857665](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409110857665.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/50a0c205-ac0a-446f-bb59-d875d3a284bb)
+
 
   * ```c++
     void print_one_dim(){
@@ -73,7 +77,8 @@
       }
       ```
 
-      * ![image-20240409112334193](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409112334193.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ba2fb1d9-6105-478c-aecb-8f98304ca5b2)
+
 
     * ```c++
       //打印各个维度上grid和block的大小
@@ -84,7 +89,8 @@
       }
       ```
 
-      * ![image-20240409113355252](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409113355252.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a7f5f12d-eeef-4818-9068-1c6eda3d6713)
+
 
 * 【一维索引】
 
@@ -102,9 +108,11 @@
       }
       ```
 
-      * ![image-20240409113858214](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409113858214.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bf8512aa-a86b-46ae-8eda-7b04f0adf24c)
 
-    * ![image-20240409114140801](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409114140801.png)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/eeb4d04a-e6bc-44e0-a2dd-598a44dc0a91)
+
 
   * 在Grid空间下寻找Thread ID
 
@@ -129,9 +137,11 @@
       }
       ```
 
-      * ![image-20240409115237992](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409115237992.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/795c1555-93b1-4db0-bd7a-cf6f0562039f)
 
-    * ![image-20240409115106157](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240409115106157.png)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c1d89a5a-c0f5-41b6-b542-868f90d948a9)
+
 
 ###### 2. 二维
 
