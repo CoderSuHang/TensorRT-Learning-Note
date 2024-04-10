@@ -1396,7 +1396,150 @@
 
 ### 2.2 使用CUDA进行MATMULL计算
 
+#### 2.2.1 host端与device端的数据传输
 
+##### （1）CPU(host)端
+
+* 1、分配host与device端的内存空间：
+  * ![image-20240410154341775](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410154341775.png)
+  * cudaMalloc (在device端分配空间)，是一种cuda runtime api(*)
+    * ![image-20240410103035827](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410103035827.png)
+    * (*)这些以cuda*开头的api一般被称作**cuda runtime api**，以CU*开头的api被称作**cuda  driver api**。
+      * **cuda runtime api**对底层的操作做好的封装便于使用，包括：
+        * implicit initialization (隐式初始化) 
+        * context management (上下文管理)
+        * module management (模块管理)
+      * **cuda  driver api**一般对GPU硬件进行操作，复杂不常用
+  * cudaMallocHost (在host端的pinned memory上分配空间)
+* 2、将数据传送到GPU
+  * ![image-20240410154430491](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410154430491.png)
+  * cudaMemcpy (以同步的方式，将数据在host->device, device->device, device->host进行传输)
+  * cudaMemcpyAsync (以异步的方式，进行数据传输)
+* 3、配置核函数的参数
+  * ![image-20240410154721285](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410154721285.png)
+  * grid dim（必须配置）
+  * block dim（必须配置）
+  * shared memory size（默认）
+  * stream（默认）
+* 4、启动核函数
+  * 一般是异步的，所以启动完核函数需要进行同步
+    * ![image-20240410154750136](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410154750136.png)
+* 5、将数据从GPU传入回来
+
+##### （2） GPU(device)端
+
+* 1、根据配置的参数启动核函数
+* 2、多个thread并行计算
+
+
+
+#### 2.2.2 CUDA Core的矩阵乘法计算
+
+##### （1）Blocksize=1
+
+![image-20240410103902258](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410103902258.png)
+
+* 要如果所有的thread依次执行的话：
+  * 要完成 4 x 8 (A)与  8 x 4 (B)的计算
+  * 需要 8 * 16  = 128个 clk 才可以完成
+* 要如果我们分配 16个thread，每一个thread负责C中的一个元素，所有的thread依次执行的话：
+  * 要完成 4 x 8 (A)与  8 x 4 (B)的计算 和 一个 1 x 8 与 8 x 1的计算所需要的时间是一样的。
+  * 需要 8 个 clk 可以完成。
+
+##### （2）Blocksize=4
+
+![image-20240410111726663](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410111726663.png)
+
+* 【CUDA中有个规定】：
+  * 就是一个block中可以分配的 thread的数量最大是1,024个线程。如果大于 1,024会显示配置错误
+
+
+
+#### 2.2.3 代码详情
+
+##### （1）main.cpp
+
+* ```c++
+  #include <stdio.h>
+  #include <cuda_runtime.h>
+  
+  #include "utils.hpp"
+  #include "timer.hpp"
+  #include "matmul.hpp"
+  
+  
+  int seed;
+  int main(){
+      Timer timer;           // 使用计时器的类
+      int width     = 1<<10; // 1,024
+      int min       = 0;
+      int max       = 1;
+      int size      = width * width;
+      int blockSize = 1;
+  
+      float* h_matM = (float*)malloc(size * sizeof(float));
+      float* h_matN = (float*)malloc(size * sizeof(float));
+      float* h_matP = (float*)malloc(size * sizeof(float));
+      float* d_matP = (float*)malloc(size * sizeof(float));
+      
+      /* 生成矩阵A和B，seed控制生成两个不同矩阵 */
+      seed = 1;
+      initMatrix(h_matM, size, min, max, seed);   // 矩阵初始化，h_matM：矩阵指针
+      seed += 1;
+      initMatrix(h_matN, size, min, max, seed);
+      
+      /* CPU */
+      timer.start();
+      MatmulOnHost(h_matM, h_matN, h_matP, width);    // A x B = C 的实现，三层for循环
+      timer.stop();
+      timer.duration<Timer::ms>("matmul in cpu");
+  
+      /* GPU warmup */
+      /* 
+       * GPU在第一次启动核函数API的时候存在延迟，影响测量核函数的时间，造成误差
+       * 因此需要warmup让CPU第一次执行kernel时随便做点任务，再执行真正想要的内容
+       */
+      timer.start();
+      MatmulOnDevice(h_matM, h_matN, d_matP, width, blockSize);
+      timer.stop();
+      timer.duration<Timer::ms>("matmul in gpu(warmup)");
+  
+      /* GPU general implementation, bs = 16*/
+      blockSize = 16;
+      timer.start();
+      MatmulOnDevice(h_matM, h_matN, d_matP, width, blockSize);
+      timer.stop();
+      timer.duration<Timer::ms>("matmul in gpu(bs = 16)");
+      compareMat(h_matP, d_matP, size);   // 确保精度
+  
+      /* GPU general implementation, bs = 1*/
+      blockSize = 1;
+      timer.start();
+      MatmulOnDevice(h_matM, h_matN, d_matP, width, blockSize);
+      timer.stop();
+      timer.duration<Timer::ms>("matmul in gpu(bs = 1)");
+      compareMat(h_matP, d_matP, size);
+  
+      /* GPU general implementation, bs = 32*/
+      blockSize = 32;
+      timer.start();
+      MatmulOnDevice(h_matM, h_matN, d_matP, width, blockSize);
+      timer.stop();
+      timer.duration<Timer::ms>("matmul in gpu(bs = 32)");
+      compareMat(h_matP, d_matP, size);
+      return 0;
+  }
+  ```
+
+* ![image-20240410154935349](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410154935349.png)
+
+#### 2.2.4 CUDA中的Error Handler
+
+Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我们进行调试
+
+
+
+#### 2.2.5 GPU的硬件信息获取
 
 ### 2.3 共享内存以及BANK CONFLICT
 
