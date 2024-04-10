@@ -1401,9 +1401,11 @@
 ##### （1）CPU(host)端
 
 * 1、分配host与device端的内存空间：
-  * ![image-20240410154341775](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410154341775.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2c7e2fe7-5e6b-4f61-8f16-ab86c7f1d299)
+
   * cudaMalloc (在device端分配空间)，是一种cuda runtime api(*)
-    * ![image-20240410103035827](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410103035827.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/23027c63-1888-4353-ae1e-f7d15091a414)
+
     * (*)这些以cuda*开头的api一般被称作**cuda runtime api**，以CU*开头的api被称作**cuda  driver api**。
       * **cuda runtime api**对底层的操作做好的封装便于使用，包括：
         * implicit initialization (隐式初始化) 
@@ -1412,18 +1414,21 @@
       * **cuda  driver api**一般对GPU硬件进行操作，复杂不常用
   * cudaMallocHost (在host端的pinned memory上分配空间)
 * 2、将数据传送到GPU
-  * ![image-20240410154430491](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410154430491.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/73cf13f7-6fe1-4435-96af-c50c3c30edd3)
+
   * cudaMemcpy (以同步的方式，将数据在host->device, device->device, device->host进行传输)
   * cudaMemcpyAsync (以异步的方式，进行数据传输)
 * 3、配置核函数的参数
-  * ![image-20240410154721285](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410154721285.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e965cbe8-0bbb-421e-a550-bba5e5add937)
+
   * grid dim（必须配置）
   * block dim（必须配置）
   * shared memory size（默认）
   * stream（默认）
 * 4、启动核函数
   * 一般是异步的，所以启动完核函数需要进行同步
-    * ![image-20240410154750136](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410154750136.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/66321873-9da7-4752-bdeb-699cf7e752ae)
+
 * 5、将数据从GPU传入回来
 
 ##### （2） GPU(device)端
