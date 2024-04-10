@@ -1536,7 +1536,8 @@
   }
   ```
 
-* ![image-20240410154935349](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240410154935349.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/68e44d4f-84c5-499a-a51a-01928ff3675a)
+
 
 #### 2.2.4 CUDA中的Error Handler
 
