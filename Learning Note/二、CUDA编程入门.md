@@ -1618,9 +1618,11 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 ##### （2）有无error handling对比
 
 * 没有error handling：
-  * ![image-20240411101347302](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411101347302.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/40bf5f68-c335-4d40-8eab-66df9943808e)
+
 * 有error handling：
-  * ![image-20240411094125545](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411094125545.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b8b2acd8-ae83-4a4d-8f3d-9134c3b7af28)
+
 
 ##### （3）用error handler原因
 
@@ -1677,27 +1679,33 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 ##### （4）对cuda runtime api使用的error handling
 
 * 在每一个cuda程序执行的时候都会返回cudaError状态指令，而CUDA_CHECK函数便能够打印出来这写状态。
-  * ![image-20240411095304068](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411095304068.png)
-  * ![image-20240411095708395](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411095708395.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c24a5b1e-57c9-4c1d-8901-ee3d9c44540f)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/95bb345f-950a-45be-b68a-2ab982f217ab)
+
 
 
 
 ##### （5）对核函数的error handling
 
 * 由于核函数返回的类型为空，不像cuda函数能够返回状态信息：
-  * ![image-20240411100125391](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411100125391.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8ef90a8c-eb7d-40cf-b7a4-b437d571d2ac)
+
 * 所以需要特定的捕捉状态函数：
-  * ![image-20240411100241281](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411100241281.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/65716501-bba2-4b1e-94f6-111c66c7aa3e)
+
   * 这里用到了“cudaError_t err = cudaPeekAtLastError();”指令：
-    * ![image-20240411100442634](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411100442634.png)
+    *![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6ec0aee0-051d-413d-8361-55554b358e1c)
 
 * 在编写CUDA是，错误排查非常重要，默认的cuda runtime API中的函数都会返回**cudaError_t**类型的结果，但是在写kernel函数的时候，需要通过**cudaPeekAtLastError**或者**cudaGetLastError**来获取错误，这两个有本质上的区别。
   * cudaGetLastError：
     * 返回最近的错误，同时把系统状态复位到cudaSuccess状态
-      * ![image-20240411100716618](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411100716618.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/20a5223e-3361-44f1-9449-170f9342ff92)
+
   * cudaPeekAtLastError：
     * 返回最近的错误，不会把系统状态复位到cudaSuccess状态
-      * ![image-20240411100843820](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411100843820.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/02d83b45-0c54-4991-8682-d4720a9679bf)
+
   * 两者差别在于错误是否传播。
     * 对于不可恢复的错误(*)，如果发生了错误的话并且不把系统的状态进行reset的话，错误会一直传播下去，导致后面的即便正确的api使用也会产生同样的错误。
       *  (*)“不可恢复的(non-recoverable/sticky)”，一般指的是核函数内部的执行错误，比较典型的例子就是内存访问越界。
