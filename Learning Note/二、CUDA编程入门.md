@@ -1764,11 +1764,13 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 #### 2.3.1 Nsight systems
 
-![image-20240411104516440](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411104516440.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7f7c4176-3ecf-42b3-a685-abb567bb4a3b)
+
 
 #### 2.3.2 Nsight Compute
 
-![image-20240411104525477](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411104525477.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e03445a4-7854-4e15-bbb4-915e545ad20e)
+
 
 #### 2.3.3 主要应用
 
