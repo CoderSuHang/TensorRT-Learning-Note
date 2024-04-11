@@ -1714,11 +1714,80 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
     * synchronous/asynchronous error
     * sticky/non-sticky error
 
+
 #### 2.2.5 GPU的硬件信息获取
 
+由于我们在模型优化的时候需要考虑硬件性能，让模型能够完全匹配硬件，所以需要获取GPU硬件信息。
+
+![image-20240411102158626](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411102158626.png)
+
+##### （1）新添加的内容
+
+* utils.hpp
+  * 把打印日志的方法定义成了一个宏，方便使用
+  * VA_ARGS：编译器内部的定义的一个宏。
+    * 表示的是变参。
+    * 配合 vsnprintf 可以将 LOG 中的变参信息存入到 msg 的这个buffer 中。最终在一起打印出来
+  * ![image-20240411102510228](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411102510228.png)
 
 
-### 2.3 共享内存以及BANK CONFLICT
+
+##### （2）为什么要注意硬件信息
+
+* 1、我们需要知道我们的GPU的compute capability。nvcc的参数中有时会需要
+  * ![image-20240411102811899](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411102811899.png)
+* 2、我们需要知道我们在启动核函数的时候，配置信息的规定都有哪些
+  * ![image-20240411102849694](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411102849694.png)
+* 3、shared memory的使用对cuda程序的加速很重要。
+  * ![image-20240411102957839](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411102957839.png)
+  * 当我们在使用**shared memory**是需要知道它的大小上限是多少。
+  * 这里需要注意的是，我们其实是可以调整shared memory和L1 cache在缓存中的空间。
+  * ![image-20240411103039307](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411103039307.png)
+* 4、**warp scheduler**是cuda中对大量thread的一个调度器。我们需要知道一个warp是由多少个thread组成的。
+  * ![image-20240411103132245](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411103132245.png)
+* 5、当我们在进行性能调优的时候，内存的大小和内存的带宽是我们需要考虑的一个很重要的因素。结合 roofline model(后面的章节会讲，如何更好接近计算峰值)，我们需要寻找想要隐藏 memory 的数据传输所造成的overhead，需要多少的计算量和计算效率
+  * ![image-20240411103409807](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411103409807.png)
+
+
+
+### 2.3 Nsight systems and compute
+
+这两个软件可以帮助我们分析kernel中的每个细节包括：shared memory的使用、读取写入数据的带宽情况、计算瓶颈等。同时能够帮助我们分析各个内容的调度。
+
+#### 2.3.1 Nsight systems
+
+![image-20240411104516440](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411104516440.png)
+
+#### 2.3.2 Nsight Compute
+
+![image-20240411104525477](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411104525477.png)
+
+#### 2.3.3 主要应用
+
+* 参考下面博客：
+  * [CUDA编程 - Nsight system & Nsight compute 的安装和使用 - 学习记录_cuda nsight-CSDN博客](https://blog.csdn.net/weixin_40653140/article/details/136238420?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-1-136238420-blog-122532275.235^v43^pc_blog_bottom_relevance_base4&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-1-136238420-blog-122532275.235^v43^pc_blog_bottom_relevance_base4&utm_relevant_index=2)
+
+
+
+#### 2.3.4 安装步骤
+
+参考链接：
+
+[在WSL2上运行nVIDIA Nsight_nsight wsl-CSDN博客](https://blog.csdn.net/cyr20040123/article/details/122532275?ops_request_misc=%7B%22request%5Fid%22%3A%22171280690916800213045012%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=171280690916800213045012&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-122532275-null-null.142^v100^pc_search_result_base5&utm_term=在WSL2上运行nVIDIA Nsight&spm=1018.2226.3001.4187)
+
+![image-20240411153846231](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411153846231.png)
+
+
+
+![image-20240411151603122](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411151603122.png)
+
+![image-20240411130117543](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411130117543.png)
+
+无法成功连接
+
+![image-20240411160225563](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411160225563.png)
+
+### 2.4 共享内存以及BANK CONFLICT
 
 
 
