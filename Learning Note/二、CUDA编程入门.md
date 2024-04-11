@@ -1719,7 +1719,8 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 由于我们在模型优化的时候需要考虑硬件性能，让模型能够完全匹配硬件，所以需要获取GPU硬件信息。
 
-![image-20240411102158626](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411102158626.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2f136c83-fc1f-4301-848b-064113a9b02b)
+
 
 ##### （1）新添加的内容
 
@@ -1728,25 +1729,32 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
   * VA_ARGS：编译器内部的定义的一个宏。
     * 表示的是变参。
     * 配合 vsnprintf 可以将 LOG 中的变参信息存入到 msg 的这个buffer 中。最终在一起打印出来
-  * ![image-20240411102510228](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411102510228.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/562ce996-ba15-4f2a-ba4c-ff66857cddca)
+
 
 
 
 ##### （2）为什么要注意硬件信息
 
 * 1、我们需要知道我们的GPU的compute capability。nvcc的参数中有时会需要
-  * ![image-20240411102811899](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411102811899.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/eb144239-43ca-44f6-8607-0d503fb6af22)
+
 * 2、我们需要知道我们在启动核函数的时候，配置信息的规定都有哪些
-  * ![image-20240411102849694](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411102849694.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4867ab89-9d51-4726-9a0d-52c580a58b40)
+
 * 3、shared memory的使用对cuda程序的加速很重要。
-  * ![image-20240411102957839](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411102957839.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/47108d55-f15f-49ae-9c07-da021091ecd9)
+
   * 当我们在使用**shared memory**是需要知道它的大小上限是多少。
   * 这里需要注意的是，我们其实是可以调整shared memory和L1 cache在缓存中的空间。
-  * ![image-20240411103039307](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411103039307.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8d482b14-dd94-46b6-8280-60867258824c)
+
 * 4、**warp scheduler**是cuda中对大量thread的一个调度器。我们需要知道一个warp是由多少个thread组成的。
-  * ![image-20240411103132245](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411103132245.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f8274c3a-1e39-4c29-b8c8-abd9a4c2c2f6)
+
 * 5、当我们在进行性能调优的时候，内存的大小和内存的带宽是我们需要考虑的一个很重要的因素。结合 roofline model(后面的章节会讲，如何更好接近计算峰值)，我们需要寻找想要隐藏 memory 的数据传输所造成的overhead，需要多少的计算量和计算效率
-  * ![image-20240411103409807](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411103409807.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5e14fa9f-31e9-44f1-9520-9bd80c62fa62)
+
 
 
 
