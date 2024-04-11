@@ -1543,9 +1543,172 @@
 
 Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我们进行调试
 
+##### （1）新添加的内容
 
+* utils.hpp
+
+  * 添加了两个宏定义
+
+    * ```c++
+      // 对cuda runtime api使用的error handling
+      inline static void __cudaCheck(cudaError_t err, const char* file, const int line) {
+          if (err != cudaSuccess) {
+              printf("ERROR: %s:%d, ", file, line);
+              printf("CODE:%s, DETAIL:%s\n", cudaGetErrorName(err), cudaGetErrorString(err));
+              exit(1);
+          }
+      }
+      
+      // 对最近的核函数的error handling
+      inline static void __kernelCheck(const char* file, const int line) {
+          /* 
+           * 在编写CUDA是，错误排查非常重要，默认的cuda runtime API中的函数都会返回cudaError_t类型的结果，
+           * 但是在写kernel函数的时候，需要通过cudaPeekAtLastError或者cudaGetLastError来获取错误
+           */
+          cudaError_t err = cudaPeekAtLastError();
+          if (err != cudaSuccess) {
+              printf("ERROR: %s:%d, ", file, line);
+              printf("CODE:%s, DETAIL:%s\n", cudaGetErrorName(err), cudaGetErrorString(err));
+              exit(1);
+          }
+      }
+      ```
+
+* matmul_gpu_basic.cu
+
+  * 对于每一个cuda runtime api的时候都 进行了错误检查，以及kernel执行结束 以后对kernel进行错误排查
+
+    * ```c++
+      void MatmulOnDevice(float *M_host, float *N_host, float* P_host, int width, int blockSize){
+          /* 设置矩阵大小 */
+          int size = width * width * sizeof(float);
+      
+          /* 分配M, N在GPU上的空间*/
+          float *M_device;
+          float *N_device;
+          CUDA_CHECK(cudaMalloc(&M_device, size));
+          CUDA_CHECK(cudaMalloc(&N_device, size));
+      
+          /* 分配M, N拷贝到GPU上*/ CUDA_CHECK(cudaMemcpy(M_device, M_host, size, cudaMemcpyHostToDevice));
+          CUDA_CHECK(cudaMemcpy(N_device, N_host, size, cudaMemcpyHostToDevice));
+      
+          /* 分配P在GPU上的空间*/
+          float *P_device;
+          CUDA_CHECK(cudaMalloc(&P_device, size));
+      
+          /* 调用kernel来进行matmul计算, 在这个例子中我们用的方案是：使用一个grid，一个grid里有width*width个线程 */
+          dim3 dimBlock(blockSize, blockSize);
+          dim3 dimGrid(width / blockSize, width / blockSize);
+          MatmulKernel <<<dimGrid, dimBlock>>> (M_device, N_device, P_device, width);
+      
+          /* 将结果从device拷贝回host*/
+          CUDA_CHECK(cudaMemcpy(P_host, P_device, size, cudaMemcpyDeviceToHost));
+          CUDA_CHECK(cudaDeviceSynchronize());
+      
+          /* 注意要在synchronization结束之后排查kernel的错误, 否则错误排查只会检查参数配置*/
+          LAST_KERNEL_CHECK(); 
+      
+          /* Free */
+          cudaFree(P_device);
+          cudaFree(N_device);
+          cudaFree(M_device);
+      }
+      ```
+
+##### （2）有无error handling对比
+
+* 没有error handling：
+  * ![image-20240411101347302](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411101347302.png)
+* 有error handling：
+  * ![image-20240411094125545](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411094125545.png)
+
+##### （3）用error handler原因
+
+* 一般来说，我们习惯把cuda的error handler定义成宏。因为这样可以避免在执行的时候发生调用error handler 而引起的overhead。
+
+  * ____FILE____: 编译器内部定义的一个宏。表示的是当前文件的文件名 
+  * ____LINE____: 编译器内部定义的一个宏。表示的是当前文件的行
+
+* 一个良好的cuda编程习惯里，我们习惯在调用一个cuda runtime api时，我们就用error handler进行包装。这样可以方便我们排查错误的来源
+
+* ```c++
+  #ifndef __UTILS_HPP__
+  #define __UTILS_HPP__
+  
+  #include <cuda_runtime.h>
+  #include <system_error>
+  
+  #define CUDA_CHECK(call)             __cudaCheck(call, __FILE__, __LINE__)
+  #define LAST_KERNEL_CHECK()          __kernelCheck(__FILE__, __LINE__)
+  #define BLOCKSIZE 16
+  
+  // 对cuda runtime api使用的error handling
+  inline static void __cudaCheck(cudaError_t err, const char* file, const int line) {
+      if (err != cudaSuccess) {
+          printf("ERROR: %s:%d, ", file, line);
+          printf("CODE:%s, DETAIL:%s\n", cudaGetErrorName(err), cudaGetErrorString(err));
+          exit(1);
+      }
+  }
+  
+  // 对最近的核函数的error handling
+  inline static void __kernelCheck(const char* file, const int line) {
+      /* 
+       * 在编写CUDA是，错误排查非常重要，默认的cuda runtime API中的函数都会返回cudaError_t类型的结果，
+       * 但是在写kernel函数的时候，需要通过cudaPeekAtLastError或者cudaGetLastError来获取错误
+       */
+      cudaError_t err = cudaPeekAtLastError();
+      if (err != cudaSuccess) {
+          printf("ERROR: %s:%d, ", file, line);
+          printf("CODE:%s, DETAIL:%s\n", cudaGetErrorName(err), cudaGetErrorString(err));
+          exit(1);
+      }
+  }
+  
+  void initMatrix(float* data, int size, int low, int high, int seed);
+  void printMat(float* data, int size);
+  void compareMat(float* h_data, float* d_data, int size);
+  
+  #endif //__UTILS_HPP__//
+  ```
+
+
+
+##### （4）对cuda runtime api使用的error handling
+
+* 在每一个cuda程序执行的时候都会返回cudaError状态指令，而CUDA_CHECK函数便能够打印出来这写状态。
+  * ![image-20240411095304068](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411095304068.png)
+  * ![image-20240411095708395](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411095708395.png)
+
+
+
+##### （5）对核函数的error handling
+
+* 由于核函数返回的类型为空，不像cuda函数能够返回状态信息：
+  * ![image-20240411100125391](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411100125391.png)
+* 所以需要特定的捕捉状态函数：
+  * ![image-20240411100241281](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411100241281.png)
+  * 这里用到了“cudaError_t err = cudaPeekAtLastError();”指令：
+    * ![image-20240411100442634](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411100442634.png)
+
+* 在编写CUDA是，错误排查非常重要，默认的cuda runtime API中的函数都会返回**cudaError_t**类型的结果，但是在写kernel函数的时候，需要通过**cudaPeekAtLastError**或者**cudaGetLastError**来获取错误，这两个有本质上的区别。
+  * cudaGetLastError：
+    * 返回最近的错误，同时把系统状态复位到cudaSuccess状态
+      * ![image-20240411100716618](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411100716618.png)
+  * cudaPeekAtLastError：
+    * 返回最近的错误，不会把系统状态复位到cudaSuccess状态
+      * ![image-20240411100843820](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411100843820.png)
+  * 两者差别在于错误是否传播。
+    * 对于不可恢复的错误(*)，如果发生了错误的话并且不把系统的状态进行reset的话，错误会一直传播下去，导致后面的即便正确的api使用也会产生同样的错误。
+      *  (*)“不可恢复的(non-recoverable/sticky)”，一般指的是核函数内部的执行错误，比较典型的例子就是内存访问越界。
+      * 相比之下，比如像block size以及shared memory size这种配置错误，是属于”可恢复的(recoverable/non-sticky)”错误
+  * 一般来说我们可以将错误分为：
+    * synchronous/asynchronous error
+    * sticky/non-sticky error
 
 #### 2.2.5 GPU的硬件信息获取
+
+
 
 ### 2.3 共享内存以及BANK CONFLICT
 
