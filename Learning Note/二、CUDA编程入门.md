@@ -1791,13 +1791,14 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
   * 注意不是第一个docker0的IP，这个是无法连接的。
 
-  * ![image-20240412143802846](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240412143802846.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c6f0a10f-89c7-423c-8c30-22969cdba6e0)
+
 
 
 
 ##### （2）配置SSH的config文件
 
-* 安装[openssh](https://so.csdn.net/so/search?q=openssh&spm=1001.2101.3001.7020)-server：
+* 安装openssh-server：
 
   * ```python
     sudo apt install openssh-server
@@ -1831,7 +1832,8 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
         * 前面注释去掉
       * 把PasswordAuthentication 前面注释去掉，并且设置yes
 
-  * ![image-20240411151603122](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411151603122.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/31175506-7c98-45f2-8182-84ddff8dd3b9)
+
 
 
 
