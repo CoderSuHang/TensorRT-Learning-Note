@@ -1779,26 +1779,84 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 
 
-#### 2.3.4 安装步骤
+#### 2.3.4 配置流程
 
 参考链接：
 
 [在WSL2上运行nVIDIA Nsight_nsight wsl-CSDN博客](https://blog.csdn.net/cyr20040123/article/details/122532275?ops_request_misc=%7B%22request%5Fid%22%3A%22171280690916800213045012%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=171280690916800213045012&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-122532275-null-null.142^v100^pc_search_result_base5&utm_term=在WSL2上运行nVIDIA Nsight&spm=1018.2226.3001.4187)
 
-![image-20240411153846231](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411153846231.png)
+##### （1）查询WSL2的SHH远程IP
+
+* 在终端输入命令行``ifconfig``，查看 **eth0** 开头的 **inet** ：
+
+  * 注意不是第一个docker0的IP，这个是无法连接的。
+
+  * ![image-20240412143802846](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240412143802846.png)
 
 
 
-![image-20240411151603122](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411151603122.png)
+##### （2）配置SSH的config文件
 
-![image-20240411130117543](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411130117543.png)
+* 安装[openssh](https://so.csdn.net/so/search?q=openssh&spm=1001.2101.3001.7020)-server：
 
-无法成功连接
+  * ```python
+    sudo apt install openssh-server
+    ```
 
-![image-20240411160225563](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411160225563.png)
+* 打开config文件：
+
+  * ```python
+    sudo vim /etc/ssh/sshd_config
+    ```
+
+* 修改config内容：
+
+  * 取消下面注释：
+
+    * ```python
+      Port 22
+      AddressFamily any
+      ListenAddress 0.0.0.0
+      ListenAddress ::
+          
+      PasswordAuthentication yes
+      ```
+
+    * 修改内容：
+
+      * Port 22
+        AddressFamily any
+        ListenAddress 0.0.0.0
+        ListenAddress ::
+        * 前面注释去掉
+      * 把PasswordAuthentication 前面注释去掉，并且设置yes
+
+  * ![image-20240411151603122](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411151603122.png)
+
+
+
+##### （3）重启SSH
+
+* ```python
+  sudo service ssh restart
+  ```
+
+  * ![image-20240411153846231](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240411153846231.png)
+
+
+
+##### （4）启动Nsight systems
+
+参考教程：
+
+[在WSL2上运行nVIDIA Nsight_nsight wsl-CSDN博客](https://blog.csdn.net/cyr20040123/article/details/122532275?ops_request_misc=%7B%22request%5Fid%22%3A%22171280690916800213045012%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=171280690916800213045012&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-122532275-null-null.142^v100^pc_search_result_base5&utm_term=在WSL2上运行nVIDIA Nsight&spm=1018.2226.3001.4187)
+
+* 将自己的IP和用户名导入软件：
+  * ![image-20240412143628004](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240412143628004.png)
+
+
 
 ### 2.4 共享内存以及BANK CONFLICT
-
 
 
 ### 2.4 使用CUDA进行预处理/后处理
