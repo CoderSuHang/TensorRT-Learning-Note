@@ -1855,9 +1855,11 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 [在WSL2上运行nVIDIA Nsight_nsight wsl-CSDN博客](https://blog.csdn.net/cyr20040123/article/details/122532275?ops_request_misc=%7B%22request%5Fid%22%3A%22171280690916800213045012%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=171280690916800213045012&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-122532275-null-null.142^v100^pc_search_result_base5&utm_term=在WSL2上运行nVIDIA Nsight&spm=1018.2226.3001.4187)
 
 * 将自己的IP和用户名导入软件：
-  * ![image-20240412143628004](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240412143628004.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/70d105c0-cde8-422a-afbc-50dce162b3ff)
+
   * 报错：
-    * ![image-20240414220609155](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240414220609155.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8abafe82-7b42-4a12-8e8a-e077d43b4d8f)
+
     * 需要下载最新版本
 
 
