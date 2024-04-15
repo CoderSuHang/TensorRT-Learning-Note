@@ -1965,11 +1965,14 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 * 从global memory中重复加载内存同一块空间：
   * c(0,0)、c(0,1)、c(0,2)、c(0,3)的乘法计算时候，都是从a(0,0)-->a(0,7)的A矩阵一行和B矩阵每列的各个元素反复相乘累加。
-    * ![image-20240415151334595](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415151334595.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d31ec367-c11b-42c4-b04f-7666beb68d3f)
+
   * c(0,0)、c(1,0)、c(2,0)、c(3,0)的乘法计算时候，都是从b(1,0)-->a(7,0)的B矩阵一列和C矩阵每行的各个元素反复相乘累加。
-    * ![image-20240415152003142](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415152003142.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/1a6c4773-7f9f-41f2-a07b-decb8131c557)
+
 * 因此，一直访问glogal memory的话有点慢（离计算单元越远的内存，访问时间就越慢）。如果数据可以在多次被复用的话，可以把他们放在可以快速访问的shared memory中
-  * ![image-20240415152100482](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415152100482.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9340e07b-c574-4ce3-8264-a065f962d077)
+
 
 ##### （3）Shared memory vs Global memory
 
