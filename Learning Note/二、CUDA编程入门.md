@@ -1872,10 +1872,13 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 * 为了实现更加精准的kernel测速，这里采用了event进行标记。
 
   * 【timer.hpp】
-    * ![image-20240415153934612](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415153934612.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/05afccb9-d535-41b7-9f71-786c88734983)
+
   * 【timer.cpp】
-    * ![image-20240415153845458](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415153845458.png)
-    * ![image-20240415153908698](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415153908698.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2f66aca6-b03c-47a2-8e04-337491806dca)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ff1e2681-e730-4479-ade5-07eca28b9b75)
+
   * event中文名字叫做"事件"，可以用来标记cuda的stream中某一个执行点。一般用在多个stream同步或者监听某个stream的执行。
 
 * 使用静态共享变量【matmul_gpu_shared.cu】
