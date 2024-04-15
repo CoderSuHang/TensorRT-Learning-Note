@@ -1863,8 +1863,265 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
     * 需要下载最新版本
 
 
-### 2.4 使用CUDA进行预处理/后处理
+### 2.4 共享内存以及BANK CONFLICT
 
+#### 2.4.1 如何使用共享内存
 
+##### （1）新添加的东西
+
+* 为了实现更加精准的kernel测速，这里采用了event进行标记。
+
+  * 【timer.hpp】
+    * ![image-20240415153934612](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415153934612.png)
+  * 【timer.cpp】
+    * ![image-20240415153845458](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415153845458.png)
+    * ![image-20240415153908698](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415153908698.png)
+  * event中文名字叫做"事件"，可以用来标记cuda的stream中某一个执行点。一般用在多个stream同步或者监听某个stream的执行。
+
+* 使用静态共享变量【matmul_gpu_shared.cu】
+
+  * ```c++
+    /* 
+        使用shared memory把计算一个tile所需要的数据分块存储到访问速度快的memory中
+    */
+    __global__ void MatmulSharedStaticKernel(float *M_device, float *N_device, float *P_device, int width){
+        __shared__ float M_deviceShared[BLOCKSIZE][BLOCKSIZE];
+        __shared__ float N_deviceShared[BLOCKSIZE][BLOCKSIZE];
+        /* 
+            对于x和y, 根据blockID, tile大小和threadID进行索引
+        */
+        int x = blockIdx.x * blockDim.x + threadIdx.x;
+        int y = blockIdx.y * blockDim.y + threadIdx.y;
+    
+        float P_element = 0.0;
+    
+        int ty = threadIdx.y;
+        int tx = threadIdx.x;
+        /* 对于每一个P的元素，我们只需要循环遍历width / tile_width 次就okay了，这里有点绕，画图理解一下*/
+        for (int m = 0; m < width / BLOCKSIZE; m ++) {
+            M_deviceShared[ty][tx] = M_device[y * width + (m * BLOCKSIZE + tx)];
+            N_deviceShared[ty][tx] = N_device[(m * BLOCKSIZE + ty)* width + x];
+            __syncthreads();
+    
+            for (int k = 0; k < BLOCKSIZE; k ++) {
+                P_element += M_deviceShared[ty][k] * N_deviceShared[k][tx];
+            }
+            __syncthreads();
+        }
+    
+        P_device[y * width + x] = P_element;
+    }
+    ```
+
+* 使用动态共享变量【matmul_gpu_shared.cu】
+
+  * ```c++
+    __global__ void MatmulSharedDynamicKernel(float *M_device, float *N_device, float *P_device, int width, int blockSize){
+        /* 
+            声明动态共享变量的时候需要加extern，同时需要是一维的 
+            注意这里有个坑, 不能够像这样定义： 
+                __shared__ float M_deviceShared[];
+                __shared__ float N_deviceShared[];
+            因为在cuda中定义动态共享变量的话，无论定义多少个他们的地址都是一样的。
+            所以如果想要像上面这样使用的话，需要用两个指针分别指向shared memory的不同位置才行
+        */
+    
+        extern __shared__ float deviceShared[];
+        int stride = blockSize * blockSize;
+        /* 
+            对于x和y, 根据blockID, tile大小和threadID进行索引
+        */
+        int x = blockIdx.x * blockSize + threadIdx.x;
+        int y = blockIdx.y * blockSize + threadIdx.y;
+    
+        float P_element = 0.0;
+    
+        int ty = threadIdx.y;
+        int tx = threadIdx.x;
+        /* 对于每一个P的元素，我们只需要循环遍历width / tile_width 次就okay了 */
+        for (int m = 0; m < width / blockSize; m ++) {
+            deviceShared[ty * blockSize + tx] = M_device[y * width + (m * blockSize + tx)];
+            deviceShared[stride + (ty * blockSize + tx)] = N_device[(m * blockSize + ty)* width + x];
+            __syncthreads();
+    
+            for (int k = 0; k < blockSize; k ++) {
+                P_element += deviceShared[ty * blockSize + k] * deviceShared[stride + (k * blockSize + tx)];
+            }
+            __syncthreads();
+        }
+    
+        if (y < width && x < width) {
+            P_device[y * width + x] = P_element;
+        }
+    }
+    ```
+
+    
+
+##### （2）矩阵乘法特点
+
+* 从global memory中重复加载内存同一块空间：
+  * c(0,0)、c(0,1)、c(0,2)、c(0,3)的乘法计算时候，都是从a(0,0)-->a(0,7)的A矩阵一行和B矩阵每列的各个元素反复相乘累加。
+    * ![image-20240415151334595](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415151334595.png)
+  * c(0,0)、c(1,0)、c(2,0)、c(3,0)的乘法计算时候，都是从b(1,0)-->a(7,0)的B矩阵一列和C矩阵每行的各个元素反复相乘累加。
+    * ![image-20240415152003142](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415152003142.png)
+* 因此，一直访问glogal memory的话有点慢（离计算单元越远的内存，访问时间就越慢）。如果数据可以在多次被复用的话，可以把他们放在可以快速访问的shared memory中
+  * ![image-20240415152100482](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415152100482.png)
+
+##### （3）Shared memory vs Global memory
+
+* 区别：
+  *  Shared memory: on-chip memory
+  * Global memory:  off-chip memory (DRAM)
+* 示例：
+  * GPU：
+    * ![image-20240415152649312](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415152649312.png)
+    *  L1/L2 cache和shared memory都是属于on-chip memory，memory  load/store的overhead会比较小，是可以高速访问的memory
+    *  Global memory的延迟是最高的，我们一般在cudaMalloc时都是在global  memory上进行访问的
+  * SM：
+    * ![image-20240415152857815](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415152857815.png)
+* on-chip memory
+  * register：线程独享，访问最快大小最小
+  * L1 cache：SM内共享
+  * shared memory：SM内共享
+  *  L2 cache：SM内共享
+* off-chip memory
+  * local memory：线程独享，寄存器不足的时候使用
+  * Global memory：设备内所有线程共享
+  * constant memory：只读内存，用与避免线程独数据冲突
+  * texture memory：只读内存，tex可以实现硬件插值
+
+##### （4）运行效果
+
+* ![image-20240415154542225](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415154542225.png)
+
+##### （5）代码细节
+
+* 1、动态/静态共享变量切换：
+
+  * 【main.cpp】
+
+    * ```c++
+          // /* GPU general implementation <<<256, 16>>>*/
+          timer.start_gpu();
+          MatmulSharedOnDevice(h_matM, h_matN, d_matP, width, blockSize, statMem);
+          timer.stop_gpu();
+          std::sprintf(str, "matmul in gpu(with shared memory(static))<<<%d, %d>>>", width / blockSize, blockSize);
+          timer.duration_gpu(str);
+          compareMat(h_matP, d_matP, size);
+      
+          /* GPU general implementation <<<256, 16>>>*/
+          statMem = false;
+          timer.start_gpu();
+          MatmulSharedOnDevice(h_matM, h_matN, d_matP, width, blockSize, statMem);
+          timer.stop_gpu();
+          std::sprintf(str, "matmul in gpu(with shared memory(dynamic))<<<%d, %d>>>", width / blockSize, blockSize);
+          timer.duration_gpu(str);
+          compareMat(h_matP, d_matP, size);
+      ```
+
+  * 【matmul_gpu_shared.cu】
+
+    * ```C++
+          /* 调用kernel来进行matmul计算, 在这个例子中我们用的方案是：使用一个grid，一个grid里有width*width个线程 */
+          dim3 dimBlock(blockSize, blockSize);
+          dim3 dimGrid(width / blockSize, width / blockSize);
+          if (staticMem) {
+              MatmulSharedStaticKernel <<<dimGrid, dimBlock>>> (M_device, N_device, P_device, width);
+          } else {
+              MatmulSharedDynamicKernel <<<dimGrid, dimBlock, sMemSize, nullptr>>> (M_device, N_device, P_device, width, blockSize);
+          }
+      ```
+
+* 2、静态共享内存
+
+  * 【matmul_gpu_shared.cu】
+
+    * ```c++
+      /* 
+          使用shared memory把计算一个tile所需要的数据分块存储到访问速度快的memory中
+      */
+      __global__ void MatmulSharedStaticKernel(float *M_device, float *N_device, float *P_device, int width){
+          __shared__ float M_deviceShared[BLOCKSIZE][BLOCKSIZE];
+          __shared__ float N_deviceShared[BLOCKSIZE][BLOCKSIZE];
+          /* 
+              对于x和y, 根据blockID, tile大小和threadID进行索引
+          */
+          int x = blockIdx.x * blockDim.x + threadIdx.x;
+          int y = blockIdx.y * blockDim.y + threadIdx.y;
+      
+          float P_element = 0.0;
+      
+          int ty = threadIdx.y;
+          int tx = threadIdx.x;
+          /* 对于每一个P的元素，我们只需要循环遍历width / tile_width 次就okay了，这里有点绕，画图理解一下*/
+          // shared memory 写操作
+          for (int m = 0; m < width / BLOCKSIZE; m ++) {
+              M_deviceShared[ty][tx] = M_device[y * width + (m * BLOCKSIZE + tx)];
+              N_deviceShared[ty][tx] = N_device[(m * BLOCKSIZE + ty)* width + x];
+              __syncthreads();    // 在一个Block里面对所有线程的同步，如果用到shared memory就要这样同步一下
+      
+              // shared memory 读操作，从shared memory中读数据
+              for (int k = 0; k < BLOCKSIZE; k ++) {
+                  P_element += M_deviceShared[ty][k] * N_deviceShared[k][tx];
+              }
+              __syncthreads();
+          }
+      
+          // global memory 写操作
+          P_device[y * width + x] = P_element;
+      }
+      ```
+
+    * ![image-20240415171715461](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415171715461.png)
+
+* 3、动态共享内存
+
+  * 【matmul_gpu_shared.cu】
+
+    * ```c++
+      __global__ void MatmulSharedDynamicKernel(float *M_device, float *N_device, float *P_device, int width, int blockSize){
+          /* 
+              声明动态共享变量的时候需要加extern，同时需要是一维的 
+              注意这里有个坑, 不能够像这样定义： 
+                  __shared__ float M_deviceShared[];
+                  __shared__ float N_deviceShared[];
+              因为在cuda中定义动态共享变量的话，无论定义多少个他们的地址都是一样的。
+              所以如果想要像上面这样使用的话，需要用两个指针分别指向shared memory的不同位置才行
+          */
+      
+          extern __shared__ float deviceShared[];
+          int stride = blockSize * blockSize;
+          /* 
+              对于x和y, 根据blockID, tile大小和threadID进行索引
+          */
+          int x = blockIdx.x * blockSize + threadIdx.x;
+          int y = blockIdx.y * blockSize + threadIdx.y;
+      
+          float P_element = 0.0;
+      
+          int ty = threadIdx.y;
+          int tx = threadIdx.x;
+          /* 对于每一个P的元素，我们只需要循环遍历width / tile_width 次就okay了 */
+          for (int m = 0; m < width / blockSize; m ++) {
+              deviceShared[ty * blockSize + tx] = M_device[y * width + (m * blockSize + tx)];
+              deviceShared[stride + (ty * blockSize + tx)] = N_device[(m * blockSize + ty)* width + x];
+              __syncthreads();
+      
+              for (int k = 0; k < blockSize; k ++) {
+                  P_element += deviceShared[ty * blockSize + k] * deviceShared[stride + (k * blockSize + tx)];
+              }
+              __syncthreads();
+          }
+      
+          if (y < width && x < width) {
+              P_device[y * width + x] = P_element;
+          }
+      }
+      ```
+
+    * 注意：声明动态共享变量的时候需要加extern，同时需要是一维的。
+
+#### 2.4.2 理解BANK CONFLICT及其缓解策略
 
 ### 2.5 STREAM和EVENT
