@@ -2082,7 +2082,8 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
       }
       ```
 
-    * ![image-20240415171715461](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415171715461.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d01ee962-9bba-4d02-b5e0-e6a37a0e9185)
+
 
 * 3、动态共享内存
 
