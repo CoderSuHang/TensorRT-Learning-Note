@@ -1981,11 +1981,13 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
   * Global memory:  off-chip memory (DRAM)
 * 示例：
   * GPU：
-    * ![image-20240415152649312](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415152649312.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e0eae956-069c-4805-89f8-57abdc781130)
+
     *  L1/L2 cache和shared memory都是属于on-chip memory，memory  load/store的overhead会比较小，是可以高速访问的memory
     *  Global memory的延迟是最高的，我们一般在cudaMalloc时都是在global  memory上进行访问的
   * SM：
-    * ![image-20240415152857815](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415152857815.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c4051ad7-26d5-4b1f-afe5-9848f77d7edb)
+
 * on-chip memory
   * register：线程独享，访问最快大小最小
   * L1 cache：SM内共享
@@ -1999,7 +2001,8 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 ##### （4）运行效果
 
-* ![image-20240415154542225](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240415154542225.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ef6aee4e-afd2-407d-9cc8-b9d306d50b28)
+
 
 ##### （5）代码细节
 
