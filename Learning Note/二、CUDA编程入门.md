@@ -2290,6 +2290,127 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
   * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/fa5beb07-c1b0-4526-a42c-22636d570b8f)
 
+##### （5）Streams单流/多流对比
 
-### 2.6 使用CUDA进行预处理/后处理
+* 1、输入256X256大小的矩阵，Gridsize=4X4，Blocksize=4X4：
+  * ![image-20240416152439973](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416152439973.png)
+* 2、输入256X256大小的矩阵，Gridsize=1X1，Blocksize=16X16：
+  * ![image-20240416152530003](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416152530003.png)
+* 3、输入4096X4096大小的矩阵，Gridsize=4X4，Blocksize=16X16：
+  * ![image-20240416152616232](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416152616232.png)
+* 4、输入104857X104857大小的矩阵，Gridsize=64X64，Blocksize=16X16：
+  * ![image-20240416152756312](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416152756312.png)
+
+
+
+##### （6）如何隐藏延迟(memory)
+
+* 1、按正常的方式去调度流程（红色和绿色是两个不同的流）：
+  * ![image-20240416153232884](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416153232884.png)
+  * ![image-20240416153306243](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416153306243.png)
+* 2、将D2H2放在一开始issue，可以减少D2H2 Queue的等待时间：
+  * ![image-20240416153835375](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416153835375.png)
+
+##### （7）如何隐藏延迟(kernel)
+
+* 1、按正常的方式去调度流程（红色和绿色是两个不同的流）：
+  * ![image-20240416153813157](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416153813157.png)
+  * ![image-20240416153306243](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416153306243.png)
+* 2、在KernelA1执行等待时launch KernelA2：
+  * ![image-20240416153914180](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416153914180.png)
+* 3、两个核函数一大一小时：
+  * 正常方式：
+    * ![image-20240416154304054](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416154304054.png)
+  * 在KernelA1执行等待的时候启动A2：
+    * ![image-20240416154330828](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416154330828.png)
+  * A2先执行完发现可以先启动B2：
+    * ![image-20240416154452463](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416154452463.png)
+
+##### （8）如何隐藏延迟(kernel + memory)
+
+* ![image-20240416155421665](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416155421665.png)
+
+
+
+#### 2.5.3 代码细节
+
+##### （1）【Stream.cu】
+
+* ```c++
+  /* n stream，处理一次memcpy，以及n个kernel */
+  void SleepMultiStream(
+      float* src_host, float* tar_host,
+      int width, int blockSize, 
+      int count) 
+  {
+      int size = width * width * sizeof(float);
+  
+      float *src_device;
+      float *tar_device;
+  
+      CUDA_CHECK(cudaMalloc((void**)&src_device, size));
+      CUDA_CHECK(cudaMalloc((void**)&tar_device, size));
+  
+  
+      /* 先把所需要的stream创建出来 */
+      cudaStream_t stream[count]; // 创建一个stream变量
+      for (int i = 0; i < count ; i++) {
+          CUDA_CHECK(cudaStreamCreate(&stream[i])); //利用cudaStreamCreate创建stream
+      }
+  
+      for (int i = 0; i < count ; i++) {
+          for (int j = 0; j < 1; j ++) 
+              // 异步的memory copy，指定stream
+              CUDA_CHECK(cudaMemcpyAsync(src_device, src_host, size, cudaMemcpyHostToDevice, stream[i]));
+          dim3 dimBlock(blockSize, blockSize);
+          dim3 dimGrid(width / blockSize, width / blockSize);
+  
+          /* 这里面我们把参数写全了 <<<dimGrid, dimBlock, sMemSize, stream>>> */
+          SleepKernel <<<dimGrid, dimBlock, 0, stream[i]>>> (MAX_ITER);
+          CUDA_CHECK(cudaMemcpyAsync(src_host, src_device, size, cudaMemcpyDeviceToHost, stream[i]));
+      }
+  
+  
+      CUDA_CHECK(cudaDeviceSynchronize());
+  
+  
+      cudaFree(tar_device);
+      cudaFree(src_device);
+  
+      // 释放stream
+      for (int i = 0; i < count ; i++) {
+          // 使用完了以后不要忘记释放
+          cudaStreamDestroy(stream[i]);
+      }
+  
+  }
+  ```
+
+
+
+### 2.6 双线性插值与仿射变换
+
+由于我们在终端部署的时候，输入的图片尺寸会不同，因此统一图片尺寸是一个非常必要的工作。这时需要对图片resize，如果使用openCV的resize的话，会非常的慢。
+
+##### （1）不同的双线性插值
+
+* 原图（图1）、普通的双线性插值scale转换成高宽比一样的图片（图2）、scale保持不变的resized（图3）、scale保持不变并居中的resized（图4）
+  * ![image-20240416165653744](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416165653744.png)
+* 执行效果：
+  * ![image-20240416171209757](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416171209757.png)
+
+#### 2.6.1 新的内容
+
+##### （1）2.10-bilinear-interpolation
+
+* 普通的双线性插值
+  * 内部核函数主要做的是uint8的核函数计算
+  * 更偏向实际应用
+* ![image-20240416165501869](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416165501869.png)
+
+##### （2）2.11-bilinear-interpolation-template
+
+* 模板函数
+  * 内部核函数可以根据用户的使用情况做uint38、float32等的核函数计算
+  * 更偏向实际应用
 
