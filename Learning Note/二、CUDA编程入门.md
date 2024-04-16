@@ -2293,23 +2293,30 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 ##### （5）Streams单流/多流对比
 
 * 1、输入256X256大小的矩阵，Gridsize=4X4，Blocksize=4X4：
-  * ![image-20240416152439973](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416152439973.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ed530150-4c86-4cd4-aa9f-9ad64a4a6ef5)
+
 * 2、输入256X256大小的矩阵，Gridsize=1X1，Blocksize=16X16：
-  * ![image-20240416152530003](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416152530003.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9395dd1a-b985-4cf0-adaa-69aab3308c96)
+
 * 3、输入4096X4096大小的矩阵，Gridsize=4X4，Blocksize=16X16：
-  * ![image-20240416152616232](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416152616232.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/1dcd7ef2-e3e4-42e8-b587-845f28e555d9)
+
 * 4、输入104857X104857大小的矩阵，Gridsize=64X64，Blocksize=16X16：
-  * ![image-20240416152756312](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416152756312.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c97f9d09-d0b4-44a1-b0df-1e45ac9a1ecc)
+
 
 
 
 ##### （6）如何隐藏延迟(memory)
 
 * 1、按正常的方式去调度流程（红色和绿色是两个不同的流）：
-  * ![image-20240416153232884](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416153232884.png)
-  * ![image-20240416153306243](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416153306243.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/71dbce7d-6d1d-4fc7-abd5-896381a678b1)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/eb8f9e8a-2e15-46db-b71b-16b5db779de8)
+
 * 2、将D2H2放在一开始issue，可以减少D2H2 Queue的等待时间：
-  * ![image-20240416153835375](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416153835375.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8957617c-002e-477d-b025-ec00772d505d)
+
 
 ##### （7）如何隐藏延迟(kernel)
 
