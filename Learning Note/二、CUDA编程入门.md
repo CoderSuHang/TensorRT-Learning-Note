@@ -2258,14 +2258,18 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 ##### （3）显示的指定流进行操作
 
-* ![image-20240416113821355](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416113821355.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/dd3df021-513f-4df1-b1bd-fc9df335726b)
+
 * 注意：在显示的指定时候，在host端分配空间的时候，要用cudaMallocHost函数
-  * ![image-20240416113839890](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416113839890.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b8eeb608-c9a3-4f55-9355-e408af552764)
+
 * 当我们显式的指定流的时候，核函数是可能overlap：
   * 计算资源被沾满的时候：
-    * ![image-20240416114117036](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416114117036.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f40999c7-c1ec-4b4f-87c2-780d2fc461a0)
+
   * 计算资源没有被占满的时候：
-    * ![image-20240416114137460](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416114137460.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/adf74cf0-439d-4c55-bff6-83211d5a37a8)
+
 
 ##### （4）页锁定内存
 
