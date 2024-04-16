@@ -1855,12 +1855,19 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 [在WSL2上运行nVIDIA Nsight_nsight wsl-CSDN博客](https://blog.csdn.net/cyr20040123/article/details/122532275?ops_request_misc=%7B%22request%5Fid%22%3A%22171280690916800213045012%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&request_id=171280690916800213045012&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-122532275-null-null.142^v100^pc_search_result_base5&utm_term=在WSL2上运行nVIDIA Nsight&spm=1018.2226.3001.4187)
 
 * 将自己的IP和用户名导入软件：
-  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/70d105c0-cde8-422a-afbc-50dce162b3ff)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c63425ec-2a5b-4df6-b845-b5a219fc273e)
 
   * 报错：
-    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8abafe82-7b42-4a12-8e8a-e077d43b4d8f)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/75d4b987-131b-452a-ac8e-fd96f4842604)
 
-    * 需要下载最新版本
+    * 取消红色感叹号框选项，具体解决办法已解决：
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/647d2d48-f749-43cf-92fd-d62464389d8d)
+
+
+      * 参考下面连接：
+        * [NVIDIA 开发工具解决方案 - |NVIDIA 开发人员](https://developer.nvidia.com/nvidia-development-tools-solutions-err_nvgpuctrperm-permission-issue-performance-counters)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/eac7d250-5865-4d21-8a7e-474765316137)
+
 
 
 ### 2.4 共享内存以及BANK CONFLICT
