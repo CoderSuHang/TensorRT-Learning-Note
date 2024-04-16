@@ -2231,7 +2231,8 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 ##### （2）运行结果
 
-* ![image-20240416111605835](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416111605835.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4eec9da7-871f-4886-b02c-745e9bd25c51)
+
 
 #### 2.5.2 Stream
 
@@ -2239,7 +2240,8 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 * “A sequence of operation that execute in issue-order in GPU”
 * 同一个流的执行顺序和各个kernel以及mempry operation的启动的顺序是一致的。但是，只要资源没有被占用，不同流之间的执行是可以overlap的。
-  * ![image-20240416113007159](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416113007159.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/305d97e2-1d37-4c01-9d62-2d20d090c015)
+
   * PCIe是共享的，所以memcpy只能够在同一个时间执行一个
   * SM计算资源是有限的，所以如果计算资源占满了，多流和单流是差不多的
 
@@ -2248,9 +2250,11 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 * 当我们不指定核函数以及memcpy的流式，cuda会使用默认流(default stream)
 * 完全串行，**H2D和D2H是在同一个steam中的不同队列**
   * 执行一个核函数：
-    * ![image-20240416113322117](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416113322117.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c68fe86b-6344-48c4-b180-7268a1749208)
+
   * 执行两个不同的核函数：
-    * ![image-20240416113520427](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416113520427.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bdeea1f6-812e-4c30-805a-a16c4bc4bf98)
+
 
 ##### （3）显示的指定流进行操作
 
