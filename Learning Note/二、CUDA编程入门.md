@@ -2321,17 +2321,23 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 ##### （7）如何隐藏延迟(kernel)
 
 * 1、按正常的方式去调度流程（红色和绿色是两个不同的流）：
-  * ![image-20240416153813157](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416153813157.png)
-  * ![image-20240416153306243](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416153306243.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a5126d3f-0645-4673-a6e8-3b51bb514df5)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f2d6773a-b2be-46ab-808e-9891e0b8afcc)
+
 * 2、在KernelA1执行等待时launch KernelA2：
-  * ![image-20240416153914180](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416153914180.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d9caf7af-c6a2-4d6e-9901-9ef2400e171c)
+
 * 3、两个核函数一大一小时：
   * 正常方式：
-    * ![image-20240416154304054](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416154304054.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/041aee78-7500-4f13-89ef-c38805697ad7)
+
   * 在KernelA1执行等待的时候启动A2：
-    * ![image-20240416154330828](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416154330828.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2e3b7db0-c5bd-4a6e-a934-43d83d017e51)
+
   * A2先执行完发现可以先启动B2：
-    * ![image-20240416154452463](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416154452463.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0ad98a1d-b6e3-44af-98e2-e02b255d78ca)
+
 
 ##### （8）如何隐藏延迟(kernel + memory)
 
