@@ -2178,14 +2178,17 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 * 在实际CUDA设计时，是32个bank一次stride，为了方便解释，这里使用了8个bank一次stride进行举例：
   * 当8个thread访问同一个bank[2]时，会产生bank conflict：
-    * ![image-20240416095732300](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416095732300.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/49942c32-571b-4682-bc00-ec6ef2dc886a)
+
   * padding通过在这个8X8的shared memory矩阵最后多加一列，使得每8个bank进行一次stride，最终memory变成下图9X8的矩阵。
     * 这是每个thread在访问bank[2]时，都不会产生冲突了，因为每个bank[2]都已经不在同一个位置上了。
-    * ![image-20240416095945403](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416095945403.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f61625bb-b944-455e-ba93-61ff168969f4)
+
 
 ##### （5）运行效果
 
-* ![image-20240416103606317](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416103606317.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f643d5af-664b-4578-affb-bb27c020604a)
+
 
 ##### （6）代码细节
 
