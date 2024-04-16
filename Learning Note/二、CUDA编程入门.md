@@ -2134,4 +2134,123 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 #### 2.4.2 理解BANK CONFLICT及其缓解策略
 
+##### （1）新添加的东西
+
+![image-20240416105702620](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416105702620.png)
+
+##### （2）shared memory中存放数据的特殊方式
+
+* 在cuda编程中，32个threads组成一个**warp**，一般程序在执行的时候是以**warp**为单位去执行，也就是说每32个threads一起执行同一个指令：
+  * ![image-20240416094657238](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416094657238.png)
+* 所以，为了能够高效的访存，shared memory中也对应了分成了32个**存储体**。我们称之为 “bank”，分别对应warp中32个线程：
+  * ![image-20240416094844076](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416094844076.png)
+* bank的宽度，代表的是一个bank所存储的数据的大小宽度。
+  * 可以是4个字节(32 bit,  单精度浮点数float)
+  * 也可以是8个字节(64bit，双精度浮点数)
+* 每31个bank，就会进行一次stride。
+  * ![image-20240416094812733](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416094812733.png)
+  *  比如说bank的宽度是4字节。我们在shared memory中申请了float A[256]大小的空间，那么：
+    *  A[0], A[1], …, A[31]分别在bank0, bank1, …, bank31中
+    *  A[32], A[33], …, A[63]也分在了bank0, bank1, …, bank31中
+  * 所以A[0], A[32]是共享同一个bank的
+
+##### （3）bank conflict
+
+* 一个很理想的情况就是，32个thread，分别访问shared memory中的32个不同的bank：
+  * **没有bank conflict**，一个memory周期完成所有的memory read/write (row major/行优先矩阵访问)
+    * ![image-20240416095129471](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416095129471.png)
+    * ![image-20240416095136325](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416095136325.png)
+  * 一个最不理想的情况就是，32个thread，访问shared memory中的同一个bank：
+    * **bank conflict最大化**，需要32个memory周期才能完成所有的memory read/write (column major列优先矩阵访问)
+      * ![image-20240416095220154](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416095220154.png)
+      * ![image-20240416095227434](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416095227434.png)
+
+##### （4）使用padding缓解bank conflict
+
+* 在实际CUDA设计时，是32个bank一次stride，为了方便解释，这里使用了8个bank一次stride进行举例：
+  * 当8个thread访问同一个bank[2]时，会产生bank conflict：
+    * ![image-20240416095732300](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416095732300.png)
+  * padding通过在这个8X8的shared memory矩阵最后多加一列，使得每8个bank进行一次stride，最终memory变成下图9X8的矩阵。
+    * 这是每个thread在访问bank[2]时，都不会产生冲突了，因为每个bank[2]都已经不在同一个位置上了。
+    * ![image-20240416095945403](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416095945403.png)
+
+##### （5）运行效果
+
+* ![image-20240416103606317](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416103606317.png)
+
+##### （6）代码细节
+
+* 【matmul_gpu_bank_conflict.cu】
+  * ![image-20240416104427072](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416104427072.png)
+  * ![image-20240416104453447](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416104453447.png)
+* 【matmul_gpu_bank_conflict_pad.cu】
+  * 静态：
+    * ![image-20240416104617470](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416104617470.png)
+  * 动态：
+    * ![image-20240416104934904](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416104934904.png)
+    * ![image-20240416104809658](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416104809658.png)
+
+
+
 ### 2.5 STREAM和EVENT
+
+#### 2.5.1 新添加的内容
+
+##### （1）文件夹列表
+
+* ![image-20240416111654060](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416111654060.png)
+* 【stream.cu】
+  * 为了能够平衡mempry以及kernel的执 行，这里在kernel内部设定了等待：
+    * ![image-20240416111931674](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416111931674.png)
+  * 多流进行异步的计算流程：
+    * ![image-20240416112030128](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416112030128.png)
+* 【gelu.cu】
+  * 添加了一个GELU的CUDA实现，为后面搭建Plugin做铺垫
+    * ![image-20240416112143134](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416112143134.png)
+
+##### （2）运行结果
+
+* ![image-20240416111605835](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416111605835.png)
+
+#### 2.5.2 Stream
+
+##### （1）Stream简介
+
+* “A sequence of operation that execute in issue-order in GPU”
+* 同一个流的执行顺序和各个kernel以及mempry operation的启动的顺序是一致的。但是，只要资源没有被占用，不同流之间的执行是可以overlap的。
+  * ![image-20240416113007159](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416113007159.png)
+  * PCIe是共享的，所以memcpy只能够在同一个时间执行一个
+  * SM计算资源是有限的，所以如果计算资源占满了，多流和单流是差不多的
+
+##### （2）默认流
+
+* 当我们不指定核函数以及memcpy的流式，cuda会使用默认流(default stream)
+* 完全串行，**H2D和D2H是在同一个steam中的不同队列**
+  * 执行一个核函数：
+    * ![image-20240416113322117](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416113322117.png)
+  * 执行两个不同的核函数：
+    * ![image-20240416113520427](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416113520427.png)
+
+##### （3）显示的指定流进行操作
+
+* ![image-20240416113821355](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416113821355.png)
+* 注意：在显示的指定时候，在host端分配空间的时候，要用cudaMallocHost函数
+  * ![image-20240416113839890](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416113839890.png)
+* 当我们显式的指定流的时候，核函数是可能overlap：
+  * 计算资源被沾满的时候：
+    * ![image-20240416114117036](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416114117036.png)
+  * 计算资源没有被占满的时候：
+    * ![image-20240416114137460](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416114137460.png)
+
+##### （4）页锁定内存
+
+* cudaMallocHost()函数使用的是页锁定内存：
+  * ![image-20240416113839890](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416113839890.png)
+* 内存分为：
+  * Pageable memory：可分页内存
+  * Pinned memory / page-locked memory：页锁定内存
+  * ![image-20240416114636264](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416114636264.png)
+  * ![image-20240416114812261](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416114812261.png)
+
+### 2.6 使用CUDA进行预处理/后处理
+
