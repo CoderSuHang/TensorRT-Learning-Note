@@ -2136,19 +2136,23 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 ##### （1）新添加的东西
 
-![image-20240416105702620](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416105702620.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/140e4ab4-cc02-4c29-9621-dbd366780192)
+
 
 ##### （2）shared memory中存放数据的特殊方式
 
 * 在cuda编程中，32个threads组成一个**warp**，一般程序在执行的时候是以**warp**为单位去执行，也就是说每32个threads一起执行同一个指令：
-  * ![image-20240416094657238](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416094657238.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/502c2062-7e34-4b5d-9044-1dad9c3adb0b)
+
 * 所以，为了能够高效的访存，shared memory中也对应了分成了32个**存储体**。我们称之为 “bank”，分别对应warp中32个线程：
-  * ![image-20240416094844076](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416094844076.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ed106870-7c29-4fd4-ae0c-9305bc57df15)
+
 * bank的宽度，代表的是一个bank所存储的数据的大小宽度。
   * 可以是4个字节(32 bit,  单精度浮点数float)
   * 也可以是8个字节(64bit，双精度浮点数)
 * 每31个bank，就会进行一次stride。
-  * ![image-20240416094812733](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416094812733.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a64af915-685c-4f1d-afab-361837202820)
+
   *  比如说bank的宽度是4字节。我们在shared memory中申请了float A[256]大小的空间，那么：
     *  A[0], A[1], …, A[31]分别在bank0, bank1, …, bank31中
     *  A[32], A[33], …, A[63]也分在了bank0, bank1, …, bank31中
@@ -2158,12 +2162,17 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 * 一个很理想的情况就是，32个thread，分别访问shared memory中的32个不同的bank：
   * **没有bank conflict**，一个memory周期完成所有的memory read/write (row major/行优先矩阵访问)
-    * ![image-20240416095129471](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416095129471.png)
-    * ![image-20240416095136325](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416095136325.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/392ea48e-c9a8-4553-8ec1-7bc814676aec)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b09358ce-448d-4fab-8c7a-67a990de2d17)
+
   * 一个最不理想的情况就是，32个thread，访问shared memory中的同一个bank：
     * **bank conflict最大化**，需要32个memory周期才能完成所有的memory read/write (column major列优先矩阵访问)
-      * ![image-20240416095220154](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416095220154.png)
-      * ![image-20240416095227434](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416095227434.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3e16f76a-53f7-4816-bc34-4d1c0b8e45be)
+
+
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a972c8c8-0521-4db4-97cb-0f9c64dfff82)
+
 
 ##### （4）使用padding缓解bank conflict
 
