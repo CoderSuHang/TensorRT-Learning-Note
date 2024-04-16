@@ -2193,14 +2193,19 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 ##### （6）代码细节
 
 * 【matmul_gpu_bank_conflict.cu】
-  * ![image-20240416104427072](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416104427072.png)
-  * ![image-20240416104453447](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416104453447.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/91875d7a-5588-4d67-bd2c-6aece5f1bde9)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3cc938e0-57f1-429b-a799-0457a7ce925e)
+
 * 【matmul_gpu_bank_conflict_pad.cu】
   * 静态：
-    * ![image-20240416104617470](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416104617470.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b3505d6b-a27a-4ce6-862a-55330c273aed)
+
   * 动态：
-    * ![image-20240416104934904](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416104934904.png)
-    * ![image-20240416104809658](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416104809658.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d87cc911-80a6-4c10-8be5-9c36a39b1c9f)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c93e3947-e9b3-401a-9a8d-8f565334fbed)
+
 
 
 
