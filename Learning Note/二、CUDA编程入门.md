@@ -2274,12 +2274,15 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 ##### （4）页锁定内存
 
 * cudaMallocHost()函数使用的是页锁定内存：
-  * ![image-20240416113839890](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416113839890.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d87bd3cb-f54d-4a29-975f-0f350c0baf8e)
+
 * 内存分为：
   * Pageable memory：可分页内存
   * Pinned memory / page-locked memory：页锁定内存
-  * ![image-20240416114636264](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416114636264.png)
-  * ![image-20240416114812261](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416114812261.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c1497906-8df3-409c-8e86-dc9231f83c0f)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/fa5beb07-c1b0-4526-a42c-22636d570b8f)
+
 
 ### 2.6 使用CUDA进行预处理/后处理
 
