@@ -2341,7 +2341,8 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 ##### （8）如何隐藏延迟(kernel + memory)
 
-* ![image-20240416155421665](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416155421665.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/df44968d-9152-4e4e-bc96-279526b6c1f1)
+
 
 
 
@@ -2408,9 +2409,11 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 ##### （1）不同的双线性插值
 
 * 原图（图1）、普通的双线性插值scale转换成高宽比一样的图片（图2）、scale保持不变的resized（图3）、scale保持不变并居中的resized（图4）
-  * ![image-20240416165653744](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416165653744.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6e37b4e9-01d1-4236-a9a6-34cc90a27183)
+
 * 执行效果：
-  * ![image-20240416171209757](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416171209757.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/34a78f82-fdf1-4428-a7d7-19a0fc0722c9)
+
 
 #### 2.6.1 新的内容
 
@@ -2419,7 +2422,8 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 * 普通的双线性插值
   * 内部核函数主要做的是uint8的核函数计算
   * 更偏向实际应用
-* ![image-20240416165501869](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416165501869.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9c516f62-2549-492a-b04c-8af05068b803)
+
 
 ##### （2）2.11-bilinear-interpolation-template
 
