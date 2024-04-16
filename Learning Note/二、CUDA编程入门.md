@@ -2215,15 +2215,19 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 ##### （1）文件夹列表
 
-* ![image-20240416111654060](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416111654060.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/faee102d-882b-40e5-aad7-1059caadbbfd)
+
 * 【stream.cu】
   * 为了能够平衡mempry以及kernel的执 行，这里在kernel内部设定了等待：
-    * ![image-20240416111931674](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416111931674.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8d059bc2-531c-48cf-8d37-3011f4c0ead8)
+
   * 多流进行异步的计算流程：
-    * ![image-20240416112030128](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416112030128.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6e0ad1e6-f732-4828-aa0e-9b4ef50af066)
+
 * 【gelu.cu】
   * 添加了一个GELU的CUDA实现，为后面搭建Plugin做铺垫
-    * ![image-20240416112143134](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416112143134.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/45fc2261-6a7b-4b8d-a89b-3b47b2e9ca15)
+
 
 ##### （2）运行结果
 
