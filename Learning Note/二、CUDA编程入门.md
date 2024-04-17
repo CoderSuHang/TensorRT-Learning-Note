@@ -2406,14 +2406,72 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 由于我们在终端部署的时候，输入的图片尺寸会不同，因此统一图片尺寸是一个非常必要的工作。这时需要对图片resize，如果使用openCV的resize的话，会非常的慢。
 
+#### 2.6.1 双线性插值与仿射变换简介
+
 ##### （1）不同的双线性插值
 
 * 原图（图1）、普通的双线性插值scale转换成高宽比一样的图片（图2）、scale保持不变的resized（图3）、scale保持不变并居中的resized（图4）
-  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6e37b4e9-01d1-4236-a9a6-34cc90a27183)
-
+  * ![image-20240416165653744](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416165653744.png)
 * 执行效果：
-  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/34a78f82-fdf1-4428-a7d7-19a0fc0722c9)
+  * ![image-20240416171209757](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416171209757.png)
 
+
+
+##### （2）普通的双线性插值
+
+* 是一种对图像进行缩放/放大的一种计算方法，scale转换成高宽比一样的图片：
+  * ![image-20240417111018809](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417111018809.png)
+* 由于像素点在scale以后，精度会发生变化，因此在256X256分辨率下找到的点（浮点数强制转换为int），需要计算RGB值，openCV提供了最临近法：*Nearest neighbor*方法。将resize之后的坐标点返回到原图片中，找到离该浮点坐标最近的点，如下图所示：
+  * ![image-20240417153123851](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417153123851.png)
+  * ![image-20240417153146081](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417153146081.png)
+
+##### （3）双线性插值（宽高比未复原）
+
+* 不仅要考虑还原后最近的坐标点，还要考虑它附近所有四个点坐标，以及他们与中间点之间的面积：
+  * resize后的target坐标：
+    * ![image-20240417180819440](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417180819440.png)
+  * 还原后的坐标以及周围的四个点坐标：
+    * ![image-20240417180848654](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417180848654.png)
+* 双线性插值计算最终RGB值：
+  * ![image-20240417180946741](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417180946741.png)
+  * ![image-20240417181011192](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417181011192.png)
+
+##### （4）双线性插值（复原高宽比）
+
+* 如果我们想要缩放后依然保持比例的话，我们对宽和高的缩放比保持一致就可以了：
+
+  * 计算缩放比公式：
+
+    * ```c++
+      //scaled resize
+      float scaled_h = (float)srcH / tarH;
+      float scaled_w = (float)srcW / tarW;
+      float scale = (scaled_h > scaled_w ? scaled_h : scaled_w);
+      ```
+
+    * ![image-20240417202046016](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417202046016.png)
+
+    * ![image-20240417202106101](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417202106101.png)
+
+##### （5）双线性插值（复原高宽比居中）
+
+* 一般来说，在进行缩放以后我们希望让图像居中，所以需要让图像的中心坐标shift一定的像素：
+
+  * ```c++
+    // bilinear interpolation -- 计算原图在目标图中的x, y方向上的偏移量
+    y = y - int(srcH / (scaled_h * 2)) + int(tarH / 2);
+    x = x - int(srcW / (scaled_w * 2)) + int(tarW / 2);
+    ```
+
+  * ![image-20240417204221413](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417204221413.png)
+
+
+
+##### （6）BGR2RGB
+
+* opencv读取完图片以后，默认的格式是BGR的。如果要将读取的图片传给DNN进行推理的话，我们需要将channel 的方向改变一下。在CUDA中可以这么更改：
+  * ![image-20240417204728993](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417204728993.png)
+  * 其实，如果需要的话，我们也可以在BGR2RGB的同时，实现BHWC2BCHW的转变。类似于PyTorch中的transpose
 
 #### 2.6.1 新的内容
 
@@ -2422,12 +2480,10 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 * 普通的双线性插值
   * 内部核函数主要做的是uint8的核函数计算
   * 更偏向实际应用
-* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9c516f62-2549-492a-b04c-8af05068b803)
-
+* ![image-20240416165501869](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416165501869.png)
 
 ##### （2）2.11-bilinear-interpolation-template
 
 * 模板函数
   * 内部核函数可以根据用户的使用情况做uint38、float32等的核函数计算
   * 更偏向实际应用
-
