@@ -2411,30 +2411,40 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 ##### （1）不同的双线性插值
 
 * 原图（图1）、普通的双线性插值scale转换成高宽比一样的图片（图2）、scale保持不变的resized（图3）、scale保持不变并居中的resized（图4）
-  * ![image-20240416165653744](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416165653744.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/211706a0-36ad-46ec-bd4d-3bcc92754be1)
+
 * 执行效果：
-  * ![image-20240416171209757](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416171209757.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/69727d50-f556-4a38-9c23-dee948c47be0)
+
 
 
 
 ##### （2）普通的双线性插值
 
 * 是一种对图像进行缩放/放大的一种计算方法，scale转换成高宽比一样的图片：
-  * ![image-20240417111018809](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417111018809.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d121569d-4ee4-4196-afe5-350fcb5080fc)
+
 * 由于像素点在scale以后，精度会发生变化，因此在256X256分辨率下找到的点（浮点数强制转换为int），需要计算RGB值，openCV提供了最临近法：*Nearest neighbor*方法。将resize之后的坐标点返回到原图片中，找到离该浮点坐标最近的点，如下图所示：
-  * ![image-20240417153123851](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417153123851.png)
-  * ![image-20240417153146081](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417153146081.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a1485504-6430-4a82-8863-5b18b6fe27a0)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a9c23a11-cf97-46b0-b833-546a2ec776d3)
+
 
 ##### （3）双线性插值（宽高比未复原）
 
 * 不仅要考虑还原后最近的坐标点，还要考虑它附近所有四个点坐标，以及他们与中间点之间的面积：
   * resize后的target坐标：
-    * ![image-20240417180819440](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417180819440.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/990da94e-984f-4e57-8f00-0c4ab32fd507)
+
   * 还原后的坐标以及周围的四个点坐标：
-    * ![image-20240417180848654](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417180848654.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2fe5366b-a674-4d49-9d5a-c40c39336439)
+
 * 双线性插值计算最终RGB值：
-  * ![image-20240417180946741](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417180946741.png)
-  * ![image-20240417181011192](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417181011192.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4ea3d75d-3496-47b4-a994-f6225ed8d093)
+
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a9c14090-9540-4852-bbc9-1e61a107e697)
+
 
 ##### （4）双线性插值（复原高宽比）
 
@@ -2449,9 +2459,11 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
       float scale = (scaled_h > scaled_w ? scaled_h : scaled_w);
       ```
 
-    * ![image-20240417202046016](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417202046016.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4025fbbe-b7d2-4a4e-99d1-b989bd85c8e6)
 
-    * ![image-20240417202106101](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417202106101.png)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/28fd8cc9-95cc-434b-b2ae-67f7ba74292e)
+
 
 ##### （5）双线性插值（复原高宽比居中）
 
@@ -2463,14 +2475,16 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
     x = x - int(srcW / (scaled_w * 2)) + int(tarW / 2);
     ```
 
-  * ![image-20240417204221413](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417204221413.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/60a95fc7-a952-4bbf-add5-ceaebab23be1)
+
 
 
 
 ##### （6）BGR2RGB
 
 * opencv读取完图片以后，默认的格式是BGR的。如果要将读取的图片传给DNN进行推理的话，我们需要将channel 的方向改变一下。在CUDA中可以这么更改：
-  * ![image-20240417204728993](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240417204728993.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3c3302cb-ca84-4ebe-8219-9f53668b7bc6)
+
   * 其实，如果需要的话，我们也可以在BGR2RGB的同时，实现BHWC2BCHW的转变。类似于PyTorch中的transpose
 
 #### 2.6.1 新的内容
@@ -2480,7 +2494,8 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 * 普通的双线性插值
   * 内部核函数主要做的是uint8的核函数计算
   * 更偏向实际应用
-* ![image-20240416165501869](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416165501869.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c40e06e6-ebc4-4d52-a28f-9d54b5f89b1a)
+
 
 ##### （2）2.11-bilinear-interpolation-template
 
