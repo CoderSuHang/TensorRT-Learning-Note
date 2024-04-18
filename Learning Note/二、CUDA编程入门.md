@@ -2935,21 +2935,26 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 * 不同输出大小下的加速效果：
   * 750 x 750：
-    * ![image-20240418103736444](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418103736444.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e9a4700f-5387-4afa-97f6-1e639007271d)
+
   * 1000 x 750：
-    * ![image-20240418114033406](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418114033406.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/279ab41d-f097-4468-8083-79a03511b175)
+
   * 500 x 250：
-    * ![image-20240418114124814](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418114124814.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ff6ee767-00ce-4a58-b548-c913f52084d4)
+
 
 ##### （2）2.11-bilinear-interpolation-template
 
 * 运行效果：
 
-  * ![image-20240418114521081](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418114521081.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ae1e09ea-b082-4702-94ac-aea70e5a136b)
+
 
 * 【main.cpp】设置计算输入精度
 
-  * ![image-20240418114315521](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418114315521.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/882812df-0d3d-4dc4-87d8-4af7a5e6805c)
+
 
 * 【preprocess.cpp】
 
