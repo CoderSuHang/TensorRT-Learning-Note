@@ -2710,9 +2710,11 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
     }
     ```
 
-  * ![image-20240418110619543](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418110619543.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f952cfc9-78fa-4907-99bd-a8c22a8831d4)
 
-  * ![image-20240418110730724](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418110730724.png)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a2c4c00a-d028-46d7-837c-c522c4dfbba5)
+
 
 * 【preprocess.cu】双线性插值算法实现
 
