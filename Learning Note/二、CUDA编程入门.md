@@ -2487,18 +2487,527 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
   * 其实，如果需要的话，我们也可以在BGR2RGB的同时，实现BHWC2BCHW的转变。类似于PyTorch中的transpose
 
-#### 2.6.1 新的内容
+#### 2.6.2 新的内容
 
 ##### （1）2.10-bilinear-interpolation
 
 * 普通的双线性插值
   * 内部核函数主要做的是uint8的核函数计算
   * 更偏向实际应用
-* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c40e06e6-ebc4-4d52-a28f-9d54b5f89b1a)
-
+* ![image-20240416165501869](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416165501869.png)
 
 ##### （2）2.11-bilinear-interpolation-template
 
 * 模板函数
   * 内部核函数可以根据用户的使用情况做uint38、float32等的核函数计算
   * 更偏向实际应用
+
+
+
+#### 2.6.3 代码详情
+
+##### （1）2.10-bilinear-interpolation
+
+* 执行结果：
+
+  * ![image-20240418103736444](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418103736444.png)
+  * CPU与GPU之间有20倍左右的加速效果
+
+* OpenCV导入图片：
+
+  * ```c++
+    #include <stdio.h>
+    #include <cuda_runtime.h>
+    #include <iostream>
+    
+    #include "utils.hpp"
+    #include "timer.hpp"
+    #include "preprocess.hpp"
+    
+    using namespace std;
+    
+    int main(){
+        Timer timer;
+    
+        string file_path     = "data/deer.png";
+        string output_prefix = "results/";
+        string output_path   = "";
+    
+        cv::Mat input = cv::imread(file_path);
+        int tar_h = 500;
+        int tar_w = 250;
+        int tactis;
+    
+        cv::Mat resizedInput_cpu;
+        cv::Mat resizedInput_gpu;
+        
+        /* 
+         * bilinear interpolation resize的CPU/GPU速度比较
+         * tatics 列表
+         * 0: 最近邻差值缩放 + 全图填充
+         * 1: 双线性差值缩放 + 全图填充
+         * 2: 双线性差值缩放 + 填充(letter box)
+         * 3: 双线性差值缩放 + 填充(letter box) + 平移居中
+         * */
+        
+        resizedInput_cpu = preprocess_cpu(input, tar_h, tar_w, timer, tactis);
+        output_path = output_prefix + getPrefix(file_path) + "_resized_bilinear_cpu.png";
+        cv::cvtColor(resizedInput_cpu, resizedInput_cpu, cv::COLOR_RGB2BGR);
+        cv::imwrite(output_path, resizedInput_cpu);
+    
+        tactis = 0;
+        resizedInput_gpu = preprocess_gpu(input, tar_h, tar_w, timer, tactis);
+        output_path = output_prefix + getPrefix(file_path) + "_resized_nearest_gpu.png";
+        cv::cvtColor(resizedInput_cpu, resizedInput_cpu, cv::COLOR_RGB2BGR);
+        cv::imwrite(output_path, resizedInput_gpu);
+    
+        tactis = 1;
+        resizedInput_gpu = preprocess_gpu(input, tar_h, tar_w, timer, tactis);
+        output_path = output_prefix + getPrefix(file_path) + "_resized_bilinear_gpu.png";
+        cv::cvtColor(resizedInput_cpu, resizedInput_cpu, cv::COLOR_RGB2BGR);
+        cv::imwrite(output_path, resizedInput_gpu);
+    
+        tactis = 2;
+        resizedInput_gpu = preprocess_gpu(input, tar_h, tar_w, timer, tactis);
+        output_path = output_prefix + getPrefix(file_path) + "_resized_bilinear_letterbox_gpu.png";
+        cv::cvtColor(resizedInput_cpu, resizedInput_cpu, cv::COLOR_RGB2BGR);
+        cv::imwrite(output_path, resizedInput_gpu);
+    
+        tactis = 3;
+        resizedInput_gpu = preprocess_gpu(input, tar_h, tar_w, timer, tactis);
+        output_path = output_prefix + getPrefix(file_path) + "_resized_bilinear_letterbox_center_gpu.png";
+        cv::cvtColor(resizedInput_cpu, resizedInput_cpu, cv::COLOR_RGB2BGR);
+        cv::imwrite(output_path, resizedInput_gpu);
+        return 0;
+    }
+    ```
+
+* CPU实现：
+
+  * ```c++
+    // 根据比例进行缩放 (CPU版本) bilinear resize的opencv实现
+    cv::Mat preprocess_cpu(cv::Mat &src, const int &tar_h, const int &tar_w, Timer timer, int tactis) {
+        cv::Mat tar;
+        
+        // 先找到resizeH和W的大小
+        int height  = src.rows;
+        int width   = src.cols;
+        float dim   = std::max(height, width);
+        int resizeH = ((height / dim) * tar_h);
+        int resizeW = ((width / dim) * tar_w);
+    
+        int xOffSet = (tar_w - resizeW) / 2;
+        int yOffSet = (tar_h - resizeH) / 2;
+    
+        resizeW    = tar_w;
+        resizeH    = tar_h;
+    
+        /*测速*/
+        timer.start_cpu();
+    
+        /*BGR2RGB*/
+        cv::cvtColor(src, src, cv::COLOR_BGR2RGB);
+    
+        /*Resize*/
+        cv::resize(src, tar, cv::Size(resizeW, resizeH), 0, 0, cv::INTER_LINEAR);
+    
+        timer.stop_cpu();
+        timer.duration_cpu<Timer::ms>("Resize(bilinear) in cpu takes:");
+    
+        return tar;
+    }
+    ```
+
+* GPU实现：
+
+  * ```c++
+    #include "preprocess.hpp"
+    #include "opencv2/opencv.hpp"
+    #include "utils.hpp"
+    #include "timer.hpp"
+    
+    // 根据比例进行缩放 (CPU版本) bilinear resize的opencv实现
+    cv::Mat preprocess_cpu(cv::Mat &src, const int &tar_h, const int &tar_w, Timer timer, int tactis) {
+        cv::Mat tar;
+        
+        // 先找到resizeH和W的大小
+        int height  = src.rows;
+        int width   = src.cols;
+        float dim   = std::max(height, width);
+        int resizeH = ((height / dim) * tar_h);
+        int resizeW = ((width / dim) * tar_w);
+    
+        int xOffSet = (tar_w - resizeW) / 2;
+        int yOffSet = (tar_h - resizeH) / 2;
+    
+        resizeW    = tar_w;
+        resizeH    = tar_h;
+    
+        /*测速*/
+        timer.start_cpu();
+    
+        /*BGR2RGB*/
+        cv::cvtColor(src, src, cv::COLOR_BGR2RGB);
+    
+        /*Resize*/
+        cv::resize(src, tar, cv::Size(resizeW, resizeH), 0, 0, cv::INTER_LINEAR);
+    
+        timer.stop_cpu();
+        timer.duration_cpu<Timer::ms>("Resize(bilinear) in cpu takes:");
+    
+        return tar;
+    }
+    
+    // 根据比例进行缩放 (GPU版本) bilinear resize的cuda实现（接口部分）
+    cv::Mat preprocess_gpu(
+        cv::Mat &h_src, const int& tar_h, const int& tar_w, Timer timer, int tactis) 
+    {
+        uint8_t* d_tar = nullptr;
+        uint8_t* d_src = nullptr;
+    
+        // 分配空间大小CV_8UC3：UC=unsigned char，3=chanel，8=uint8
+        cv::Mat h_tar(cv::Size(tar_w, tar_h), CV_8UC3);
+    
+        int height   = h_src.rows;
+        int width    = h_src.cols;
+        int chan     = 3;
+    
+        int src_size  = height * width * chan;
+        int tar_size  = tar_h * tar_w * chan;
+    
+        // 分配device上的src和tar的内存
+        CUDA_CHECK(cudaMalloc(&d_src, src_size));
+        CUDA_CHECK(cudaMalloc(&d_tar, tar_size));
+    
+        // 将数据拷贝到device上
+        CUDA_CHECK(cudaMemcpy(d_src, h_src.data, src_size, cudaMemcpyHostToDevice));
+    
+        timer.start_gpu();
+    
+        // device上处理resize, BGR2RGB的核函数
+        resize_bilinear_gpu(d_tar, d_src, tar_w, tar_h, width, height, tactis);
+    
+        // host和device进行同步处理
+        CUDA_CHECK(cudaDeviceSynchronize());
+    
+        timer.stop_gpu();
+        switch (tactis) {
+            case 0: timer.duration_gpu("Resize(nearest) in gpu takes:"); break;
+            case 1: timer.duration_gpu("Resize(bilinear) in gpu takes:"); break;
+            case 2: timer.duration_gpu("Resize(bilinear-letterbox) in gpu takes:"); break;
+            case 3: timer.duration_gpu("Resize(bilinear-letterbox-center) in gpu takes:"); break;
+            default: break;
+        }
+    
+        // 将结果返回给host上
+        CUDA_CHECK(cudaMemcpy(h_tar.data, d_tar, tar_size, cudaMemcpyDeviceToHost));
+    
+    
+        CUDA_CHECK(cudaFree(d_src));
+        CUDA_CHECK(cudaFree(d_tar));
+    
+        return h_tar;
+    }
+    ```
+
+  * ![image-20240418110619543](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418110619543.png)
+
+  * ![image-20240418110730724](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418110730724.png)
+
+* 【preprocess.cu】双线性插值算法实现
+
+  * ```c++
+    #include "cuda_runtime_api.h"
+    #include "stdio.h"
+    #include <iostream>
+    
+    #include "utils.hpp"
+    
+    
+    __global__ void resize_nearest_BGR2RGB_kernel(
+        uint8_t* tar, uint8_t* src, 
+        int tarW, int tarH, 
+        int srcW, int srcH,
+        float scaled_w, float scaled_h) 
+    {
+        // nearest neighbour -- resized之后的图tar上的坐标
+        int x = blockIdx.x * blockDim.x + threadIdx.x;
+        int y = blockIdx.y * blockDim.y + threadIdx.y;
+    
+        // nearest neighbour -- 计算最近坐标
+        int src_y = round((float)y * scaled_h);
+        int src_x = round((float)x * scaled_w);
+    
+        if (src_x < 0 || src_y < 0 || src_x > srcW || src_y > srcH) {
+            // nearest neighbour -- 对于越界的部分，不进行计算
+        } else {
+            // nearest neighbour -- 计算tar中对应坐标的索引
+            // 3是chanel的个数，数据都是1维的，每个坐标乘3就是索引
+            int tarIdx = (y * tarW  + x) * 3;
+    
+            // nearest neighbour -- 计算src中最近邻坐标的索引
+            int srcIdx = (src_y * srcW + src_x) * 3;
+    
+            // nearest neighbour -- 实现nearest beighbour的resize + BGR2RGB
+            tar[tarIdx + 0] = src[srcIdx + 2];
+            tar[tarIdx + 1] = src[srcIdx + 1];
+            tar[tarIdx + 2] = src[srcIdx + 0];
+        }
+    }
+    
+    __global__ void resize_bilinear_BGR2RGB_kernel(
+        uint8_t* tar, uint8_t* src, 
+        int tarW, int tarH, 
+        int srcW, int srcH, 
+        float scaled_w, float scaled_h) 
+    {
+    
+        // bilinear interpolation -- resized之后的图tar上的坐标
+        int x = blockIdx.x * blockDim.x + threadIdx.x;
+        int y = blockIdx.y * blockDim.y + threadIdx.y;
+    
+        // bilinear interpolation -- 计算x,y映射到原图时最近的4个坐标
+        // src_y1，src_x1就是ppt里面的（200，100）这个点（左上角）坐标
+        int src_y1 = floor((y + 0.5) * scaled_h - 0.5); // floor取整
+        int src_x1 = floor((x + 0.5) * scaled_w - 0.5);
+        // src_y2，src_x2就是ppt里面的（201，101）这个点（右下角）坐标
+        int src_y2 = src_y1 + 1;
+        int src_x2 = src_x1 + 1;
+    
+        if (src_y1 < 0 || src_x1 < 0 || src_y1 > srcH || src_x1 > srcW) {
+            // bilinear interpolation -- 对于越界的坐标不进行计算
+        } else {
+            // bilinear interpolation -- 计算原图上的坐标(浮点类型)在0~1之间的值
+            // th，tw就是PPT中resized点还原后的坐标转换成在0~1之间的值
+            float th   = ((y + 0.5) * scaled_h - 0.5) - src_y1;
+            float tw   = ((x + 0.5) * scaled_w - 0.5) - src_x1;
+    
+            // bilinear interpolation -- 计算面积(这里建议自己手画一张图来理解一下)
+            float a1_1 = (1.0 - tw) * (1.0 - th);  //右下
+            float a1_2 = tw * (1.0 - th);          //左下
+            float a2_1 = (1.0 - tw) * th;          //右上
+            float a2_2 = tw * th;                  //左上
+    
+            // bilinear interpolation -- 计算4个坐标所对应的索引
+            int srcIdx1_1 = (src_y1 * srcW + src_x1) * 3;  //左上
+            int srcIdx1_2 = (src_y1 * srcW + src_x2) * 3;  //右上
+            int srcIdx2_1 = (src_y2 * srcW + src_x1) * 3;  //左下
+            int srcIdx2_2 = (src_y2 * srcW + src_x2) * 3;  //右下
+    
+            // bilinear interpolation -- 计算resized之后的图的索引
+            int tarIdx    = (y * tarW  + x) * 3;
+    
+            // bilinear interpolation -- 实现bilinear interpolation的resize + BGR2RGB
+            tar[tarIdx + 0] = round(
+                              a1_1 * src[srcIdx1_1 + 2] + 
+                              a1_2 * src[srcIdx1_2 + 2] +
+                              a2_1 * src[srcIdx2_1 + 2] +
+                              a2_2 * src[srcIdx2_2 + 2]);
+    
+            tar[tarIdx + 1] = round(
+                              a1_1 * src[srcIdx1_1 + 1] + 
+                              a1_2 * src[srcIdx1_2 + 1] +
+                              a2_1 * src[srcIdx2_1 + 1] +
+                              a2_2 * src[srcIdx2_2 + 1]);
+    
+            tar[tarIdx + 2] = round(
+                              a1_1 * src[srcIdx1_1 + 0] + 
+                              a1_2 * src[srcIdx1_2 + 0] +
+                              a2_1 * src[srcIdx2_1 + 0] +
+                              a2_2 * src[srcIdx2_2 + 0]);
+        }
+    }
+    
+    __global__ void resize_bilinear_BGR2RGB_shift_kernel(
+        uint8_t* tar, uint8_t* src, 
+        int tarW, int tarH, 
+        int srcW, int srcH, 
+        float scaled_w, float scaled_h) 
+    {
+    
+        // resized之后的图tar上的坐标
+        int x = blockIdx.x * blockDim.x + threadIdx.x;
+        int y = blockIdx.y * blockDim.y + threadIdx.y;
+    
+        // bilinear interpolation -- 计算x,y映射到原图时最近的4个坐标
+        int src_y1 = floor((y + 0.5) * scaled_h - 0.5);
+        int src_x1 = floor((x + 0.5) * scaled_w - 0.5);
+        int src_y2 = src_y1 + 1;
+        int src_x2 = src_x1 + 1;
+    
+        if (src_y1 < 0 || src_x1 < 0 || src_y1 > srcH || src_x1 > srcW) {
+            // bilinear interpolation -- 对于越界的坐标不进行计算
+        } else {
+            // bilinear interpolation -- 计算原图上的坐标(浮点类型)在0~1之间的值
+            float th   = ((y + 0.5) * scaled_h - 0.5) - src_y1;
+            float tw   = ((x + 0.5) * scaled_w - 0.5) - src_x1;
+    
+            // bilinear interpolation -- 计算面积(这里建议自己手画一张图来理解一下)
+            float a1_1 = (1.0 - tw) * (1.0 - th);  //右下
+            float a1_2 = tw * (1.0 - th);          //左下
+            float a2_1 = (1.0 - tw) * th;          //右上
+            float a2_2 = tw * th;                  //左上
+    
+            // bilinear interpolation -- 计算4个坐标所对应的索引
+            int srcIdx1_1 = (src_y1 * srcW + src_x1) * 3;  //左上
+            int srcIdx1_2 = (src_y1 * srcW + src_x2) * 3;  //右上
+            int srcIdx2_1 = (src_y2 * srcW + src_x1) * 3;  //左下
+            int srcIdx2_2 = (src_y2 * srcW + src_x2) * 3;  //右下
+    
+            // bilinear interpolation -- 计算原图在目标图中的x, y方向上的偏移量
+            y = y - int(srcH / (scaled_h * 2)) + int(tarH / 2);
+            x = x - int(srcW / (scaled_w * 2)) + int(tarW / 2);
+    
+            // bilinear interpolation -- 计算resized之后的图的索引
+            int tarIdx    = (y * tarW  + x) * 3;
+    
+            // bilinear interpolation -- 实现bilinear interpolation + BGR2RGB
+            tar[tarIdx + 0] = round(
+                              a1_1 * src[srcIdx1_1 + 2] + 
+                              a1_2 * src[srcIdx1_2 + 2] +
+                              a2_1 * src[srcIdx2_1 + 2] +
+                              a2_2 * src[srcIdx2_2 + 2]);
+    
+            tar[tarIdx + 1] = round(
+                              a1_1 * src[srcIdx1_1 + 1] + 
+                              a1_2 * src[srcIdx1_2 + 1] +
+                              a2_1 * src[srcIdx2_1 + 1] +
+                              a2_2 * src[srcIdx2_2 + 1]);
+    
+            tar[tarIdx + 2] = round(
+                              a1_1 * src[srcIdx1_1 + 0] + 
+                              a1_2 * src[srcIdx1_2 + 0] +
+                              a2_1 * src[srcIdx2_1 + 0] +
+                              a2_2 * src[srcIdx2_2 + 0]);
+        }
+    }
+    
+    /*
+        这里面的所有函数都实现了kernel fusion。这样可以减少kernel launch所产生的overhead
+        如果使用了shared memory的话，就可以减少分配shared memory所产生的overhead以及内部线程同步的overhead。(这个案例没有使用shared memory)
+        CUDA编程中有一些cuda runtime api是implicit synchronize(隐式同步)的，比如cudaMalloc, cudaMallocHost，以及shared memory的分配。
+        高效的CUDA编程需要意识这些implicit synchronize以及其他会产生overhead的地方。比如使用内存复用的方法，让cuda分配完一次memory就一直使用它
+    
+        这里建议大家把我写的每一个kernel都拆开成不同的kernel来分别计算
+        e.g. resize kernel + BGR2RGB kernel + shift kernel 
+        之后用nsight去比较融合与不融合的差别在哪里。去体会一下fusion的好处
+    */
+    
+    void resize_bilinear_gpu(
+        uint8_t* d_tar, uint8_t* d_src, 
+        int tarW, int tarH, 
+        int srcW, int srcH, 
+        int tactis) 
+    {
+        dim3 dimBlock(16, 16, 1);
+        dim3 dimGrid(tarW / 16 + 1, tarH / 16 + 1, 1);
+        
+        //scaled resize
+        float scaled_h = (float)srcH / tarH;
+        float scaled_w = (float)srcW / tarW;
+        float scale = (scaled_h > scaled_w ? scaled_h : scaled_w);
+    
+        if (tactis > 1) {
+            scaled_h = scale;
+            scaled_w = scale;
+        }
+        
+        switch (tactis) {
+        case 0:
+            resize_nearest_BGR2RGB_kernel <<<dimGrid, dimBlock>>> (d_tar, d_src, tarW, tarH, srcW, srcH, scaled_w, scaled_h);
+            break;
+        case 1:
+            resize_bilinear_BGR2RGB_kernel <<<dimGrid, dimBlock>>> (d_tar, d_src, tarW, tarH, srcW, srcH, scaled_w, scaled_h);
+            break;
+        case 2:
+            resize_bilinear_BGR2RGB_kernel <<<dimGrid, dimBlock>>> (d_tar, d_src, tarW, tarH, srcW, srcH, scaled_w, scaled_h);
+            break;
+        case 3:
+            resize_bilinear_BGR2RGB_shift_kernel <<<dimGrid, dimBlock>>> (d_tar, d_src, tarW, tarH, srcW, srcH, scaled_w, scaled_h);
+            break;
+        default:
+            break;
+        }
+    }
+    ```
+
+
+
+* 不同输出大小下的加速效果：
+  * 750 x 750：
+    * ![image-20240418103736444](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418103736444.png)
+  * 1000 x 750：
+    * ![image-20240418114033406](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418114033406.png)
+  * 500 x 250：
+    * ![image-20240418114124814](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418114124814.png)
+
+##### （2）2.11-bilinear-interpolation-template
+
+* 运行效果：
+
+  * ![image-20240418114521081](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418114521081.png)
+
+* 【main.cpp】设置计算输入精度
+
+  * ![image-20240418114315521](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418114315521.png)
+
+* 【preprocess.cpp】
+
+  * ```c++
+    // 根据比例进行缩放 (GPU版本)
+    template <typename T>
+    cv::Mat preprocess_gpu(
+        cv::Mat &h_src, const int& tar_h, const int& tar_w, Timer timer) 
+    {
+        T*       d_tar = nullptr;
+        uint8_t* d_src = nullptr;
+    
+        // 这里针对传入进来的type进行判断
+        // 如果做fp32分配空间会不同，因此要根据不同的type分配不同的资源大小
+        // 如果输入fp32计算，但是分配uint8空间大小，那么输出的图就是一片黑
+        int type = (std::is_same<T, uint8_t>::value) ? CV_8UC3 : CV_32FC3;
+        cv::Mat h_tar(cv::Size(tar_w, tar_h), type);
+    
+        int height   = h_src.rows;
+        int width    = h_src.cols;
+        int chan     = 3;
+    
+        int src_size  = height * width * chan * sizeof(uint8_t);
+        int tar_size  = tar_h * tar_w * chan * sizeof(T);
+    
+        // 分配device上的src和tar的内存
+        CUDA_CHECK(cudaMalloc(&d_src, src_size));
+        CUDA_CHECK(cudaMalloc(&d_tar, tar_size));
+    
+        // 将数据拷贝到device上
+        CUDA_CHECK(cudaMemcpy(d_src, h_src.data, src_size, cudaMemcpyHostToDevice));
+    
+        timer.start_gpu();
+    
+        // device上处理resize, BGR2RGB的核函数
+        resize_bilinear_gpu(d_tar, d_src, tar_w, tar_h, width, height);
+    
+        // host和device进行同步处理
+        CUDA_CHECK(cudaDeviceSynchronize());
+    
+        timer.stop_gpu();
+        if (type == CV_8UC3) {
+            timer.duration_gpu("Resize(bilinear-letterbox-center, uint8) in gpu takes:");
+        } else {
+            timer.duration_gpu("Resize(bilinear-letterbox-center, float32) in gpu takes:");
+        }
+    
+        // 将结果返回给host上
+        CUDA_CHECK(cudaMemcpy(h_tar.data, d_tar, tar_size, cudaMemcpyDeviceToHost));
+    
+        CUDA_CHECK(cudaFree(d_src));
+        CUDA_CHECK(cudaFree(d_tar));
+    
+        return h_tar;
+    }
+    
+    
+    template cv::Mat preprocess_gpu<u_int8_t>(cv::Mat &h_src, const int& tar_h, const int& tar_w, Timer timer);
+    template cv::Mat preprocess_gpu<float>(cv::Mat &h_src, const int& tar_h, const int& tar_w, Timer timer) ;
+    ```
+
