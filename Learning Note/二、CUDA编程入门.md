@@ -2494,7 +2494,8 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 * 普通的双线性插值
   * 内部核函数主要做的是uint8的核函数计算
   * 更偏向实际应用
-* ![image-20240416165501869](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240416165501869.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/01442d1c-9f13-4cc7-8cab-9bd6ff5003b9)
+
 
 ##### （2）2.11-bilinear-interpolation-template
 
@@ -2510,7 +2511,8 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 * 执行结果：
 
-  * ![image-20240418103736444](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240418103736444.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2b7e8a66-6c73-4ca6-bdf6-7464889e172b)
+
   * CPU与GPU之间有20倍左右的加速效果
 
 * OpenCV导入图片：
