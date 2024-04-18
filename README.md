@@ -5,3 +5,4 @@
   * 原文链接：https://blog.csdn.net/chenhaogu/article/details/131873286
 * 【自动驾驶之心】
   * https://www.zdjszx.com/
+  * https://github.com/kalfazed/tensorrt_starter
