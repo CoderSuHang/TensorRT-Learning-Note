@@ -130,12 +130,15 @@
 
 * 量化是压缩模型的一个很重要的策略
   * 将单精度类型(FP32)训练权重转变为半精度(FP16)或者整型(INT8, INT4)
-    * ![image-20240423112539019](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240423112539019.png)
-    * ![image-20240423113543110](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240423113543110.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/383c3203-1203-477e-8458-a2731690ee43)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/1f81885b-7936-4e41-97ef-db8694f7fa1a)
+
 * 过程作量化(Quantization)：
   * 训练的时候，因为需要**优先考虑精度**而不需要太重视速度，所以会使用 FP32来表示权重和激活值；
   * 但部署的时候，我们需要想办法把FP32的数据尽量压缩，能够用**16bits,  8bits**，甚至**4 bits**来表示它们。
-  *  ![image-20240423113703422](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240423113703422.png)
+  *  ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8cb223c1-e089-4900-8dae-c92197cd9f35)
+
 
 ### 3.4 导出ONNX以及修改ONNX的方法
 
