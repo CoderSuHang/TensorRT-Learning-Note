@@ -234,18 +234,23 @@
 
 * 1、首先进入【if __name__ == "__main__":】
 
-  * ![image-20240424121023566](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424121023566.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/189293ab-2438-4212-beb7-a490958a7a08)
+
 
 * 2、然后运行【infer()】函数
 
-  * ![image-20240424165607389](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424165607389.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ffb58da4-bfec-499f-a7ae-cd9d911ccb9c)
+
   * 其中函数会调用【Model】：
-    * ![image-20240424165848134](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424165848134.png)
-    * ![image-20240424165827364](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424165827364.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8aff615c-9d1b-492c-9261-62551af42b51)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e7d5f66f-e611-482f-b014-077bf3641fbf)
+
 
 * 3、最后运行【export_onnx()】函数：
 
-  * ![image-20240424170259167](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424170259167.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/33e49cf6-5723-4a33-b0a6-778164cd205b)
+
 
 
 
