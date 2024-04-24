@@ -290,10 +290,13 @@
 ##### （4）动态batch
 
 * 输出：
-  * ![image-20240424172802061](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424172802061.png)
-  * ![image-20240424172727338](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424172727338.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6502c321-61a8-44e4-9a7c-a40b0c10e563)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/072bcc09-22b0-4ee1-b59f-6ffcdaa0e21c)
+
 * 代码细节：
-  * ![image-20240424173404245](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424173404245.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0c0ce173-04b9-454e-a486-b3ccb29eb98e)
+
 
 
 
