@@ -142,4 +142,159 @@
 
 ### 3.4 导出ONNX以及修改ONNX的方法
 
+#### 3.4.1 报错
+
+##### （1）未安装Pytorch
+
+* 会显示【ModuleNotFoundError: No module named ‘torch’】
+
+* 原因是没有安装pytorch
+
+  * 因为我们配置的是CUDA11.7，所以在下面网页原则相对应的版本pip即可：
+
+    * [Previous PyTorch Versions | PyTorch](https://pytorch.org/get-started/previous-versions/)
+
+    * ![image-20240424120338735](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424120338735.png)
+
+    * ```python
+      # CUDA 11.7
+      pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
+      ```
+
+##### （2）未找到models路径
+
+* 会显示【FileNotFoundError: [Errno 2] No such file or directory: '../models/example.onnx'】
+  * ![image-20240424120511582](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424120511582.png)
+* 原因是没有创建【models】文件夹
+  * 新建即可
+  * ![image-20240424120600761](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424120600761.png)
+
+#### 3.4.2 导出ONNX
+
+##### （1）程序代码
+
+* ```python
+  import torch
+  import torch.nn as nn
+  import torch.onnx
+  
+  class Model(torch.nn.Module):
+      def __init__(self, in_features, out_features, weights, bias=False):
+          super().__init__()
+          self.linear = nn.Linear(in_features, out_features, bias)
+          with torch.no_grad():
+              self.linear.weight.copy_(weights)
+      
+      def forward(self, x):
+          x = self.linear(x)
+          return x
+  
+  def infer():
+      in_features = torch.tensor([1, 2, 3, 4], dtype=torch.float32)
+      weights = torch.tensor([
+          [1, 2, 3, 4],
+          [2, 3, 4, 5],
+          [3, 4, 5, 6]
+      ],dtype=torch.float32)
+      
+      model = Model(4, 3, weights)
+      x = model(in_features)
+      print("result is: ", x)
+  
+  def export_onnx():
+      input   = torch.zeros(1, 1, 1, 4)
+      weights = torch.tensor([
+          [1, 2, 3, 4],
+          [2, 3, 4, 5],
+          [3, 4, 5, 6]
+      ],dtype=torch.float32)
+      model   = Model(4, 3, weights)
+      model.eval() #添加eval防止权重继续更新
+  
+      # pytorch导出onnx的方式，参数有很多，也可以支持动态size
+      # 我们先做一些最基本的导出，从netron学习一下导出的onnx都有那些东西
+      # opset：指令集版本
+      torch.onnx.export(
+          model         = model, 
+          args          = (input,),
+          f             = "../models/example.onnx",
+          input_names   = ["input0"],
+          output_names  = ["output0"],
+          opset_version = 12)
+      print("Finished onnx export")
+  
+  
+  if __name__ == "__main__":
+      infer()
+      export_onnx()
+  ```
+
+* 1、首先进入【if __name__ == "__main__":】
+
+  * ![image-20240424121023566](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424121023566.png)
+
+* 2、然后运行【infer()】函数
+
+  * ![image-20240424165607389](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424165607389.png)
+  * 其中函数会调用【Model】：
+    * ![image-20240424165848134](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424165848134.png)
+    * ![image-20240424165827364](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424165827364.png)
+
+* 3、最后运行【export_onnx()】函数：
+
+  * ![image-20240424170259167](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424170259167.png)
+
+
+
+##### （2）查看流程
+
+* 1、运行代码：
+
+  * ```python
+    python3 example.py
+    ```
+
+  * ![image-20240424164831212](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424164831212.png)
+
+* 2、使用netron导出结构图：
+
+  * ```python
+    netron ../models/example.onnx 
+    ```
+
+  * ![image-20240424164914243](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424164914243.png)
+
+  * ![image-20240424164934791](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424164934791.png)
+
+##### （3）双输出
+
+* ![image-20240424172543955](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424172543955.png)
+* ![image-20240424172051268](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424172051268.png)
+* 代码中需要补充的地方：
+  * ![image-20240424172408182](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424172408182.png)
+
+##### （4）动态batch
+
+* 输出：
+  * ![image-20240424172802061](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424172802061.png)
+  * ![image-20240424172727338](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424172727338.png)
+* 代码细节：
+  * ![image-20240424173404245](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424173404245.png)
+
+
+
+#### 3.4.3 偏向深度学习的onnx框架
+
+##### （1）cbr框架
+
+* 1、框架结构：
+  * ![image-20240424203921741](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424203921741.png)
+* 2、代码细节：
+  * ![image-20240424204029433](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424204029433.png)
+  * 由于代码中给定了BatchNorm2d，但是在框架中并没有显示，是因为在onnx导出时，已经将BarchNorm2d和Conv2d融合在了一起，所以不会显示。
+
+##### （2）reshape框架
+
+* 
+
 ### 3.5 初步使用TensorRT
