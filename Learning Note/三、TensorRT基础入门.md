@@ -262,7 +262,8 @@
     python3 example.py
     ```
 
-  * ![image-20240424164831212](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424164831212.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/585311eb-bd56-40bb-8643-a1ad6f7d80be)
+
 
 * 2、使用netron导出结构图：
 
@@ -270,16 +271,21 @@
     netron ../models/example.onnx 
     ```
 
-  * ![image-20240424164914243](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424164914243.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/afdcfe55-2784-49ef-ba59-004a3164efc9)
 
-  * ![image-20240424164934791](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424164934791.png)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/67721f79-c193-4342-9b1a-c1f5c6f2dc44)
+
 
 ##### （3）双输出
 
-* ![image-20240424172543955](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424172543955.png)
-* ![image-20240424172051268](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424172051268.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3be1b718-5597-4a4f-a869-06ad29e63d57)
+
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c273afce-aa08-4515-90b2-58e0d1cc1cbe)
+
 * 代码中需要补充的地方：
-  * ![image-20240424172408182](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424172408182.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4c84f95d-e91a-4744-b990-95441b29c11c)
+
 
 ##### （4）动态batch
 
