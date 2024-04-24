@@ -154,7 +154,8 @@
 
     * [Previous PyTorch Versions | PyTorch](https://pytorch.org/get-started/previous-versions/)
 
-    * ![image-20240424120338735](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424120338735.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/53ace0e4-579f-4809-b597-66e8896fcc6a)
+
 
     * ```python
       # CUDA 11.7
@@ -164,10 +165,12 @@
 ##### （2）未找到models路径
 
 * 会显示【FileNotFoundError: [Errno 2] No such file or directory: '../models/example.onnx'】
-  * ![image-20240424120511582](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424120511582.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/cb0c720b-f592-4812-ad74-ce25d684f1e4)
+
 * 原因是没有创建【models】文件夹
   * 新建即可
-  * ![image-20240424120600761](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424120600761.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4137ca80-2589-4ece-a9e5-0919a991852b)
+
 
 #### 3.4.2 导出ONNX
 
