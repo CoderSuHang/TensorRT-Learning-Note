@@ -305,9 +305,11 @@
 ##### （1）cbr框架
 
 * 1、框架结构：
-  * ![image-20240424203921741](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424203921741.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/336a28d0-2867-4bc9-9452-b484a10e890f)
+
 * 2、代码细节：
-  * ![image-20240424204029433](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424204029433.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/19d2275f-0c09-4e4e-b325-1ecdc662c229)
+
   * 由于代码中给定了BatchNorm2d，但是在框架中并没有显示，是因为在onnx导出时，已经将BarchNorm2d和Conv2d融合在了一起，所以不会显示。
 
 ##### （2）reshape框架
