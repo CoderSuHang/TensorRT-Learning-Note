@@ -388,11 +388,13 @@
         * 一般用来定义一个权重，比如conv的w和b
           * (dims是repeated类型，意味着是数组) 
           * (raw_data是bytes类型)
-        * ![image-20240426113840375](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426113840375.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/731c502d-4dbb-41d3-87bc-e93ae485522a)
+
       * ValueInfoProto（描述的是input/output信息）
         * 一般用来定义网络的input/output 
           * (会根据input/output的type来附加属性)
-        * ![image-20240426113934915](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426113934915.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8ea8c057-a244-43c4-9687-a707ce00198f)
+
 
 ##### （2）根据onnx中的Proto信息，创建onnx
 
