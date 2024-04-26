@@ -1,4 +1,4 @@
-### 3.1 TensorRT简介
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e036cade-789d-4854-99ca-85f44baf8568)### 3.1 TensorRT简介
 
 “NVIDIA TensorR, an **SDK** for **high-performance** deep learning **inference**, includes a deep  learning inference optimizer and runtime that delivers low latency and high throughput for  inference applications.”
 
@@ -315,13 +315,18 @@
 ##### （2）reshape
 
 * 1、框架结构：
-  * ![image-20240426100801562](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426100801562.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/989780b4-a4eb-4d24-8bd2-180ffcabfc7e)
+
 * 2、代码细节：
-  * ![image-20240426100949439](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426100949439.png)
-  * ![image-20240426101404859](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426101404859.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/589f9cc4-db64-499c-8ade-9a295b2fb3c5)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/de121316-013a-4315-b9e5-226da9cdabf2)
+
 * 3、可以使用onnx-simplifier来进行onnx的简化（偏工业）：
-  * ![image-20240426103437584](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426103437584.png)
-  * ![image-20240426103559853](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426103559853.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0deb3e9c-5cc8-494b-9669-a46ecf864813)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/eccdac24-37b5-4c62-af42-ee35997d16a1)
+
 
 ##### （3）导出torchvision中提供的框架
 
