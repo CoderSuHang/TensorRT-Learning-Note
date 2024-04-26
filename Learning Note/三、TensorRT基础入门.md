@@ -302,17 +302,84 @@
 
 #### 3.4.3 偏向深度学习的onnx框架
 
-##### （1）cbr框架
+##### （1）cbr
 
 * 1、框架结构：
-  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/336a28d0-2867-4bc9-9452-b484a10e890f)
-
+  * ![image-20240424203921741](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424203921741.png)
 * 2、代码细节：
-  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/19d2275f-0c09-4e4e-b325-1ecdc662c229)
-
+  * ![image-20240424204029433](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240424204029433.png)
   * 由于代码中给定了BatchNorm2d，但是在框架中并没有显示，是因为在onnx导出时，已经将BarchNorm2d和Conv2d融合在了一起，所以不会显示。
 
-##### （2）reshape框架
+##### （2）reshape
+
+* 1、框架结构：
+  * ![image-20240426100801562](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426100801562.png)
+* 2、代码细节：
+  * ![image-20240426100949439](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426100949439.png)
+  * ![image-20240426101404859](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426101404859.png)
+* 3、可以使用onnx-simplifier来进行onnx的简化（偏工业）：
+  * ![image-20240426103437584](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426103437584.png)
+  * ![image-20240426103559853](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426103559853.png)
+
+##### （3）导出torchvision中提供的框架
+
+* 1、代码细节：
+  * 设置模型选择选项：
+    * ![image-20240426104205092](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426104205092.png)
+  * 指定导出模型：
+    * ![image-20240426104238923](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426104238923.png)
+* 2、模型结构
+  * 可以导出自行学习，模型较大，这里不再展示。
+
+#### 3.4.4 剖析onnx架构并理解ProtoBuf
+
+##### （1）ONNX简介
+
+* ONNX是一种神经网络的格式，采用Protobuf二进制形式进行序列化模型。
+  * Protobuf: 全称叫做Protocal Buffer。是Google提出来的一套表示和序列化数据的机制
+  * Protobuf会根据用于定义的数据结构来进行序列化存储
+* 同理，我们可以根据官方提供的数据结构信息，去修改或者创建onnx
+  * 查看网址：
+    * [onnx/onnx/onnx.in.proto at main · onnx/onnx (github.com)](https://github.com/onnx/onnx/blob/main/onnx/onnx.in.proto)
+    * 里面包含了onnx的protobuf数据格式
+* onnx中的组织架构：
+  * ModelProto（描述的是整个模型的信息）
+    * 一般用来定义模型的全局信息，比如opset
+      * (graph并不是repeated，所以一个model对应一个graph)
+    * ![image-20240426115128690](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426115128690.png)
+    * GraphProto（描述的是整个网络的信息）
+      * 一般用来定义一个网络。包括
+        * input/output(input/output是repeated，所以是数组)
+        * initializer (initializer是repeated，所以是数组)
+        * node (node是repeated，所以是数组) 
+      * ![image-20240426114146566](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426114146566.png)
+      * ![image-20240426112357118](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426112357118.png)
+      * NodeProto（描述的是各个计算节点，比如conv，liner）
+        * 一般用来定义一个计算节点，比如conv, linear
+          * (input是repeated类型，意味着是数组) 
+          * (output是repeated类型，意味着是数组) 
+          * (attribute有一个自己的Proto) 
+            * 一般用来定义一个node的属性。比如说kernel size
+              *  ( 比较常见的方式就是把(key, value)传入Proto，之后 
+                * name = key
+                * i         = value 
+              * )
+            * ![image-20240426114752288](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426114752288.png)
+            * ![image-20240426114651121](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426114651121.png)
+          * (op_type需要严格根据onnx所提供的Operators写)
+            *  https://github.com/onnx/onnx/blob/main/docs/Operators.md
+            * ![image-20240426114545797](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426114545797.png)
+      * TensorProto（描述的是tensor的信息，主要包括权重）
+        * 一般用来定义一个权重，比如conv的w和b
+          * (dims是repeated类型，意味着是数组) 
+          * (raw_data是bytes类型)
+        * ![image-20240426113840375](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426113840375.png)
+      * ValueInfoProto（描述的是input/output信息）
+        * 一般用来定义网络的input/output 
+          * (会根据input/output的type来附加属性)
+        * ![image-20240426113934915](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426113934915.png)
+
+##### （2）根据onnx中的Proto信息，创建onnx
 
 * 
 
