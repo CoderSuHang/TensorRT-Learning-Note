@@ -355,14 +355,17 @@
   * ModelProto（描述的是整个模型的信息）
     * 一般用来定义模型的全局信息，比如opset
       * (graph并不是repeated，所以一个model对应一个graph)
-    * ![image-20240426115128690](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426115128690.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ee4e17d3-8357-4a0d-a654-a0ae388c7af6)
+
     * GraphProto（描述的是整个网络的信息）
       * 一般用来定义一个网络。包括
         * input/output(input/output是repeated，所以是数组)
         * initializer (initializer是repeated，所以是数组)
         * node (node是repeated，所以是数组) 
-      * ![image-20240426114146566](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426114146566.png)
-      * ![image-20240426112357118](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426112357118.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8cfb4c6d-5846-4d42-830b-4aaa5b1dd4a1)
+
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/745a6ed1-e97d-4c3e-b927-3dd2ac3d417d)
+
       * NodeProto（描述的是各个计算节点，比如conv，liner）
         * 一般用来定义一个计算节点，比如conv, linear
           * (input是repeated类型，意味着是数组) 
