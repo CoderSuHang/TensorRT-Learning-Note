@@ -332,9 +332,11 @@
 
 * 1、代码细节：
   * 设置模型选择选项：
-    * ![image-20240426104205092](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426104205092.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3f67c99b-f623-4d33-9396-211fcd08aaa7)
+
   * 指定导出模型：
-    * ![image-20240426104238923](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426104238923.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b3305c0c-6529-46ac-9bc5-c5fcafe9ecd8)
+
 * 2、模型结构
   * 可以导出自行学习，模型较大，这里不再展示。
 
