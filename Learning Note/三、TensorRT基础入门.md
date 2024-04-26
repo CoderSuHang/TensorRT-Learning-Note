@@ -376,11 +376,14 @@
                 * name = key
                 * i         = value 
               * )
-            * ![image-20240426114752288](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426114752288.png)
-            * ![image-20240426114651121](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426114651121.png)
+            * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ba2f4f20-6230-42f9-9f3d-a0769a5e28fd)
+
+            * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/89088ba8-f013-41ca-b099-f42e1bd23706)
+
           * (op_type需要严格根据onnx所提供的Operators写)
             *  https://github.com/onnx/onnx/blob/main/docs/Operators.md
-            * ![image-20240426114545797](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240426114545797.png)
+            * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ccff9bdb-0a41-4b57-a435-255d38f29dcb)
+
       * TensorProto（描述的是tensor的信息，主要包括权重）
         * 一般用来定义一个权重，比如conv的w和b
           * (dims是repeated类型，意味着是数组) 
