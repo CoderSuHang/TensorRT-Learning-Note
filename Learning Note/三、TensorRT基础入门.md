@@ -396,9 +396,11 @@
         * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8ea8c057-a244-43c4-9687-a707ce00198f)
 
 
-##### （2）根据onnx中的Proto信息，创建onnx
+##### （2）创建Linear网络
 
-
-* 20240501
+* Linear网络可参考4个算子的运算：
+  * y = (a * x) + b
+  * ![image-20240505163502896](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240505163502896.png)
+* 要将上述4个算子运算，需先创建4个算子的数据结构，因此分别对【】
 
 ### 3.5 初步使用TensorRT
