@@ -1,5 +1,3 @@
-![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e036cade-789d-4854-99ca-85f44baf8568)
-问题
 ### 3.1 TensorRT简介
 
 “NVIDIA TensorR, an **SDK** for **high-performance** deep learning **inference**, includes a deep  learning inference optimizer and runtime that delivers low latency and high throughput for  inference applications.”
