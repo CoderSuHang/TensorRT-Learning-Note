@@ -401,7 +401,8 @@
 * Linear网络可参考4个算子的运算：
 
   * y = (a * x) + b
-  * ![image-20240505163502896](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240505163502896.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9ec794ff-9cf0-4736-be1a-e7a33656d76e)
+
 
 * 1、要将上述4个算子运算，需先创建4个算子的数据结构，因此分别对【a，x，b，y】创建 TensorProto（也是ValueProto）
 
@@ -425,7 +426,8 @@
   * 注意：输入的第一个参数要与opset列表内容一致：
 
     * [onnx/docs/Operators.md at main · onnx/onnx (github.com)](https://github.com/onnx/onnx/blob/main/docs/Operators.md)
-    * ![image-20240506153545906](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506153545906.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/1716eb81-0d48-4b85-945f-7251b5538163)
+
 
 * 3、创建节点连接的网络：
 
@@ -434,7 +436,8 @@
         graph = helper.make_graph([mul, add], 'sample-linear', [a, x, b], [y])
     ```
 
-  * ![image-20240506154002768](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506154002768.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/38139894-8d80-4ff5-b50c-f4e0f732dc55)
+
 
 * 4、创建Model，只需要将graph参数传入即可：
 
@@ -464,7 +467,8 @@
 
 * 1、网络结构：
 
-  * ![image-20240506155747416](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506155747416.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/002f00ff-e60c-409a-a48a-5ad6e221762c)
+
 
 * 2、给定全局参数：
 
@@ -481,7 +485,8 @@
         output_shape   = [input_batch, output_channel, 1, 1]
     ```
 
-  * ![image-20240506162138655](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506162138655.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c8124291-f9a2-4e0b-b2d5-8ce76d7a6204)
+
 
     * input_shape：[B, C, H, W]
     * output_shape：[B, C, 1, 1]
@@ -504,7 +509,8 @@
                 output_shape)
     ```
 
-  * ![image-20240506162455321](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506162455321.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3be7b34a-2e79-4f3b-8279-a9861bfea58e)
+
 
 * 4、创建第1个Conv节点：
 
@@ -551,18 +557,21 @@
 
   * 创建Conv节点输入量有3个：
 
-    * ![image-20240506163333422](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506163333422.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4d83a4e8-1b5d-48c1-beea-0d8e196ea627)
+
       * Input（上一个）；
       * Conv1_weight；
       * Conv1_bias。
 
   * 其中Conv1_weight 和 Conv1_bais 需要用 Initializer 创建各自的权重：
 
-    * ![image-20240506163239058](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506163239058.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d0682fc2-c3e3-4a32-a090-cc9e19f52e8f)
+
 
   * 输出除了outputs，还要分配 kernel_shape 和 pads：
 
-    * ![image-20240506163353808](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506163353808.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/fb81f542-f0b0-48ca-a0c2-efee08f75abc)
+
 
 * 5、创建第1个BatchNorm节点：
 
