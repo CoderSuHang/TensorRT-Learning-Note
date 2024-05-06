@@ -626,9 +626,11 @@
   * BH节点输入信息除了 Conv1_output ，还需要BH公式中的其他参数，包括 scale，bias，mean，var：
 
     * 这些参数和创建 weight 和 bias 一样，通过 Initializer 并实现：
-      * ![image-20240506164702694](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506164702694.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/1df2cf09-5c49-4169-9078-0c7d8e6ae6d0)
+
     * scale，bias，mean，var 的权重信息由随机生成获得：
-      * ![image-20240506164742363](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506164742363.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/353db4ae-63db-42a9-bef1-02dd021c20f7)
+
 
 * 6、创建 Relu 节点，AveragePool节点：
 
@@ -727,7 +729,8 @@
         )
     ```
 
-  * ![image-20240506170204666](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506170204666.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e46a3cce-a77e-4eaa-bd90-23040515c512)
+
 
 * 9、创建Model，保存验证：
 
@@ -794,7 +797,8 @@
                     \n\toutputs:   {}".format(node.name, node.op_type, node.input, node.output))
     ```
 
-  * ![image-20240506170612902](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506170612902.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/445abe20-a8d6-460b-a592-4184a7d3bc63)
+
 
   * 也可以编写打印函数调用，参考【parser.py】和【parser_onnx_cbr.py】
 
