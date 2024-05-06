@@ -804,7 +804,236 @@
 
 #### 3.4.5 ONNX注册算子的方法
 
-##### （1）xxx
+经常会遇到 pytorch 导出 onnx 不成功（不兼容）的时候，需要进行解决
 
+##### （1）转换swin-tiny时候出现的不兼容op的例子
+
+![image-20240506194152570](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506194152570.png)
+
+##### （2）当出现导出onnx不成功的时候，我们需要考虑的事情
+
+难易度从低到高：
+
+* 【⭐			】修改opset的版本（opset向上升级调高到兼容的部分）
+  * 查看不支持的算子在新的opset中是否被支持（可以参考onnx的文档）
+    * [onnx/docs/Operators.md at main · onnx/onnx (github.com)](https://github.com/onnx/onnx/blob/main/docs/Operators.md)
+  *  如果不考虑自己搭建plugin的话，也需要看看onnx-trt中这个算子是否被支持
+    * 因为onnx是一种图结构表示，并不包含各个算子的实现。除非我们是要在onnx-runtime上测试， 否则我们更看重onnx-trt中这个算子的支持情况
+  * 看官方文档
+* 【⭐⭐		】替换pytorch中的算子组合
+  * 把某些计算替换成onnx可以识别的
+* 【⭐⭐⭐	】在pytorch登记onnx中某些算子
+  * 有可能onnx中有支持，但没有被登记（Asinh为例，虽然onnx支持，但是没有登记）
+* 【⭐⭐⭐⭐】直接修改onnx，创建plugin
+  * 使用onnx-surgeon
+  * 一般是用在加速某些算子上使用
+
+
+
+##### （3）unsupported asinh算子
+
+![image-20240506195414265](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506195414265.png)
+
+* 1、先去寻找官方文档：
+
+  * ![image-20240506195954430](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506195954430.png)
+  * 从onnx支持的算子里面我们可以知道自从opset9开始asinh就已经被支持了
+  * 所以可以知道，问题是出现在PyTorch与onnx之间没有建立asinh的映射，需要建立这个映射
+
+* 2、建立映射
+
+  * 寻找pytorch到onnx中的注册算子【官方文档】
+
+    * 这里我的电脑onnx官方注册算子文档与教程不一致：
+
+      * E:\Anaconda\envs\yolov5\Lib\site-packages\torch\onnx
+      * ![image-20240506202744208](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506202744208.png)
+
+    * 以sub算子为例：
+
+      * ```python
+        @_onnx_symbolic("aten::reshape_as")
+        @_beartype.beartype
+        def sub(g: jit_utils.GraphContext, self, other, alpha=None):
+            if alpha and symbolic_helper._scalar(symbolic_helper._maybe_get_scalar(alpha)) != 1:
+                other = g.op("Mul", other, alpha)
+            return g.op("Sub", self, other)
+        ```
+
+      * aten是"a Tensor Library"的缩写，是一个实现张量运算的C++库
+
+      *  aten::xxx
+
+        * c++的一个namespace
+        * pytorch的很多算子的底层都是在aten这个命名空间下进行以c++进行实现的
+
+      * onnx_symblic
+
+        * 负责绑定
+        * 绑定pytorch中的算子与aten命名空间下的算子的一一对应
+
+  * 【算子注册方法1】那么我们就可以按照类似的方法去自己创建这个联系
+
+    * 创建symbolic符号函数，从而创建一个onnx operator
+
+      * ```python
+        # 创建一个asinh算子的symblic，符号函数，用来登记
+        # 符号函数内部调用g.op, 为onnx计算图添加Asinh算子
+        #   g: 就是graph，计算图
+        #   也就是说，在计算图中添加onnx算子
+        #   由于我们已经知道Asinh在onnx是有实现的，所以我们只要在g.op调用这个op的名字就好了
+        #   symblic的参数需要与Pytorch的asinh接口函数的参数对齐
+        #       def asinh(input: Tensor, *, out: Optional[Tensor]=None) -> Tensor: ...
+        def asinh_symbolic(g, input, *, out=None):
+            return g.op("Asinh", input)
+        
+        # 在这里，将asinh_symbolic这个符号函数，与PyTorch的asinh算子绑定。也就是所谓的“注册算子”
+        # asinh是在名为aten的一个c++命名空间下进行实现的
+        ```
+
+    * 注册这个onnx operator，并让它与底层的aten中的asinh实现绑定
+
+      * ```python
+        register_custom_op_symbolic('aten::asinh', asinh_symbolic, 12)
+        ```
+
+      * aten::asinh：底层的C++函数实现
+
+      * asinh_symbolic：symbolic符号函数
+
+      * 12：代表第几个opset开始支持
+
+    * 这里容易混淆的地方：
+
+      * register_op中的第一个参数是PyTorch中的算子名字: aten::asinh
+      * g.op中的第一个参数是onnx中的算子名字: Asinh
+
+    * 运行注册好的【sample_asinh_register.py】
+
+      * ![image-20240506204041108](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506204041108.png)
+      * ![image-20240506204237097](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506204237097.png)
+
+  * 【算子注册方法2】
+
+    * ```python
+      # 另外一个写法
+      #    这个是类似于torch/onnx/symbolic_opset*.py中的写法
+      #    通过torch._internal中的registration来注册这个算子，让这个算子可以与底层C++实现的aten::asinh绑定
+      #    一般如果这么写的话，其实可以把这个算子直接加入到torch/onnx/symbolic_opset*.py中
+      @_onnx_symbolic('aten::asinh')
+      def asinh_symbolic(g, input, *, out=None):
+          return g.op("Asinh", input)
+      ```
+
+##### （4）自创算子（未注册）
+
+* 1、创建一个叫CustomOp的类作为算子：
+
+  * 这个算子可以把0以下的数据的数据变成0（只保存0以上的），并做了一个除法运算
+
+  * ```python
+    class CustomOp(torch.autograd.Function):
+        @staticmethod
+        def forward(ctx, x: torch.Tensor) -> torch.Tensor:
+            ctx.save_for_backward(x)
+            x = x.clamp(min=0) # 做一个截取
+            return x / (1 + torch.exp(-x))
+    ```
+
+* 2、在Model中导入算子：
+
+  * ```python
+    customOp = CustomOp.apply
+    
+    class Model(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+        
+        def forward(self, x):
+            x = customOp(x)
+            return x
+    ```
+
+* 3、运行结果
+
+  * ![image-20240506205654097](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506205654097.png)
+  * ![image-20240506210037932](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506210037932.png)
+    * 每一个节点都被跟踪，这样对于网络可视化并不友好，需要简化
+
+##### （5）自创算子（注册）
+
+* 1、创建一个叫CustomOp的类作为算子：
+
+  * 加入注册symbolic
+
+  * ![image-20240506210653352](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506210653352.png)
+
+    * 自己定义一个名称空间：
+      * custom_domain::customOp2
+
+  * ```python
+    class CustomOp(torch.autograd.Function):
+        @staticmethod # 静态的注册方法
+        def symbolic(g: torch.Graph, x: torch.Value) -> torch.Value:
+            return g.op("custom_domain::customOp2", x)
+    
+        @staticmethod
+        def forward(ctx, x: torch.Tensor) -> torch.Tensor:
+            ctx.save_for_backward(x)
+            x = x.clamp(min=0)
+            return x / (1 + torch.exp(-x))
+    ```
+
+* 2、运行结果：
+
+  * ![image-20240506210555912](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506210555912.png)
+  * ![image-20240506210602504](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506210602504.png)
+
+
+
+##### （6）DeformConv2d
+
+* 1、未注册前【sample_deformable_conv.py】：
+
+  * 输入输出没问题，但是导出是出问题：
+    * ![image-20240506211404734](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506211404734.png)
+    * 原因是算子不兼容
+
+* 2、按照之前方法注册算子：
+
+  * ```python
+    # 注意
+    #   这里需要把args的各个参数的类型都指定
+    #   这里还没有实现底层对deform_conv2d的实现
+    #   具体dcn的底层实现是在c++完成的，这里会在后面的TensorRT plugin中回到这里继续讲这个案例
+    #   这里先知道对于不支持的算子，onnx如何导出即可
+    @parse_args("v", "v", "v", "v", "v", "i", "i", "i", "i", "i","i", "i", "i", "none")
+    def dcn_symbolic(
+            g,
+            input,
+            weight,
+            offset,
+            mask,
+            bias,
+            stride_h, stride_w,
+            pad_h, pad_w,
+            dil_h, dil_w,
+            n_weight_grps,
+            n_offset_grps,
+            use_mask):
+        return g.op("custom::deform_conv2d", input, offset)
+    
+    register_custom_op_symbolic("torchvision::deform_conv2d", dcn_symbolic, 12)
+    ```
+
+  * ![image-20240506211707743](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506211707743.png)
+
+* 3、输出
+
+  * ![image-20240506211802692](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506211802692.png)
+
+#### 3.4.6 ONNX graph surgeon
+
+xxxx
 
 ### 3.5 初步使用TensorRT
