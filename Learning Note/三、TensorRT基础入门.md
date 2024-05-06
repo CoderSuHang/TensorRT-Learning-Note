@@ -808,7 +808,8 @@
 
 ##### （1）转换swin-tiny时候出现的不兼容op的例子
 
-![image-20240506194152570](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506194152570.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c8890c54-ba61-4884-8bb4-84322ae23251)
+
 
 ##### （2）当出现导出onnx不成功的时候，我们需要考虑的事情
 
@@ -832,11 +833,13 @@
 
 ##### （3）unsupported asinh算子
 
-![image-20240506195414265](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506195414265.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3ace20b7-af7b-4012-9f9e-26057a77f036)
+
 
 * 1、先去寻找官方文档：
 
-  * ![image-20240506195954430](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506195954430.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/99b07b5c-a31d-48e5-8ac5-c15ce8fc138f)
+
   * 从onnx支持的算子里面我们可以知道自从opset9开始asinh就已经被支持了
   * 所以可以知道，问题是出现在PyTorch与onnx之间没有建立asinh的映射，需要建立这个映射
 
@@ -847,7 +850,8 @@
     * 这里我的电脑onnx官方注册算子文档与教程不一致：
 
       * E:\Anaconda\envs\yolov5\Lib\site-packages\torch\onnx
-      * ![image-20240506202744208](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506202744208.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/22e92266-e4b5-4bce-bf3f-006bf7d81049)
+
 
     * 以sub算子为例：
 
@@ -910,8 +914,10 @@
 
     * 运行注册好的【sample_asinh_register.py】
 
-      * ![image-20240506204041108](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506204041108.png)
-      * ![image-20240506204237097](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506204237097.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/be8dd616-243f-47e9-bd61-9a929815fb64)
+
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/48834b81-cedc-435f-af21-90c824de01e9)
+
 
   * 【算子注册方法2】
 
@@ -956,8 +962,10 @@
 
 * 3、运行结果
 
-  * ![image-20240506205654097](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506205654097.png)
-  * ![image-20240506210037932](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506210037932.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/944b720f-397c-4e64-aa86-f590a6ab3f50)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/599e6a99-09f6-42bf-8621-c8c31c3d83c3)
+
     * 每一个节点都被跟踪，这样对于网络可视化并不友好，需要简化
 
 ##### （5）自创算子（注册）
