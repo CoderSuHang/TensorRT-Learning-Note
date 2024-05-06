@@ -974,7 +974,8 @@
 
   * 加入注册symbolic
 
-  * ![image-20240506210653352](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506210653352.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e820d3c8-5913-4c6e-9f92-917a3192f817)
+
 
     * 自己定义一个名称空间：
       * custom_domain::customOp2
@@ -994,8 +995,10 @@
 
 * 2、运行结果：
 
-  * ![image-20240506210555912](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506210555912.png)
-  * ![image-20240506210602504](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506210602504.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/459958da-d297-47a2-9ee1-5bdadf329804)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/359749bb-fa7f-4a46-b058-e1dfea1fdc53)
+
 
 
 
