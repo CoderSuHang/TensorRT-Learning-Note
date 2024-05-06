@@ -1007,7 +1007,8 @@
 * 1、未注册前【sample_deformable_conv.py】：
 
   * 输入输出没问题，但是导出是出问题：
-    * ![image-20240506211404734](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506211404734.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2c3fd6a7-218d-4fb2-ba06-c968fd1de9fc)
+
     * 原因是算子不兼容
 
 * 2、按照之前方法注册算子：
@@ -1037,11 +1038,12 @@
     register_custom_op_symbolic("torchvision::deform_conv2d", dcn_symbolic, 12)
     ```
 
-  * ![image-20240506211707743](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506211707743.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d2b96eaf-f073-4417-a4da-eadb18a7a4a2)
 
 * 3、输出
 
-  * ![image-20240506211802692](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240506211802692.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8d9ed40b-4e26-4974-b391-7e5ec950a746)
+
 
 #### 3.4.6 ONNX graph surgeon
 
