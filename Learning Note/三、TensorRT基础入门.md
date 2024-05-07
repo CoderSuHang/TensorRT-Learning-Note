@@ -1047,6 +1047,212 @@
 
 #### 3.4.6 ONNX graph surgeon
 
-xxxx
+之前的案例我们都是用```onnx.helper```的API创建修改onnx，但是在TensorRT中也存在修改onnx的工具包：onnx-graph-surgon
+
+##### （1）ONNX graph surgeon安装
+
+* 创建/修改onnx的工具。在TensorRT/tools中可以安装
+
+  * 更加方便的添加/修改onnx节点
+  * 更加方便的修改子图
+  * 更加方便的替换算子
+  * (底层一般是用的onnx.helper，但是给做了一些封装)
+  * ![image-20240507101544498](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507101544498.png)
+  * ![image-20240507101605001](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507101605001.png)
+
+* 安装指令：
+
+  * ```python
+    python3 -m pip install onnx_graphsurgeon --index-url https://pypi.ngc.nvidia.com
+    ```
+
+##### （2）Intermediate Representation不同平台中的对比
+
+* 1、onnx ProtoBuf中的IR表示：
+  * ![image-20240507102315554](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507102315554.png)
+* 2、onnx graph surgeon中的IR表示：
+  * ![image-20240507102335189](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507102335189.png)
+  * gs帮助我们隐藏了很多信息
+  * node的属性以前使用AttributeProto保存， 但是gs中统一用dict来保存
+
+##### （2）Intermediate Representation不同平台创建onnx的对比
+
+* 1、使用原生的onnx.hepler创建onnx：
+  * ![image-20240507103005246](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507103005246.png)
+* 2、使用原生的gs创建onnx
+  * ![image-20240507103032012](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507103032012.png)
+
+
+
+##### （3）onnx graph surgeon其他用法
+
+* 1、gs可以自定义一些函数去创建onnx，使整个onnx的创建更加方便（我们完全可以自己创建一些算子在这里使用）：
+  * 1.在graph注册调用的函数（类似于onnx中symbolic符号函数来注册算子一样）
+    * ![image-20240507103425780](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507103425780.png)
+  * 2.设计网络架构
+    * ![image-20240507103443288](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507103443288.png)
+    * ![image-20240507103452108](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507103452108.png)
+* 2、gs可以方便我们把整个网络中的一些子图给“挖”出来，以此来分析细节（一般配合polygraphy(*)使用，去寻找量化掉精度严重的子图)
+  * 以swin transformer类型的网络架构来看：
+    * ![image-20240507103949767](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507103949767.png)
+  * 可以用gs挖出整个网络中的小部分，例如LayerNorm部分和MHSA部分：
+    * LayerNorm部分：
+      * ![image-20240507104029345](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104029345.png)
+      * ![image-20240507104036876](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104036876.png)
+    * MHSA部分：
+      * ![image-20240507104107600](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104107600.png)
+      * ![image-20240507104117178](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104117178.png)
+* 3、可以使用gs来替换算子或者创建算子（gs中最重要的一个特点）
+  * 比如原来的网络：
+    * ![image-20240507104209660](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104209660.png)
+  * 用gs自己创建一个算子，把想要绑定的算子结合起来另外一个原生算子，提交给TensorRT plugin实现算子加速：
+    * ![image-20240507104402822](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104402822.png)
+    * ![image-20240507104410864](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104410864.png)
+
+##### （4）gs创建conv网络
+
+* ```python
+  import onnx_graphsurgeon as gs
+  import numpy as np
+  import onnx
+  
+  # onnx_graph_surgeon(gs)中的IR会有以下三种结构
+  # Tensor
+  #    -- 有两种类型
+  #       -- Variable:  主要就是那些不到推理不知道的变量
+  #       -- Constant:  不用推理时，而在推理前就知道的变量
+  # Node
+  #    -- 跟onnx中的NodeProto差不多
+  # Graph
+  #    -- 跟onnx中的GraphProto差不多
+  
+  def main() -> None:
+      input = gs.Variable(
+              name  = "input0",
+              dtype = np.float32,
+              shape = (1, 3, 224, 224))
+  
+      weight = gs.Constant(
+              name  = "conv1.weight",
+              values = np.random.randn(5, 3, 3, 3))
+  
+      bias   = gs.Constant(
+              name  = "conv1.bias",
+              values = np.random.randn(5))
+      
+      output = gs.Variable(
+              name  = "output0",
+              dtype = np.float32,
+              shape = (1, 5, 224, 224))
+  
+      node = gs.Node(
+              op      = "Conv",
+              inputs  = [input, weight, bias],
+              outputs = [output],
+              attrs   = {"pads":[1, 1, 1, 1]})
+  
+      graph = gs.Graph(
+              nodes   = [node],
+              inputs  = [input],
+              outputs = [output])
+  
+      model = gs.export_onnx(graph)
+  
+      onnx.save(model, "../models/sample-conv.onnx")
+  
+  
+  
+  # 使用onnx.helper创建一个最基本的ConvNet
+  #         input (ch=3, h=64, w=64)
+  #           |
+  #          Conv (in_ch=3, out_ch=32, kernel=3, pads=1)
+  #           |
+  #         output (ch=5, h=64, w=64)
+  
+  if __name__ == "__main__":
+      main()
+  ```
+
+* ![image-20240507153309394](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507153309394.png)
+
+##### （5）gs自定义一些函数网络
+
+* ```python
+  import onnx_graphsurgeon as gs
+  import numpy as np
+  import onnx
+  
+  #####################在graph注册调用的函数########################
+  @gs.Graph.register()
+  def add(self, a, b):
+      return self.layer(op="Add", inputs=[a, b], outputs=["add_out_gs"])
+  
+  @gs.Graph.register()
+  def mul(self, a, b):
+      return self.layer(op="Mul", inputs=[a, b], outputs=["mul_out_gs"])
+  
+  # 做矩阵乘法
+  @gs.Graph.register()
+  def gemm(self, a, b, trans_a=False, trans_b=False):
+      # attrs是属性，用字典类型保存，用于做矩阵乘法时表示哪一个矩阵做转秩
+      attrs = {"transA": int(trans_a), "transB": int(trans_b)}
+      return self.layer(op="Gemm", inputs=[a, b], outputs=["gemm_out_gs"], attrs=attrs) 
+  
+  @gs.Graph.register()
+  def relu(self, a):
+      return self.layer(op="Relu", inputs=[a], outputs=["act_out_gs"])
+  
+  #####################通过注册的函数进行创建网络########################
+  #          input (64, 64)
+  #            |
+  #           gemm (constant tensor A(64, 32))
+  #            |
+  #           add  (constant tensor B(64, 32))
+  #            |
+  #           relu
+  #            |
+  #           mul  (constant tensor C(64, 32))
+  #            |
+  #           add  (constant tensor D(64, 32))
+  
+  # 初始化网络结构
+  graph    = gs.Graph(opset=12)
+  
+  # 初始化网络需要用的参数
+  consA    = gs.Constant(name="consA", values=np.random.randn(64, 32))
+  consB    = gs.Constant(name="consB", values=np.random.randn(64, 32))
+  consC    = gs.Constant(name="consC", values=np.random.randn(64, 32))
+  consD    = gs.Constant(name="consD", values=np.random.randn(64, 32))
+  input0   = gs.Variable(name="input0", dtype=np.float32, shape=(64, 64))
+  
+  # 设计网络架构
+  gemm0    = graph.gemm(input0, consA, trans_b=True)
+  relu0    = graph.relu(*graph.add(*gemm0, consB))
+  mul0     = graph.mul(*relu0, consC)
+  output0  = graph.add(*mul0, consD)
+  
+  # 设置网络的输入输出
+  graph.inputs = [input0]
+  graph.outputs = output0
+  
+  for out in graph.outputs:
+      out.dtype = np.float32
+  
+  # 保存模型
+  onnx.save(gs.export_onnx(graph), "../models/sample-complicated-graph1.onnx")
+  ```
+
+* ![image-20240507153228300](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507153228300.png)
+
+##### （6）gs挖出整个网络中的小部分
+
+* 1、针对xxx需要截取LayerNormalization部分和selfattention（MHSA）部分截取出来：
+  * LayerNormalization部分：
+    * ![image-20240507164606324](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507164606324.png)
+  * selfattention（MHSA）部分：
+    * ![image-20240507164618623](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507164618623.png)
+* 2、网络结构已经从3.6models中的opset12的onnx找到。已经更新到了3.5models中。
+
+
 
 ### 3.5 初步使用TensorRT
