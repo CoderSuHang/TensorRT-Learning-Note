@@ -1120,10 +1120,12 @@
     * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f1d1ee7e-7039-4230-bfdb-f1cef9157a13)
 
   * 用gs自己创建一个算子，把想要绑定的算子结合起来另外一个原生算子，提交给TensorRT plugin实现算子加速：
-    * ![image-20240507104402822](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104402822.png)
-    * ![image-20240507104410864](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104410864.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/586223ce-89bc-46b8-8524-969cbb4cf4c9)
 
-##### （4）gs创建conv网络
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6f911c44-85d9-4ccb-a44f-27d04c356208)
+
+
+##### （5）gs创建conv网络
 
 * ```python
   import onnx_graphsurgeon as gs
