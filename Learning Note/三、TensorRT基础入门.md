@@ -1189,7 +1189,7 @@
       main()
   ```
 
-* ![image-20240507153309394](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507153309394.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9e3877ef-5e8d-4516-9c47-e3ec7c36760d)
 
 ##### （5）gs自定义一些函数网络
 
