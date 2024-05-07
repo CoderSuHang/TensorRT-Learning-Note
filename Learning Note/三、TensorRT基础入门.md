@@ -1,4 +1,4 @@
-### 3.1 TensorRT简介9
+### 3.1 TensorRT简介10
 
 “NVIDIA TensorR, an **SDK** for **high-performance** deep learning **inference**, includes a deep  learning inference optimizer and runtime that delivers low latency and high throughput for  inference applications.”
 
