@@ -1265,9 +1265,11 @@
 
 * 1、针对xxx需要截取LayerNormalization部分和selfattention（MHSA）部分截取出来：
   * LayerNormalization部分：
-    * ![image-20240507164606324](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507164606324.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3fce0f6b-891b-43a2-b033-fa2d91fb96ed)
+
   * selfattention（MHSA）部分：
-    * ![image-20240507164618623](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507164618623.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9de9f5b2-497d-409d-bbcd-ab8cbd86d340)
+
 * 2、网络结构已经从3.6models中的opset12的onnx找到。已经更新到了3.5models中。
 
 
