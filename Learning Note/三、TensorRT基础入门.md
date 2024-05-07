@@ -1057,8 +1057,10 @@
   * 更加方便的修改子图
   * 更加方便的替换算子
   * (底层一般是用的onnx.helper，但是给做了一些封装)
-  * ![image-20240507101544498](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507101544498.png)
-  * ![image-20240507101605001](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507101605001.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b72115dd-2a93-4800-99a1-7492917ec3b5)
+
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5220a3cd-dc48-4a19-a884-8021857f22a0)
+
 
 * 安装指令：
 
@@ -1069,22 +1071,25 @@
 ##### （2）Intermediate Representation不同平台中的对比
 
 * 1、onnx ProtoBuf中的IR表示：
-  * ![image-20240507102315554](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507102315554.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6af87d1f-2603-46b0-aba1-278c3e55e4a0)
+
 * 2、onnx graph surgeon中的IR表示：
-  * ![image-20240507102335189](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507102335189.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7df0207e-418f-44ac-8ef7-83151cb1588f)
+
   * gs帮助我们隐藏了很多信息
   * node的属性以前使用AttributeProto保存， 但是gs中统一用dict来保存
 
-##### （2）Intermediate Representation不同平台创建onnx的对比
+##### （3）Intermediate Representation不同平台创建onnx的对比
 
 * 1、使用原生的onnx.hepler创建onnx：
-  * ![image-20240507103005246](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507103005246.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a89e0bd1-8608-44b6-9291-8560e51ab315)
+
 * 2、使用原生的gs创建onnx
-  * ![image-20240507103032012](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507103032012.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/67353c0a-b03b-4b91-bacd-eaae5753df62)
 
 
 
-##### （3）onnx graph surgeon其他用法
+##### （4）onnx graph surgeon其他用法
 
 * 1、gs可以自定义一些函数去创建onnx，使整个onnx的创建更加方便（我们完全可以自己创建一些算子在这里使用）：
   * 1.在graph注册调用的函数（类似于onnx中symbolic符号函数来注册算子一样）
