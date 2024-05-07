@@ -1106,14 +1106,19 @@
 
   * 可以用gs挖出整个网络中的小部分，例如LayerNorm部分和MHSA部分：
     * LayerNorm部分：
-      * ![image-20240507104029345](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104029345.png)
-      * ![image-20240507104036876](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104036876.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/50c4893f-9735-47ee-be21-cb09d0857b8f)
+
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2a03fc31-de57-433f-88a7-8e51889a3ba5)
+
     * MHSA部分：
-      * ![image-20240507104107600](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104107600.png)
-      * ![image-20240507104117178](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104117178.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ca0ae250-9eb9-4a81-bd71-11097104f202)
+
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b1b41679-fe40-46a6-aae2-4bd1ca3f7839)
+
 * 3、可以使用gs来替换算子或者创建算子（gs中最重要的一个特点）
   * 比如原来的网络：
-    * ![image-20240507104209660](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104209660.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f1d1ee7e-7039-4230-bfdb-f1cef9157a13)
+
   * 用gs自己创建一个算子，把想要绑定的算子结合起来另外一个原生算子，提交给TensorRT plugin实现算子加速：
     * ![image-20240507104402822](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104402822.png)
     * ![image-20240507104410864](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104410864.png)
