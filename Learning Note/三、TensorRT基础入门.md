@@ -1093,13 +1093,17 @@
 
 * 1、gs可以自定义一些函数去创建onnx，使整个onnx的创建更加方便（我们完全可以自己创建一些算子在这里使用）：
   * 1.在graph注册调用的函数（类似于onnx中symbolic符号函数来注册算子一样）
-    * ![image-20240507103425780](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507103425780.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/cfe81da8-3a34-4280-92fe-23dc95e3c11c)
+
   * 2.设计网络架构
-    * ![image-20240507103443288](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507103443288.png)
-    * ![image-20240507103452108](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507103452108.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0f07f3f9-1125-4de0-97c3-f54a71bf1d2a)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f2661195-3d1d-424b-ab99-5c74c9ebff5c)
+
 * 2、gs可以方便我们把整个网络中的一些子图给“挖”出来，以此来分析细节（一般配合polygraphy(*)使用，去寻找量化掉精度严重的子图)
   * 以swin transformer类型的网络架构来看：
-    * ![image-20240507103949767](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507103949767.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bc851aac-916f-4ed6-ad9b-6845045e966c)
+
   * 可以用gs挖出整个网络中的小部分，例如LayerNorm部分和MHSA部分：
     * LayerNorm部分：
       * ![image-20240507104029345](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507104029345.png)
