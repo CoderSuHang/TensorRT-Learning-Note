@@ -1191,7 +1191,7 @@
 
 * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9e3877ef-5e8d-4516-9c47-e3ec7c36760d)
 
-##### （5）gs自定义一些函数网络
+##### （6）gs自定义一些函数网络
 
 * ```python
   import onnx_graphsurgeon as gs
@@ -1258,9 +1258,10 @@
   onnx.save(gs.export_onnx(graph), "../models/sample-complicated-graph1.onnx")
   ```
 
-* ![image-20240507153228300](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240507153228300.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/211d7537-9e4d-4956-99a3-41de5837f4b6)
 
-##### （6）gs挖出整个网络中的小部分
+
+##### （7）gs挖出整个网络中的小部分
 
 * 1、针对xxx需要截取LayerNormalization部分和selfattention（MHSA）部分截取出来：
   * LayerNormalization部分：
