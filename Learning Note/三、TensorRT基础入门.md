@@ -1266,9 +1266,11 @@
 * 1、针对xxx需要截取LayerNormalization部分和selfattention（MHSA）部分截取出来：
 
   * LayerNormalization部分：
-    * ![image-20240508150136732](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508150136732.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e7748069-1e11-4225-8bbc-72490600a4ee)
+
   * selfattention（MHSA）部分：
-    * ![image-20240508150221636](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508150221636.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bbc6f6d2-a945-4b99-9f0d-0da1bf41f3d2)
+
 
 * 2、网络结构已经从3.6models中的opset12的onnx找到。已经更新到了3.5models中。
 
@@ -1278,11 +1280,13 @@
 
     * 输入口【374】
 
-      * ![image-20240508205158854](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508205158854.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/83cc54dc-bead-4f40-9a5d-d2c3b5d3b0b9)
+
 
     * 输出口【383】
 
-      * ![image-20240508205256925](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508205256925.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4f13f02a-66b6-4e2c-8ed9-caed4fc41a17)
+
 
     * 打印输入输出
 
@@ -1312,7 +1316,8 @@
             main()
         ```
 
-      * ![image-20240508205406350](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508205406350.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/307c7431-9720-4b9e-adb6-3f780cfb8b2e)
+
 
     * 提取输入输出范围内的子部分：
 
@@ -1352,22 +1357,27 @@
             main()
         ```
 
-      * ![image-20240508210331216](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508210331216.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3ee76cc8-4bf3-4874-bd68-8d944077a3d8)
+
 
   * MHSA部分的输入输出，首先在onnx图中找到它们的输入输出的name：
 
     * 输入口【457】
 
-      * ![image-20240508210840789](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508210840789.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/143801ef-6646-4bd3-9815-0f26d3ee9567)
+
 
     * 输出口【512】
 
-      * ![image-20240508210946004](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508210946004.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/48a21918-c021-4cfa-bfcc-528ff6bc279c)
+
 
     * 由于矩阵乘法中存在权重信息，因此也需要找到：
 
-      * ![image-20240508211244287](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508211244287.png)
-      * ![image-20240508211317087](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508211317087.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c3a2c7a8-e628-4e4f-88e2-484bb2a28f09)
+
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e7226650-b38d-4e00-bc58-00398c86b513)
+
 
     * 打印：
 
@@ -1396,7 +1406,8 @@
             main()
         ```
 
-      * ![image-20240508211608607](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508211608607.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/89bc567e-c443-46fb-a929-775f330fba15)
+
 
     * 提取输入输出范围内的子部分：
 
@@ -1435,12 +1446,14 @@
             main()
         ```
 
-      * ![image-20240508211832684](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508211832684.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/80e9f46f-510a-4209-bddc-d75ecea6492f)
+
 
 ##### （8）使用gs来替换算子或者创建算子
 
 * 1、将网络内部的算子替换：
-  * ![image-20240508212355809](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508212355809.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ecd72e7c-a9d1-4a29-8efe-cf56651a89d1)
+
 * 
 
 
