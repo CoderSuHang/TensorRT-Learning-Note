@@ -1264,13 +1264,186 @@
 ##### （7）gs挖出整个网络中的小部分
 
 * 1、针对xxx需要截取LayerNormalization部分和selfattention（MHSA）部分截取出来：
-  * LayerNormalization部分：
-    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3fce0f6b-891b-43a2-b033-fa2d91fb96ed)
 
+  * LayerNormalization部分：
+    * ![image-20240508150136732](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508150136732.png)
   * selfattention（MHSA）部分：
-    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9de9f5b2-497d-409d-bbcd-ab8cbd86d340)
+    * ![image-20240508150221636](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508150221636.png)
 
 * 2、网络结构已经从3.6models中的opset12的onnx找到。已经更新到了3.5models中。
+
+* 3、打印需要提取部分的输入输出内容：
+
+  * LayerNorm部分的输入输出，首先在onnx图中找到它们的输入输出的name：
+
+    * 输入口【374】
+
+      * ![image-20240508205158854](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508205158854.png)
+
+    * 输出口【383】
+
+      * ![image-20240508205256925](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508205256925.png)
+
+    * 打印输入输出
+
+      * ```python
+        import onnx_graphsurgeon as gs
+        import numpy as np
+        import onnx
+        
+        def load_model(model : onnx.ModelProto):
+            graph = gs.import_onnx(model)
+            print(graph.inputs)
+            print(graph.outputs)
+        
+        def main() -> None:
+            model = onnx.load("../models/swin-tiny.onnx")
+        
+            graph = gs.import_onnx(model)
+            tensors = graph.tensors()
+        
+            # LayerNorm部分
+            print(tensors["374"]) # LN的input1: 1 x 3136 x 128
+            print(tensors["383"]) # LN的输出:   1 x 3136 x 128
+        
+        
+        # 我们想把swin中LayerNorm这一部分单独拿出来
+        if __name__ == "__main__":
+            main()
+        ```
+
+      * ![image-20240508205406350](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508205406350.png)
+
+    * 提取输入输出范围内的子部分：
+
+      * ```python
+        import onnx_graphsurgeon as gs
+        import numpy as np
+        import onnx
+        
+        def load_model(model : onnx.ModelProto):
+            graph = gs.import_onnx(model)
+            print(graph.inputs)
+            print(graph.outputs)
+        
+        def main() -> None:
+            model = onnx.load("../models/swin-tiny.onnx")
+        
+            graph = gs.import_onnx(model)
+            tensors = graph.tensors()
+        
+            # LayerNorm部分
+            print(tensors["374"]) # LN的input1: 1(Batch) x 3136(L=HxW) x 128(Size)
+            print(tensors["383"]) # LN的输出:   1 x 3136 x 128
+        
+            # 重置graph中的输入和输出
+            graph.inputs = [
+                tensors["374"].to_variable(dtype=np.float32, shape=(1, 3136, 128))]
+            graph.outputs = [
+                tensors["383"].to_variable(dtype=np.float32, shape=(1, 3136, 128))]
+            
+            # 清楚输入输出之外的部分
+            graph.cleanup()
+            onnx.save(gs.export_onnx(graph), "../models/swin-subgraph-LN.onnx")
+        
+        
+        # 我们想把swin中LayerNorm这一部分单独拿出来
+        if __name__ == "__main__":
+            main()
+        ```
+
+      * ![image-20240508210331216](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508210331216.png)
+
+  * MHSA部分的输入输出，首先在onnx图中找到它们的输入输出的name：
+
+    * 输入口【457】
+
+      * ![image-20240508210840789](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508210840789.png)
+
+    * 输出口【512】
+
+      * ![image-20240508210946004](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508210946004.png)
+
+    * 由于矩阵乘法中存在权重信息，因此也需要找到：
+
+      * ![image-20240508211244287](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508211244287.png)
+      * ![image-20240508211317087](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508211317087.png)
+
+    * 打印：
+
+      * ```python
+        import onnx_graphsurgeon as gs
+        import numpy as np
+        import onnx
+        
+        def load_model(model : onnx.ModelProto):
+            graph = gs.import_onnx(model)
+            print(graph.inputs)
+            print(graph.outputs)
+        
+        def main() -> None:
+            model = onnx.load("../models/swin-tiny.onnx")
+            # MHSA部分
+            graph = gs.import_onnx(model)
+            tensors = graph.tensors()
+            print(tensors["457"]) # MHSA输入matmul:       64 x 49 x 128
+            print(tensors["5509"])  # MHSA输入matmul的权重: 128 x 384
+            print(tensors["5518"])  # MHSA输出matmul的权重: 128 x 128
+            print(tensors["512"]) # MHSA输出:             64 x 49 x 128
+        
+        # 我们想把swin中LayerNorm这一部分单独拿出来
+        if __name__ == "__main__":
+            main()
+        ```
+
+      * ![image-20240508211608607](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508211608607.png)
+
+    * 提取输入输出范围内的子部分：
+
+      * ```python
+        import onnx_graphsurgeon as gs
+        import numpy as np
+        import onnx
+        
+        def load_model(model : onnx.ModelProto):
+            graph = gs.import_onnx(model)
+            print(graph.inputs)
+            print(graph.outputs)
+        
+        def main() -> None:
+            model = onnx.load("../models/swin-tiny.onnx")
+            # MHSA部分
+            graph = gs.import_onnx(model)
+            tensors = graph.tensors()
+            print(tensors["457"]) # MHSA输入matmul:       64 x 49 x 128
+            print(tensors["5509"])  # MHSA输入matmul的权重: 128 x 384
+            print(tensors["5518"])  # MHSA输出matmul的权重: 128 x 128
+            print(tensors["512"]) # MHSA输出:             64 x 49 x 128
+        
+            # 重置graph中的输入和输出
+            graph.inputs = [
+                tensors["457"].to_variable(dtype=np.float32, shape=(1, 3136, 128))]
+            graph.outputs = [
+                tensors["512"].to_variable(dtype=np.float32, shape=(1, 3136, 128))]
+            
+            # 清楚输入输出之外的部分
+            graph.cleanup()
+            onnx.save(gs.export_onnx(graph), "../models/swin-subgraph-MSHA.onnx")
+        
+        # 我们想把swin中MHSA这一部分单独拿出来
+        if __name__ == "__main__":
+            main()
+        ```
+
+      * ![image-20240508211832684](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508211832684.png)
+
+##### （8）使用gs来替换算子或者创建算子
+
+* 1、将网络内部的算子替换：
+  * ![image-20240508212355809](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508212355809.png)
+* 
+
+
 
 
 
