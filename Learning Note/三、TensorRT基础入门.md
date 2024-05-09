@@ -1453,7 +1453,8 @@
 
 * 1、将网络内部的算子替换：
 
-  * ![image-20240508212355809](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508212355809.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5a997d7d-89da-4496-96e4-100cbeabcb3d)
+
 
 * 2、替换前的minmax：
 
@@ -1536,7 +1537,8 @@
         main()
     ```
 
-  * ![image-20240509105020938](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240509105020938.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/75ee53a8-b99e-4052-bce7-196225507547)
+
 
 * 3、替换后的clip：
 
@@ -1623,7 +1625,8 @@
         main()
     ```
 
-  * ![image-20240509105421705](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240509105421705.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/908f64ca-da24-4c59-be54-bfec866bf48a)
+
 
 
 
