@@ -1449,15 +1449,422 @@
       * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/80e9f46f-510a-4209-bddc-d75ecea6492f)
 
 
-##### （8）使用gs来替换算子或者创建算子
+##### （8）gs替换算子或者创建算子（clip）
 
 * 1、将网络内部的算子替换：
-  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ecd72e7c-a9d1-4a29-8efe-cf56651a89d1)
 
-* 
+  * ![image-20240508212355809](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240508212355809.png)
+
+* 2、替换前的minmax：
+
+  * ```python
+    import onnx_graphsurgeon as gs
+    import numpy as np
+    import onnx
+    import onnxruntime
+    import torch
+    
+    #####################在graph注册调用的函数########################
+    @gs.Graph.register()
+    def min(self, *args):
+        return self.layer(op="Min", inputs=args, outputs=["min_output"])
+    
+    @gs.Graph.register()
+    def max(self, *args):
+        return self.layer(op="Max", inputs=args, outputs=["max_output"])
+    
+    #####################通过注册的函数进行创建网络########################
+    #          input (5, 5)
+    #            |
+    #         identity 
+    #            |
+    #           min  
+    #            |
+    #           max
+    #            |
+    #         identity  
+    #            |
+    #          output (5, 5)
+    def create_onnx_graph():
+        # 初始化网络的opset
+        graph    = gs.Graph(opset=12)
+    
+        # 初始化网络需要用的参数
+        min_val  = np.array(0, dtype=np.float32)
+        max_val  = np.array(1, dtype=np.float32)
+        input0   = gs.Variable(name="input0", dtype=np.float32, shape=(5, 5))
+    
+        # 设计网络架构
+        identity0 = graph.identity(input0)
+        min0      = graph.min(*identity0, max_val)
+        max0      = graph.max(*min0, min_val)
+        output0   = graph.identity(*max0)
+    
+        # 设置网络的输入输出
+        graph.inputs = [input0]
+        graph.outputs = output0
+    
+        # 设置网络的输出的数据类型
+        for out in graph.outputs:
+            out.dtype = np.float32
+    
+        # 保存模型
+        onnx.save(gs.export_onnx(graph), "../models/sample-minmax.onnx")
+    
+    #####################验证模型##########################################
+    def validate_onnx_graph(input, path):
+        sess   = onnxruntime.InferenceSession(path)
+        output = sess.run(None, {'input0': input.numpy()})
+    
+        print("input is \n", input)
+        print("output is \n", output)
+    
+    
+        
+    
+    def main() -> None:
+        input  = torch.Tensor(5, 5).uniform_(-1, 1)
+    
+        # 创建一个minmax的网络
+        create_onnx_graph()
+    
+        # 通过onnxruntime确认导出onnx是否正确生成
+        print("\nBefore modification:")
+        validate_onnx_graph(input, "../models/sample-minmax.onnx")
+    
+    if __name__ == "__main__":
+        main()
+    ```
+
+  * ![image-20240509105020938](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240509105020938.png)
+
+* 3、替换后的clip：
+
+  * ```python
+    import onnx_graphsurgeon as gs
+    import numpy as np
+    import onnx
+    import onnxruntime
+    import torch
+    
+    #####################在graph注册调用的函数########################
+    @gs.Graph.register()
+    def identity(self, a):
+        return self.layer(op="Identity", inputs=[a], outputs=["identity_output"])
+    
+    @gs.Graph.register()
+    def clip(self, inputs, outputs):
+        return self.layer(op="Clip", inputs=inputs, outputs=outputs)
+    
+    #####################通过注册的clip算子替换网络节点####################
+    #          input (5, 5)
+    #            |
+    #         identity 
+    #            |
+    #           clip
+    #            |
+    #         identity  
+    #            |
+    #          output (5, 5)
+    def change_onnx_graph():
+        graph = gs.import_onnx(onnx.load_model('../models/sample-minmax.onnx'))
+        tensors = graph.tensors()
+    
+        inputs = [tensors["identity_output_0"], 
+                  tensors["onnx_graphsurgeon_constant_5"],
+                  tensors["onnx_graphsurgeon_constant_2"]]
+    
+        outputs = [tensors["max_output_6"]]
+        
+        # 因为要替换子网，所以需要把子网和周围的所有节点都断开联系
+        for item in inputs:
+            # print(item.outputs)
+            item.outputs.clear()
+    
+        for item in outputs:
+            # print(item.inputs)
+            item.inputs.clear()
+    
+        # 通过注册的clip，重新把断开的联系链接起来
+        graph.clip(inputs, outputs)
+    
+        # 删除所有额外的节点
+        graph.cleanup()
+    
+        onnx.save(gs.export_onnx(graph), "../models/sample-minmax-to-clip.onnx")
+    
+    #####################验证模型##########################################
+    def validate_onnx_graph(input, path):
+        sess   = onnxruntime.InferenceSession(path)
+        output = sess.run(None, {'input0': input.numpy()})
+    
+        print("input is \n", input)
+        print("output is \n", output)
+    
+    def main() -> None:
+        input  = torch.Tensor(5, 5).uniform_(-1, 1)
+    
+        # 创建一个minmax的网络
+        create_onnx_graph()
+    
+        # 通过onnxruntime确认导出onnx是否正确生成
+        print("\nBefore modification:")
+        validate_onnx_graph(input, "../models/sample-minmax.onnx")
+    
+        # 将minmax网络修改成clip网络
+        change_onnx_graph()
+    
+        # 确认网络修改的结构是否正确
+        print("\nAfter modification:")
+        validate_onnx_graph(input, "../models/sample-minmax-to-clip.onnx")
+    
+    
+    if __name__ == "__main__":
+        main()
+    ```
+
+  * ![image-20240509105421705](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240509105421705.png)
 
 
 
+##### （9）gs替换算子或者创建算子（LN）
 
+* 1、常见的Transformer子块：
+
+  * ```python
+    import onnx_graphsurgeon as gs
+    import numpy as np
+    import onnx
+    import onnxsim
+    import onnxruntime
+    import torch
+    import torch.nn as nn
+    
+    
+    #####################在graph注册调用的函数########################
+    @gs.Graph.register()
+    def identity(self, inputs, outputs):
+        return self.layer(op="Identity", inputs=inputs, outputs=outputs)
+    
+    @gs.Graph.register()
+    def layerNorm(self, inputs, outputs, axis, epsilon):
+        attrs = {'axis': np.int64(axis), 'epsilon': np.float(epsilon)}
+        return self.layer(op="LayerNormalization", inputs=inputs, outputs=outputs, attrs=attrs)
+    
+    @gs.Graph.register()
+    def layerNorm_default(self, inputs, outputs):
+        return self.layer(op="LayerNormalization", inputs=inputs, outputs=outputs)
+    
+    
+    class Model(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.conv1 = nn.Conv2d(in_channels=3, out_channels=3, kernel_size=3, padding=1)
+            self.norm  = nn.LayerNorm(3)
+            self.act   = nn.ReLU()
+    
+        # 常见的Transformer子块
+        def forward(self, x):
+            _, _, H, W = x.shape
+            L = H * W
+            x = self.conv1(x)
+            x = x.view(x.shape[0], x.shape[1], L).permute(0, 2, 1) # 把BCHW转成BLC
+            x = self.norm(x)
+            x = self.act(x)
+            return x
+    
+    def export_onnx_graph():
+        input  = torch.Tensor(1, 3, 5, 5).uniform_(-1, 1)
+        model  = Model()
+        model.eval()
+    
+        file   = "../models/sample-ln-before.onnx"
+        torch.onnx.export(
+                model         = model,
+                args          = (input,),
+                f             = file,
+                input_names   = ["input0"],
+                output_names  = ["output0"],
+                opset_version = 12)
+    
+        print("\nFinished export {}".format(file))
+    
+        model_onnx = onnx.load(file)
+        onnx.checker.check_model(model_onnx)
+    
+        print(f"Simplifying with onnx-simplifier {onnxsim.__version__}...")
+        model_onnx, check = onnxsim.simplify(model_onnx)
+        assert check, "assert check failed"
+        onnx.save(model_onnx, file)
+    
+    def main() -> None:
+        input  = torch.Tensor(1, 3, 5, 5).uniform_(-1, 1)
+        
+        ##从pytorch导出onnx(这里为了实验，将不支持LayerNorm的opset12为例导出)
+        export_onnx_graph()
+    
+    if __name__ == "__main__":
+        main()
+    ```
+
+  * ![image-20240509110156199](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240509110156199.png)
+
+* 2、将网络内部的算子替换成LayerNorm：
+
+  * ```python
+    import onnx_graphsurgeon as gs
+    import numpy as np
+    import onnx
+    import onnxsim
+    import onnxruntime
+    import torch
+    import torch.nn as nn
+    
+    
+    #####################在graph注册调用的函数########################
+    @gs.Graph.register()
+    def identity(self, inputs, outputs):
+        return self.layer(op="Identity", inputs=inputs, outputs=outputs)
+    
+    @gs.Graph.register()
+    def layerNorm(self, inputs, outputs, axis, epsilon):
+        attrs = {'axis': np.int64(axis), 'epsilon': np.float(epsilon)}
+        return self.layer(op="LayerNormalization", inputs=inputs, outputs=outputs, attrs=attrs)
+    
+    @gs.Graph.register()
+    def layerNorm_default(self, inputs, outputs):
+        return self.layer(op="LayerNormalization", inputs=inputs, outputs=outputs)
+    
+    
+    class Model(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.conv1 = nn.Conv2d(in_channels=3, out_channels=3, kernel_size=3, padding=1)
+            self.norm  = nn.LayerNorm(3)
+            self.act   = nn.ReLU()
+    
+        # 常见的Transformer子块
+        def forward(self, x):
+            _, _, H, W = x.shape
+            L = H * W
+            x = self.conv1(x)
+            x = x.view(x.shape[0], x.shape[1], L).permute(0, 2, 1) # 把BCHW转成BLC
+            x = self.norm(x)
+            x = self.act(x)
+            return x
+    
+    def export_onnx_graph():
+        input  = torch.Tensor(1, 3, 5, 5).uniform_(-1, 1)
+        model  = Model()
+        model.eval()
+    
+        file   = "../models/sample-ln-before.onnx"
+        torch.onnx.export(
+                model         = model,
+                args          = (input,),
+                f             = file,
+                input_names   = ["input0"],
+                output_names  = ["output0"],
+                opset_version = 12)
+    
+        print("\nFinished export {}".format(file))
+    
+        model_onnx = onnx.load(file)
+        onnx.checker.check_model(model_onnx)
+    
+        print(f"Simplifying with onnx-simplifier {onnxsim.__version__}...")
+        model_onnx, check = onnxsim.simplify(model_onnx)
+        assert check, "assert check failed"
+        onnx.save(model_onnx, file)
+    
+    
+    #####################通过注册的LN算子替换网络节点####################
+    #          input (5, 5)
+    #            |
+    #           conv
+    #            |
+    #          reshape
+    #            |
+    #         layerNorm
+    #            |
+    #           relu
+    #            |
+    #          output (5, 5)
+    
+    def change_onnx_graph():
+        graph = gs.import_onnx(onnx.load_model('../models/sample-ln-before.onnx'))
+        tensors = graph.tensors()
+    
+        norm_scale = gs.Constant(name="norm.weight", values=np.ones(shape=[3], dtype=np.float32)) # weight全部归一
+        norm_bias  = gs.Constant(name="norm.bias", values=np.zeros(shape=[3], dtype=np.float32)) # bias全部归零
+    
+        inputs  = [tensors["/Transpose_output_0"]]
+        outputs = [tensors["/norm/Div_output_0"]]
+        
+        # 因为要替换子网，所以需要把子网和周围的所有节点都断开联系
+        for item in inputs:
+            item.outputs.clear()
+    
+        for item in outputs:
+            item.inputs.clear()
+    
+        # 为了迎合onnx中operator中的设计，这里把scale和bias给加上
+        inputs = [tensors["/Transpose_output_0"],
+                  norm_scale,
+                  norm_bias]
+        
+        # 这个onnx中的epsilon，我们给加上。当然，我们也可以选择默认的值
+        epsilon = [tensors["/norm/Constant_1_output_0"]]
+        print(type(epsilon[0].values))
+    
+        # 通过注册的LayerNorm，重新把断开的联系链接起来
+        graph.layerNorm(inputs, outputs, axis=-1, epsilon=epsilon[0].values)
+        # graph.identity(inputs, outputs)
+        # graph.layerNorm_default(inputs, outputs)
+    
+        # 删除所有额外的节点
+        graph.cleanup()
+    
+        onnx.save(gs.export_onnx(graph), "../models/sample-ln-after.onnx")
+    
+    #####################验证模型##########################################
+    def validate_onnx_graph(input, origin_path, modified_path):
+        sess_origin   = onnxruntime.InferenceSession(origin_path)
+        output_origin = sess_origin.run(None, {'input0': input.numpy()})
+    
+        sess_modify   = onnxruntime.InferenceSession(modified_path)
+        output_modify = sess_modify.run(None, {'input0': input.numpy()})
+    
+        print("input is \n", input)
+        print("output_before is \n", output_origin)
+        print("output_after is \n", output_modify)
+    
+    
+    def main() -> None:
+        input  = torch.Tensor(1, 3, 5, 5).uniform_(-1, 1)
+        
+        ##从pytorch导出onnx(这里为了实验，将不支持LayerNorm的opset12为例导出)
+        export_onnx_graph()
+    
+        ##手动修改LayerNorm
+        change_onnx_graph()
+    
+        ##验证修改的onnx
+        validate_onnx_graph(
+                input, 
+                "../models/sample-ln-before.onnx", 
+                "../models/sample-ln-after.onnx")
+    
+    if __name__ == "__main__":
+        main()
+    ```
+
+  * ![image-20240509111803129](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240509111803129.png)
+
+
+
+#### 3.4.7 快速分析开源代码并导出onnx
+
+以Swin Transformer为例学习快速导出onnx并分析onnx的方法，由于搭配环境和修改代码消耗时间过多，而导出onnx并不是重点，重点是onnx导出为TensorRT并查看性能。因此本部分内容在后续需要时看PPT和视频3.8即可
 
 ### 3.5 初步使用TensorRT
