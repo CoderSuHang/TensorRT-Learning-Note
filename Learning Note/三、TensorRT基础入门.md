@@ -1710,7 +1710,8 @@
         main()
     ```
 
-  * ![image-20240509110156199](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240509110156199.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0768e3b4-6000-4250-a82f-378ea731990a)
+
 
 * 2、将网络内部的算子替换成LayerNorm：
 
@@ -1862,8 +1863,7 @@
         main()
     ```
 
-  * ![image-20240509111803129](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240509111803129.png)
-
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3d73692b-18d8-419b-aa88-7e3b25c3a30f)
 
 
 #### 3.4.7 快速分析开源代码并导出onnx
