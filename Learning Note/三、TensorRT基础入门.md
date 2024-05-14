@@ -1871,3 +1871,231 @@
 以Swin Transformer为例学习快速导出onnx并分析onnx的方法，由于搭配环境和修改代码消耗时间过多，而导出onnx并不是重点，重点是onnx导出为TensorRT并查看性能。因此本部分内容在后续需要时看PPT和视频3.8即可
 
 ### 3.5 初步使用TensorRT
+
+#### 3.5.1 推理引擎生成
+
+![image-20240514164108751](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514164108751.png)
+
+中间环形部分就是推理引擎，那么如何生成推理引擎呢，有两个方法：
+
+##### （1）TensorRT API
+
+使用TensorRT API来实现创建推理引擎（C++/python）
+
+后续章节会学习
+
+![image-20240514164922286](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514164922286.png)
+
+##### （2）使用命令行（trtexec）
+
+使用命令行创建推理引擎（trtexec）
+
+![image-20240514165119322](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514165119322.png)
+
+![image-20240514165138230](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514165138230.png)
+
+![image-20240514165152473](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514165152473.png)
+
+#### 3.5.2 trtexec
+
+学习使用trtexec，以及通过trtexec的日志理解TensorRT内部所做的优化
+
+是TensorRT中的一个非常好用的快速生成trt推理引擎的工具。便于我们不使用API快速查看推理引擎的加速效果，以及TensorRT优化后的模型架构。
+
+##### （1）指令手册
+
+* 编写命令行的时候可以查询指令手册：
+  * 网址：
+    * [Developer Guide :: NVIDIA Deep Learning TensorRT Documentation](https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#trtexec-benchmark)
+    * ![image-20240514171812681](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514171812681.png)
+  * 视频里介绍了常用指令的简介，详情查阅视频3.9
+
+##### （2）代码详情
+
+* build.sh：
+
+  * 程序源码
+
+    * ```python
+      #!/bin/bash
+      # how to use:
+      #   bash tools/build.sh ${input.onnx} ${tag}
+      
+      # 找文件目录
+      IFS=. file=(${1})
+      IFS=/ file=(${file})
+      IFS=
+      PREFIX=${file[1]}
+      
+      
+      if [[ ${2} != "" ]]
+      then
+              PREFIX=${PREFIX}-${2}
+      fi
+      
+      MODE="build"
+      ONNX_PATH="models"
+      BUILD_PATH="build"
+      ENGINE_PATH=$BUILD_PATH/engines
+      LOG_PATH=${BUILD_PATH}"/log/"${PREFIX}"/"${MODE}
+      
+      mkdir -p ${ENGINE_PATH}
+      mkdir -p $LOG_PATH
+      
+      # trtexec
+      # warmup：# 有些kernel执行的比较慢，所以需要使用warmup对齐时间，200是200ms
+      # iterations：指做了多上次推理，50就是50次推理
+      trtexec --onnx=${1} \
+              --memPoolSize=workspace:2048 \
+              --saveEngine=${ENGINE_PATH}/${PREFIX}.engine \
+              --profilingVerbosity=detailed \
+              --dumpOutput \
+              --dumpProfile \
+              --dumpLayerInfo \
+              --exportOutput=${LOG_PATH}/build_output.log\
+              --exportProfile=${LOG_PATH}/build_profile.log \
+              --exportLayerInfo=${LOG_PATH}/build_layer_info.log \
+              --warmUp=200 \
+              --iterations=50 \
+      
+              > ${LOG_PATH}/build.log
+      ```
+
+  * 启动指令
+
+    * ```python
+      bash tools/build.sh  models/sample-cbr.onnx fp32
+      ```
+
+    * ![image-20240514173003852](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514173003852.png)
+
+  * 导出文件
+
+    * build_layer_info.log
+      * ![image-20240514173039564](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514173039564.png)
+    * build_output.log
+      * ![image-20240514173106361](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514173106361.png)
+    * build_profile.log
+      * ![image-20240514173124547](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514173124547.png)
+      * 这里需要注意：原来网络中Conv和Relu算子之间是分开的
+        * ![image-20240514173553528](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514173553528.png)
+      * 经过trtexec后，他们之间会被融合：
+        * ![image-20240514173634778](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514173634778.png)
+
+  * infer.sh：
+
+    * 程序源码
+
+      * ```python
+        #!/bin/bash
+        # how to use:
+        #   bash tools/infer.sh ${input.engine}
+        
+        IFS=. file=(${1})
+        IFS=/ file=(${file})
+        IFS=
+        PREFIX=${file[2]}
+        
+        
+        if [[ ${2} != "" ]]
+        then
+                PREFIX=${PREFIX}-${2}
+        fi
+        
+        MODE="infer"
+        ONNX_PATH="models"
+        BUILD_PATH="build"
+        ENGINE_PATH=$BUILD_PATH/engines
+        LOG_PATH=${BUILD_PATH}"/log/"${PREFIX}"/"${MODE}
+        
+        mkdir -p ${ENGINE_PATH}
+        mkdir -p $LOG_PATH
+        
+        trtexec --loadEngine=${ENGINE_PATH}/${PREFIX}.engine \
+                --dumpOutput \
+                --dumpProfile \
+                --dumpLayerInfo \
+                --exportOutput=${LOG_PATH}/infer_output.log\
+                --exportProfile=${LOG_PATH}/infer_profile.log \
+                --exportLayerInfo=${LOG_PATH}/infer_layer_info.log \
+                --warmUp=200 \
+                --iterations=50 \
+                > ${LOG_PATH}/infer.log
+        ```
+
+    * 启动指令
+
+      * ```python
+        bash tools/infer.sh build/engines/sample-cbr-fp32.engine
+        ```
+
+      * ![image-20240514192045774](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514192045774.png)
+
+    * 导出文件
+
+      * infer_layer_info.log
+        * ![image-20240514193504980](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514193504980.png)
+      * infer_output.log
+        * ![image-20240514193601070](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514193601070.png)
+      * infer_profile.log
+        * ![image-20240514193616543](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514193616543.png)
+
+* profile.sh：
+
+  * 程序源码
+
+    * ```python
+      #!/bin/bash
+      # how to use:
+      #   bash tools/profile.sh ${input.engine} 
+      
+      IFS=. file=(${1})
+      IFS=/ file=(${file})
+      IFS=
+      PREFIX=${file[2]}
+      
+      
+      if [[ ${2} != "" ]]
+      then
+              PREFIX=${PREFIX}-${2}
+      fi
+      
+      MODE="profile"
+      ONNX_PATH="models"
+      BUILD_PATH="build"
+      ENGINE_PATH=$BUILD_PATH/engines
+      LOG_PATH=${BUILD_PATH}"/log/"${PREFIX}"/"${MODE}
+      
+      mkdir -p ${ENGINE_PATH}
+      mkdir -p $LOG_PATH
+      
+      # nsys是 Nsight system 的一个软件包
+      # trtexec可以配合nsys一起使用进行profile分析
+      nsys profile \
+              --output=${LOG_PATH}/${PREFIX} \
+              --force-overwrite true \
+              trtexec --loadEngine=${ENGINE_PATH}/${PREFIX}.engine \
+                      --warmUp=0 \
+                      --duration=0 \
+                      --iterations=20 \
+                      --noDataTransfers \
+          > ${LOG_PATH}/profile.log
+      
+      
+      ```
+
+  * 启动指令
+
+    * ```python
+      bash tools/profile.sh build/engines/sample-cbr-fp32.engine 
+      ```
+
+    * ![image-20240514201815880](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514201815880.png)
+
+  * 输出文件
+
+    * ![image-20240514195752562](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514195752562.png)
+    * 其中【sample-cbr-fp32.nsys-rep】需要用Nsight system打开，直接将该文件拖入Nsight中即可
+      * ![image-20240514201502666](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514201502666.png)
+
+
