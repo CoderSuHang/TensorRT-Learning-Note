@@ -2105,12 +2105,15 @@
       bash tools/profile.sh build/engines/sample-cbr-fp32.engine 
       ```
 
-    * ![image-20240514201815880](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514201815880.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/1743ec38-ac4c-48d0-a2af-7e977c7fa577)
+
 
   * 输出文件
 
-    * ![image-20240514195752562](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514195752562.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ae60b6b5-c5c5-4485-9417-db13e71c6f6f)
+
     * 其中【sample-cbr-fp32.nsys-rep】需要用Nsight system打开，直接将该文件拖入Nsight中即可
-      * ![image-20240514201502666](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514201502666.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/819f5f57-d2d5-49a6-8702-9eff8fa37208)
+
 
 
