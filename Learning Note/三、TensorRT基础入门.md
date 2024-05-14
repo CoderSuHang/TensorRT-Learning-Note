@@ -1884,17 +1884,21 @@
 
 后续章节会学习
 
-![image-20240514164922286](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514164922286.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b37a865c-d9d4-4c31-8f50-d4798d3d5383)
+
 
 ##### （2）使用命令行（trtexec）
 
 使用命令行创建推理引擎（trtexec）
 
-![image-20240514165119322](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514165119322.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/eba7a2fa-546c-4c34-b581-65045f30b89a)
 
-![image-20240514165138230](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514165138230.png)
 
-![image-20240514165152473](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514165152473.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/990b4a03-3ff6-4df3-a5ae-6c78032b7da5)
+
+
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c3b128ed-f288-441a-8dac-a4109f9cc3cd)
+
 
 #### 3.5.2 trtexec
 
