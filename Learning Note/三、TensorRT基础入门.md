@@ -1911,7 +1911,8 @@
 * 编写命令行的时候可以查询指令手册：
   * 网址：
     * [Developer Guide :: NVIDIA Deep Learning TensorRT Documentation](https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#trtexec-benchmark)
-    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f9fd8a4f-3712-4e04-bbfa-8bbaf0574317)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f4589121-5e03-4ec2-b531-754c389debb1)
+
 
   * 视频里介绍了常用指令的简介，详情查阅视频3.9
 
