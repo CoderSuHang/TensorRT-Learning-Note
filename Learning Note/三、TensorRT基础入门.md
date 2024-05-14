@@ -1978,15 +1978,20 @@
   * 导出文件
 
     * build_layer_info.log
-      * ![image-20240514173039564](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514173039564.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f865af14-4ed5-43f7-9e98-db230da0d103)
+
     * build_output.log
-      * ![image-20240514173106361](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514173106361.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/936ad5dd-9228-42cd-84f4-3a3de92f6131)
+
     * build_profile.log
-      * ![image-20240514173124547](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514173124547.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/da41de14-398a-4c9a-a19d-f7d022464178)
+
       * 这里需要注意：原来网络中Conv和Relu算子之间是分开的
-        * ![image-20240514173553528](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514173553528.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2deaffce-773b-41b4-87dd-50e423df2d47)
+
       * 经过trtexec后，他们之间会被融合：
-        * ![image-20240514173634778](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514173634778.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7c5c79ca-ce5f-4c29-8136-8f016322eb1c)
+
 
   * infer.sh：
 
