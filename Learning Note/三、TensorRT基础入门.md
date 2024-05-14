@@ -2040,16 +2040,20 @@
         bash tools/infer.sh build/engines/sample-cbr-fp32.engine
         ```
 
-      * ![image-20240514192045774](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514192045774.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/370fc70e-039e-4422-9966-d3f822dfc775)
+
 
     * 导出文件
 
       * infer_layer_info.log
-        * ![image-20240514193504980](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514193504980.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4ffbc7c6-f05c-4ea0-9344-7b6bf217644e)
+
       * infer_output.log
-        * ![image-20240514193601070](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514193601070.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5c841451-b18c-4436-8ae6-7cf68e8a6cbb)
+
       * infer_profile.log
-        * ![image-20240514193616543](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240514193616543.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ca15e94e-4143-42f7-9b9d-1c1748901efd)
+
 
 * profile.sh：
 
