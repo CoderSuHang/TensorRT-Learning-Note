@@ -2115,5 +2115,13 @@
     * 其中【sample-cbr-fp32.nsys-rep】需要用Nsight system打开，直接将该文件拖入Nsight中即可
       * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/819f5f57-d2d5-49a6-8702-9eff8fa37208)
 
+#### 3.5.3 trtexec log分析
 
+trtexec log提供了TensorRT推理优化过程的记录，其中有几点需要注意一下：
+
+##### （1）指定log保存路径
+
+##### （2）简易log信息
+
+##### （3）扩展log信息
 
