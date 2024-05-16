@@ -2153,7 +2153,8 @@ trtexec log提供了TensorRT推理优化过程的记录，其中有几点需要�
 
   * 初始化、parsing过程
 
-    * ![image-20240516220802370](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516220802370.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e9266d14-0deb-4c96-afa4-76d38051e37e)
+
 
     * 其中parsing部分是使用自带的 onnx parser 把 onnx 模型 parse成 TRT 能够识别的 IR；
 
@@ -2165,15 +2166,18 @@ trtexec log提供了TensorRT推理优化过程的记录，其中有几点需要�
 
   * 检测到1个输入3个输出：
 
-    * ![image-20240516221247479](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516221247479.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9b3067a2-2899-4172-8824-50692f845476)
+
 
   * 推理部分，load一个engine进行推理：
 
-    * ![image-20240516221423128](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516221423128.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3f6261ed-087a-40b2-a6a2-49be00a1e341)
+
 
   * 最后得到推理出来的东西：
 
-    * ![image-20240516221519293](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516221519293.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0ac3eb5c-a829-4827-9119-40ceaac8966a)
+
 
 ##### （3）扩展log信息
 
