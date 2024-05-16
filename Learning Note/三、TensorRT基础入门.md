@@ -2230,19 +2230,26 @@ trtexec log提供了TensorRT推理优化过程的记录，其中有几点需要�
 
   * 正式优化：
     * 多次reformat，选取最快的tactic，作为优化策略
-      * ![image-20240516225834366](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225834366.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/dd30b52a-55fd-4299-9d56-b95a90c4b1a2)
+
     * 针对conv和relu进行优化
       * 每个kernel对应不同的layer，layer的不同体现在模型内部大小：
-        * ![image-20240516230104812](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230104812.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6e62b7a1-5c25-4623-8671-50cee570e0c7)
+
       * TensorRT利用多个策略进行layer分析，选择最快的策略：
-        * ![image-20240516230113907](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230113907.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/98cfab17-6eea-4ec0-ac45-552f4d3dbaa0)
+
       * 为了消除偶然性，重复多次优化找最快策略：
-        * ![image-20240516230205595](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230205595.png)
-        * ![image-20240516230302207](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230302207.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/84f10eeb-6b92-43fd-835a-d00a577e8c2a)
+
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/dce50187-0626-4eb2-8e75-080dab91cb5f)
+
   * 打印信息并汇总：
-    * ![image-20240516230401038](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230401038.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bb586b87-41ca-4e69-b208-00439fbf9f0a)
+
   * 推理部分：
-    * ![image-20240516230432758](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230432758.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/69c14664-061f-4e63-bbb6-4809f77b5e67)
+
 
 
 
