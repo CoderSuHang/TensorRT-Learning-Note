@@ -2217,13 +2217,17 @@ trtexec log提供了TensorRT推理优化过程的记录，其中有几点需要�
     * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/11615a46-483f-45bb-93c8-7d6d77e99adf)
 
   * 注册输出：
-    * ![image-20240516225253903](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225253903.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0052239b-dc4c-4703-baee-d5e1a82679fa)
+
   * parse RELU
-    * ![image-20240516225331930](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225331930.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d0bed848-c9e8-4343-91e2-4eb45cbc63c9)
+
   * 图优化，包括删除和应用某些模块：
-    * ![image-20240516225546285](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225546285.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9769698a-b21e-44be-8d21-908a527082d3)
+
   * kernel优化准备工作：
-    * ![image-20240516225640351](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225640351.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5ea2bb6b-9664-4ec7-b08e-1432f51606c9)
+
   * 正式优化：
     * 多次reformat，选取最快的tactic，作为优化策略
       * ![image-20240516225834366](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225834366.png)
