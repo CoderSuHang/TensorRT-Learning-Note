@@ -2121,7 +2121,128 @@ trtexec log提供了TensorRT推理优化过程的记录，其中有几点需要�
 
 ##### （1）指定log保存路径
 
+* 指令集：
+
+  * ```python
+    > ${LOG_PATH}/build.log
+    ```
+
+  * ![image-20240516214402219](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516214402219.png)
+
 ##### （2）简易log信息
 
+输出日志：
+
+* 包括输入文件信息、精度、稀疏化等：
+
+  * ![image-20240516214431364](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516214431364.png)
+
+* 系统选项、推理选项：
+
+  * ![image-20240516215914064](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516215914064.png)
+
+* 报告选项、设备信息：
+
+  * ![image-20240516220227776](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516220227776.png)
+
+* **模型推理创建内容**：
+
+  * 初始化、parsing过程
+
+    * ![image-20240516220802370](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516220802370.png)
+
+    * 其中parsing部分是使用自带的 onnx parser 把 onnx 模型 parse成 TRT 能够识别的 IR；
+
+    * 这个log里面的parsing部分比较简洁，是因为系统自己隐藏，包括层融合、每一层的优化、核优化等，如果要打印，需要在build文件中加入指令：
+
+      * ```python
+        --verbose \
+        ```
+
+  * 检测到1个输入3个输出：
+
+    * ![image-20240516221247479](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516221247479.png)
+
+  * 推理部分，load一个engine进行推理：
+
+    * ![image-20240516221423128](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516221423128.png)
+
+  * 最后得到推理出来的东西：
+
+    * ![image-20240516221519293](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516221519293.png)
+
 ##### （3）扩展log信息
+
+* 通过上述指令，扩展【V】部分的详细信息：
+
+  * ```python
+    --verbose \
+    ```
+
+  * ![image-20240516222555818](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516222555818.png)
+
+* 打印出来TensorRT中存在的插件
+
+  * ![image-20240516222717568](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516222717568.png)
+
+* 注册plugin插件：
+
+  * ![image-20240516224443643](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516224443643.png)
+
+* 分析onnx parser：
+
+  * ![image-20240516224654680](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516224654680.png)
+  * 导入输入：
+    * ![image-20240516225001455](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225001455.png)
+  * 导入权重信息
+    * ![image-20240516225036330](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225036330.png)
+  * 获得输入信息
+    * ![image-20240516225055058](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225055058.png)
+  * 注册node：
+    * ![image-20240516225203088](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225203088.png)
+  * 注册输出：
+    * ![image-20240516225253903](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225253903.png)
+  * parse RELU
+    * ![image-20240516225331930](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225331930.png)
+  * 图优化，包括删除和应用某些模块：
+    * ![image-20240516225546285](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225546285.png)
+  * kernel优化准备工作：
+    * ![image-20240516225640351](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225640351.png)
+  * 正式优化：
+    * 多次reformat，选取最快的tactic，作为优化策略
+      * ![image-20240516225834366](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225834366.png)
+    * 针对conv和relu进行优化
+      * 每个kernel对应不同的layer，layer的不同体现在模型内部大小：
+        * ![image-20240516230104812](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230104812.png)
+      * TensorRT利用多个策略进行layer分析，选择最快的策略：
+        * ![image-20240516230113907](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230113907.png)
+      * 为了消除偶然性，重复多次优化找最快策略：
+        * ![image-20240516230205595](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230205595.png)
+        * ![image-20240516230302207](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230302207.png)
+  * 打印信息并汇总：
+    * ![image-20240516230401038](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230401038.png)
+  * 推理部分：
+    * ![image-20240516230432758](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230432758.png)
+
+
+
+##### （4）量化
+
+以FP16精度量化为例：
+
+* ```python
+  --fp16 \
+  ```
+
+  * ![image-20240516230605351](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230605351.png)
+
+* ```python
+  bash tools/build.sh  models/sample-cbr.onnx fp16
+  ```
+
+* ![image-20240516230639762](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230639762.png)
+
+生成日志：
+
+* ![image-20240516231007172](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516231007172.png)
 
