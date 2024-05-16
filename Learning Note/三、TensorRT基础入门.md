@@ -2127,7 +2127,8 @@ trtexec log提供了TensorRT推理优化过程的记录，其中有几点需要�
     > ${LOG_PATH}/build.log
     ```
 
-  * ![image-20240516214402219](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516214402219.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/88c576d5-4a43-437b-bef8-d3c71119afe4)
+
 
 ##### （2）简易log信息
 
@@ -2135,15 +2136,18 @@ trtexec log提供了TensorRT推理优化过程的记录，其中有几点需要�
 
 * 包括输入文件信息、精度、稀疏化等：
 
-  * ![image-20240516214431364](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516214431364.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8b6b455e-d6e4-4ffb-a5b2-511b3967d5a3)
+
 
 * 系统选项、推理选项：
 
-  * ![image-20240516215914064](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516215914064.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/31cd9def-2fec-463f-ab7a-ac277f979160)
+
 
 * 报告选项、设备信息：
 
-  * ![image-20240516220227776](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516220227776.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3a15c0e4-b425-46a2-935d-853be0b05447)
+
 
 * **模型推理创建内容**：
 
