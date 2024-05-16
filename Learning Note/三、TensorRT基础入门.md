@@ -2187,15 +2187,18 @@ trtexec log提供了TensorRT推理优化过程的记录，其中有几点需要�
     --verbose \
     ```
 
-  * ![image-20240516222555818](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516222555818.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/18818f76-462c-4c29-ab74-127a15a9b19b)
+
 
 * 打印出来TensorRT中存在的插件
 
-  * ![image-20240516222717568](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516222717568.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/87c72e47-e5ba-4f32-9cb2-a89ac435ddf0)
+
 
 * 注册plugin插件：
 
-  * ![image-20240516224443643](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516224443643.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/36c81eb4-d633-4bc3-a1b3-1e2438f698c7)
+
 
 * 分析onnx parser：
 
