@@ -2202,15 +2202,20 @@ trtexec log提供了TensorRT推理优化过程的记录，其中有几点需要�
 
 * 分析onnx parser：
 
-  * ![image-20240516224654680](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516224654680.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b596d257-e29b-4440-b176-fa2cc7c0dec1)
+
   * 导入输入：
-    * ![image-20240516225001455](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225001455.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6747f044-f939-4f58-9355-3e23409c14e1)
+
   * 导入权重信息
-    * ![image-20240516225036330](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225036330.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0b11dbe7-a846-4fc0-85c9-bb28481c35b4)
+
   * 获得输入信息
-    * ![image-20240516225055058](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225055058.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/570344a5-7881-4644-b060-c008bc9d51b1)
+
   * 注册node：
-    * ![image-20240516225203088](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225203088.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/11615a46-483f-45bb-93c8-7d6d77e99adf)
+
   * 注册输出：
     * ![image-20240516225253903](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516225253903.png)
   * parse RELU
