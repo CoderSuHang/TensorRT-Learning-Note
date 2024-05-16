@@ -2272,6 +2272,7 @@ trtexec log提供了TensorRT推理优化过程的记录，其中有几点需要�
 
 生成日志：
 
-* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e4fed073-9af8-4b20-9c52-2c9f9d4a6440)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/eb797acf-e6ca-405f-87f0-e0a5f3dcdd94)
+
 
 
