@@ -2261,15 +2261,17 @@ trtexec log提供了TensorRT推理优化过程的记录，其中有几点需要�
   --fp16 \
   ```
 
-  * ![image-20240516230605351](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230605351.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0b140fcb-3043-4a8c-b288-a2c2dc623280)
 
 * ```python
   bash tools/build.sh  models/sample-cbr.onnx fp16
   ```
 
-* ![image-20240516230639762](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516230639762.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/96e68acd-aa8a-4614-a56e-cdd0a091fb41)
+
 
 生成日志：
 
-* ![image-20240516231007172](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240516231007172.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e4fed073-9af8-4b20-9c52-2c9f9d4a6440)
+
 
