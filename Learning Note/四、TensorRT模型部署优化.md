@@ -359,17 +359,23 @@ Roofline model在模型部署中的意义：
 
 * 以Jetson Xavier AGX Volta为例
   * 硬件资源
-    * ![image-20240521214633820](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521214633820.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4c4cf39a-45dc-455e-a798-b46a21957d20)
+
   * 分析计算密度
-    * ![image-20240521214718079](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521214718079.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f4dfaeb4-472c-4fd9-91a1-6360e636c975)
+
   * 总结
-    * ![image-20240521214726732](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521214726732.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4c693d83-5621-48be-bcd7-135f8c7894af)
+
   * 目前我们单独分析了几个layer对计算密度的影响【（5）计算密度的影响因素（FP32的Conv为例）】。但DNN是一个多个layer的组合，所以我们也需要对整个模型进行分析：
-    * ![image-20240521214119053](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521214119053.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/dcdb6fc5-ee45-460d-9f2a-f02a4fa5d2f1)
+
   * Jetson AGX Xavier架构中FP32的计算在10.2FLOPs/byte就计算饱和：
-    * ![image-20240521214748433](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521214748433.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7486da1c-5ce6-4153-a635-87b43699c71d)
+
   * 所以这些模型其实都理论上已经计算饱和：
-    * ![image-20240521214324082](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521214324082.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8ed1eba2-3186-46a1-a78a-6a0775eca642)
+
 
 
 
