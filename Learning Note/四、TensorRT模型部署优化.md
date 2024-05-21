@@ -384,7 +384,8 @@ Roofline model在模型部署中的意义：
 * **【重点】**到目前讲的是理论值。然而实际上我们会发现
   * 峰值可能会小于22.4TOPS
   * bandwidth可能会小于137GB/s
-  * ![image-20240521215116489](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521215116489.png)
+  * ![Uploading image.png…]()
+
 * **需要根据一系列 benchmark 找到部署架构的真实值。**
   * 比如自己写几个计算密集的核函数（减少作为memory cuppy 数据传输用的算子）
 
