@@ -12,14 +12,16 @@
   * 指的是一秒钟可以处理的浮动小数点运算次数
   * 是衡量计算机硬件性能、计算能力的一个单位
   * 常见的FLOPS：
-    * ![image-20240521103242880](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521103242880.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2b972a04-baff-49a0-beb9-b269279abfbc)
+
 
 
 
 * 2、TOPS
   * 指的是一秒钟可以处理的整型运算次数
   * 是衡量计算机硬件性能、计算能力的一个单位
-  * ![image-20240521103422633](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521103422633.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a83ca1b7-2b9f-4756-b05f-9ec072b1dbdf)
+
 
 
 
@@ -43,16 +45,20 @@
       * 3.0 * 10^9Hz * 8 core * 32 FLOPS/clk = 0.76 TFLOPS
     * 计算细节：
       * [1] 在该芯片内部有2个FMA，以及支持AVX-256指令集：
-        * ![image-20240521104921568](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521104921568.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/068b07a3-452e-47f9-864d-6054d98dff21)
+
       * [2] FMA是乘加运算混合的一种方法
         * 没有FMA，乘法加法分开算
           * 计算D = A * B + C需要两个时钟周期
-          * ![image-20240521105020691](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521105020691.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2616d6d4-04ca-40a3-bf13-916302722829)
+
         * 有FMA，乘法加法一起算
           * 计算D = A * B + C需要一个时钟周期
-          * ![image-20240521105040275](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521105040275.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3dfba1d5-d511-470a-b5f3-6aaf90490040)
+
       * [3] AVX-256 指令集中一个Double指令能存2个Float指令，所以在SIMD操作时，一个时钟周期就能操作8个FP32的计算
-        * ![image-20240521105145087](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521105145087.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8ff99e17-45ca-4617-83a6-a048ec45b409)
+
       * [4] 回归公式：
         * FLOPS在双精度的时候：
           * 3.0 * 10^9Hz * 8 core * 16 FLOPS/clk = 0.38 TFLOPS
@@ -60,14 +66,16 @@
               * 2 FMA：
                 * 一个时钟周期等于2个浮点运算
               * 4个 FP64 的 SIMD 运算：
-                * ![image-20240521105553965](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521105553965.png)
+                * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c4a20d3f-f1cb-492b-a775-603071722901)
+
         * FLOPS在单精度的时候：
           * 3.0 * 10^9Hz * 8 core * 32 FLOPS/clk = 0.76 TFLOPS
             * 32 FLOPS/clk = 2 FMA * 8个 FP32的 SIMD 运算 * 2乘加融合
               * 2 FMA：
                 * 一个时钟周期等于2个浮点运算
               * 4个 FP64 的 SIMD 运算：
-                * ![image-20240521105632818](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521105632818.png)
+                * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/536399ae-621a-406b-92df-0fe294b543b7)
+
 
 
 
