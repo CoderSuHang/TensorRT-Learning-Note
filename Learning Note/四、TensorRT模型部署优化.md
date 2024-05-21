@@ -208,7 +208,8 @@ Roofline model 在模型部署中的作用仅此于量化，能够帮助我们�
 
 一个衡量计算机软件/硬件性能的一个分析模型。是David Patterson带领的UC  Berkerley的团队与2008年发表的paper中提出的概念。
 
-![image-20240521202542751](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521202542751.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4f492163-9224-491a-b5ec-667ac6ed6f88)
+
 
 Roofline model在模型部署中的意义：
 
@@ -240,7 +241,8 @@ Roofline model在模型部署中的意义：
 * 访存量（Byte）
   * 单位是Byte，表示模型中某一个算子，或者某一层layer进行计算时需要与memory产生 read/write 的量。是分析模型中某些计算的**计算效率**的标准之一
   * 计算方法：
-    * ![image-20240521204607565](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521204607565.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/309ece6d-3714-4ca3-a9a7-65920944815d)
+
     * 所需要的访存量 =  （ kernel size * kernel num + output size * output num） * 4 = 288 Byte = 0.288 KB
       * 4：一般都是用FP32来计算，FP32时32bit，1Byte = 8bit，所以32bit就是4个Byte
   * 陷阱：
@@ -249,11 +251,14 @@ Roofline model在模型部署中的意义：
   * 单位是Byte/s，全称是 memory bandwidth， 表示的是**单位时间内可以传输的数据量**的多少。是衡量计算机**硬件memory性能**的一 个标准。
     * 影响因素
       * memory clock (GHz)
-        * ![image-20240521205413004](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521205413004.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2a3b8f22-8c8e-47e3-b16b-42bb39c6c0ce)
+
       * memory bus width (Byte)
-        * ![image-20240521205423515](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521205423515.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8ec93ecf-dda5-4991-a39e-21bf4dd7f864)
+
       * memory channel
-        * ![image-20240521205432241](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521205432241.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/cfdb1998-0ea5-4530-b467-e80d6fba704b)
+
   * 计算方法
     * Intel Xeon Gold 6000 (server)
       * => memory bandwidth = 2666 MHz * 8 Bytes * 6 = 128GB/s
