@@ -316,13 +316,16 @@ Roofline model在模型部署中的意义：
     * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e5241fb2-873a-4199-80b9-f0734fce8226)
 
   *  **group convolution** 对计算密度的影响：
-    * ![image-20240521211801763](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521211801763.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/166a4f34-53d6-4dae-a613-5081662fd04b)
+
       * elementwise conv(1x1 conv)的虽然较少了计算量，但是计算密度也很低。随着kernel size增大，计算密度增长率逐渐下降
 * 2、**output size** 的影响
-  * ![image-20240521212016400](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521212016400.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e9424c65-cca9-4455-a2c8-28df038ceadd)
+
     * 随着output size变大，计算密度的增长率逐渐下降
 * 3、**channel size** 的影响
-  * ![image-20240521212322297](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521212322297.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/53b96629-0801-4082-80b3-e9e508aaa19a)
+
     * 越大的 channel size 计算密度越高。
 * 4、**group convolution** 的影响
   * group：对输入输出分组做卷积的多少组
