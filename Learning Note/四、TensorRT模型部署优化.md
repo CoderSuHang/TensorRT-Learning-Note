@@ -346,9 +346,11 @@ Roofline model在模型部署中的意义：
   * **tensor reshape** 越多，计算密度越小
 * 6、**FC** 的影响
   * 计算公式：
-    * ![image-20240521213831477](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521213831477.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f488fb26-283e-413a-82a0-0308e36669f9)
+
   * **FC** 对计算密度的影响：
-    * ![image-20240521213843917](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521213843917.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/1687c4fa-6765-4596-84e2-83cb8c10e9e1)
+
       * FC的计算密度非常低的原因在于它的大量的访存
 
 
