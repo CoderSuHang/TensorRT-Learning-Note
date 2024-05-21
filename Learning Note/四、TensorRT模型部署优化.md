@@ -86,14 +86,16 @@
   * 但有大量的 Core 来提高吞吐量
   * 有 Tensor Core 来优化矩阵运算
 * 例如：
-  * ![image-20240521110127953](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521110127953.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/01429a08-3e03-4776-a789-cf655798c1c9)
+
   * 一个SM里面有：
     *  64个处理INT32的CUDA Core
     *  64个处理FP32的CUDA Core
     *  32个处理FP64的CUDA Core
     *  4个处理矩阵计算的的Tensor Core
   * 每一种精度在一个SM中的吞吐量（一个clk可以完成的计算数量）
-    * ![image-20240521110305546](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521110305546.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/28098927-adc3-4a8b-8b00-166b8dcb3bb8)
+
 * FP64的吞吐量（CUDA Core）：
   * Throughput = 1.41GHz * 108 * 32 * 1 * 2 = 9.7 TFLOPS
     * 频率：1.41 GHz
