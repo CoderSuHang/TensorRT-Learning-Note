@@ -156,20 +156,25 @@
 * CUDA Core ：
   * 使用一个CUDA Core 计算 C = A * B：
     * 如果使用CUDA Core的话， 需要8次FMA，所以需要8 个clk才可以完成一个c(0,0)
-      * ![image-20240521113133255](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521113133255.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f970e8b1-b695-4f76-9066-28dab8aa4341)
+
     * 要完成4 x 8与 8x 4 的计算， 需要 8 * 16 = 128个clk才 可以完成
-      * ![image-20240521113104914](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521113104914.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/cb18ec0e-d596-46ab-96b1-b0fab45c29bd)
+
     * 当然，如果我们有16个 CUDA core的话，这些计 算并行，实际上是8个clk。 为了与Tensor Core比较， 这里只用一个CUDA Core
 * Tensor Core ：
   * 使用一个Tensor Core 计算 C = A * B：
     * 第一代Tensor Core：
       * Tensor Core不是1个1个的 对FP16进行处理，而是4x4 个FP16一起处理，第一个clk先做A和B的前半段， 结果先存着
-        * ![image-20240521113306509](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521113306509.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e644b7d6-a45a-4386-afbf-2936f2132fd6)
+
       * 第二个clk再处理A和B的后半 段，最后和前半段结果做个累 加，完成计算。所以说Tensor  Core处理4x8*8x4的计算只需 要1 + 1 = 2个clk
-        * ![image-20240521113328684](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521113328684.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d4ac7db0-68b4-482e-9134-15e624a26c18)
+
     * 第三代Tensor Core：
       * 可以1clk处理 4x8  * 8x8 的操作，也就是说1clk可以处理 256个FP16
-        * ![image-20240521113610779](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521113610779.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/551a1115-de79-413a-8309-81e549d9eb8a)
+
   * FP16的吞吐量（Tensor Core）：
     * Ampere架构使用的是第三代Tensor Core，可以一个clk完成一个 1024 ( = 256 * 4)个FP16运算。
       * 准确来说是4x8的矩阵与8x8的矩阵的 FMA
