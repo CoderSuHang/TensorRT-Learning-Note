@@ -279,9 +279,11 @@ Roofline model在模型部署中的意义：
 
 * 单位是FLOPs/Byte，表示的是传送单位数据可以进行的浮点运算数。
   * 计算密度 = 计算量 / 访存量
-  * ![image-20240521210319908](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521210319908.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0e9b79c0-ad0a-450e-ae7e-516223f874c8)
+
 * 我们可以通过提高计算密度，让我们的硬件尽量处于饱和状态，从而提高计算效率
-  * ![image-20240521210459242](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521210459242.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ef6d036a-8dc6-4954-ad61-8e3eb45defb1)
+
 
 
 
@@ -289,23 +291,30 @@ Roofline model在模型部署中的意义：
 
 * 以3080为例
   * 硬件资源
-    * ![image-20240521210817513](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521210817513.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/191a3dc2-7b36-4657-81e9-c6643623530f)
+
   * 分析计算密度
-    * ![image-20240521210955072](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521210955072.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ef70418f-7c03-4742-90dc-b82265f4d789)
+
   * 总结
-    * ![image-20240521211039192](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521211039192.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7132a3ab-ba10-424d-a010-b3cca2959ea4)
+
   * 目前我们单独分析了几个layer对计算密度的影响【（5）计算密度的影响因素（FP32的Conv为例）】。但DNN是一个多个layer的组合，所以我们也需要对整个模型进行分析：
-    * ![image-20240521214119053](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521214119053.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/176b9a42-3acd-45fb-8663-579c5acb0456)
+
   * RTX 3080 Ampere架构中FP32的计算在39.2FLOPs/byte才达到计算饱和：
-    * ![image-20240521214302319](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521214302319.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4e3b5b25-f9dc-40fc-896e-c683f8972b10)
+
   * 所以这些模型其理论上都没有计算饱和：
-    * ![image-20240521214324082](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521214324082.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6ca4e65e-5d8a-4835-9dba-fa4f33f1feb4)
+
 
 ##### （5）计算密度的影响因素（FP32的Conv为例）
 
 * 1、**kernel size** 的影响
   * 计算公式：
-    * ![image-20240521211636123](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521211636123.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e5241fb2-873a-4199-80b9-f0734fce8226)
+
   *  **group convolution** 对计算密度的影响：
     * ![image-20240521211801763](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521211801763.png)
       * elementwise conv(1x1 conv)的虽然较少了计算量，但是计算密度也很低。随着kernel size增大，计算密度增长率逐渐下降
