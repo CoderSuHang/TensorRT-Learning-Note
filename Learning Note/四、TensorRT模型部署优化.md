@@ -329,16 +329,20 @@ Roofline model在模型部署中的意义：
     * 越大的 channel size 计算密度越高。
 * 4、**group convolution** 的影响
   * group：对输入输出分组做卷积的多少组
-  * ![image-20240521213017823](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521213017823.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/32436ac1-a5bd-4ac7-9cf9-47f07edba8d5)
+
     * depthwise虽然降低了计算量，但计算密度也下降的很多
 * 5、**tensor reshape** 的影响
   * reshape 矩阵转置的本质并没有计算，只是对数据进行了拷贝和移动
     * 模型中没有tensor reshape
-      * ![image-20240521213118429](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521213118429.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e0b0dd38-7f83-4db3-8f06-06582a2b5577)
+
     * 模型中有3个tensor reshape
-      * ![image-20240521213629674](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521213629674.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/59d1ba73-1b64-4a82-b03f-ca9b39458836)
+
     * 模型中有5个tensor reshape
-      * ![image-20240521213642931](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240521213642931.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5b28fca6-8a86-4733-816f-db13efe31f2f)
+
   * **tensor reshape** 越多，计算密度越小
 * 6、**FC** 的影响
   * 计算公式：
