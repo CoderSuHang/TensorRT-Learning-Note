@@ -549,14 +549,19 @@ Roofline model在模型部署中的意义：
     * Q中每一个元素可以代表R中每5个元素，并且偏移量是20
 * 5、问题：
   * 如果说可以通过上面的公式将R中的数据映射到Q中的话，那么我们按照下面的公式反着计算的话，是不是就可以通过Q中的数据得到R呢？
-    * ![image-20240522200337477](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200337477.png)
-    * ![image-20240522200356397](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200356397.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/07b8b9e2-85fa-4385-9ddd-1c8c3e2a94fc)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/acbb43fe-00fa-4d04-874a-7ad664981614)
+
       * 相比于原本的101个R中的数据，如今我们只能够得到R中21个数据，比如说-96， -93， -81是无法得到的
-        * ![image-20240522200454582](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200454582.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/387db2cc-d44d-4ea4-8573-e12d37432991)
+
         * 很明显，虽然下面的4个example中数据都呈现-100~0中，但是由于数据的分布形式不同，如果我们统一都用一种ratio和distance的话，会有很大的误差
-          * ![image-20240522200807784](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200807784.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/79a1c21b-e2b0-4d26-b921-37dad20ca472)
+
         * 所以，为了能够让R到Q的映射合理，以及将Q中的数据还原为R时误差能够控制到最小，我们需要**根据R中的数据分布**合理的**设计这个ratio和distance**
-          * ![image-20240522201105391](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522201105391.png)
+          * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b971a1ba-0076-4973-8e34-78e596c6990c)
+
 
 
 
