@@ -726,7 +726,8 @@ Roofline model在模型部署中的意义：
   * 对于一个训练好的模型，**weights（权重）是固定**的，所以可以通过一次计算就可以得到每一层的量化参数。
   * 但是**activation value（激活值）**是**根据输入的改变而改变**的。所以需要通过类似于**统计的方式**去寻找**对于不同类型的输入的不同的dynamic range**。这个过程叫做**校准**。
   * 跟量化粒度一样，不同的校准算法的选择会很大程度影响精度！
-* ![image-20240522205741642](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205741642.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e0ddb8ce-18d8-45d9-ac5f-15152cd012fd)
+
   * 横向tensor FP32的值，纵向每个数出现的次数
   * 做量化的时候，我们一般可以用max、entropy、percen等方法取FP32的动态范围，
 
@@ -746,7 +747,8 @@ Roofline model在模型部署中的意义：
 *  calibration的过程一般是在模型训练以后进行的，所以一般与PTQ(*)搭配使用。整体的流程就是:
   * 在 calibration dataset 中做一次FP32的推理
   * 以 histogram 的形式去统计每一层的floating point的分布
-    * ![image-20240522214426187](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522214426187.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bccc9315-0688-4642-b2eb-4730569c8a2c)
+
     * （注意，因为activation value是per-tensor quantization）
   * 寻找能够表征当前层的 floating point 分布的 scale
     * 这里会有几种不同的算法，比较常见的有
@@ -754,29 +756,34 @@ Roofline model在模型部署中的意义：
       * Entropy calibration
       * Percentile calibration
     * (以上这些过程TensorRT都已经帮我们封装好了，可以拿来直接用)
-      * ![image-20240522214607073](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522214607073.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/21070d19-6483-46c9-a61f-1e23ed7d1364)
+
 
 * Minmax calibration
   * 把FP32中的最大值和最小值全部考虑进去
   *  FP32->INT8的scale需要能够把 FP32 中的最大最小值都给覆盖住。
     * 如果 floating point 的分布比较离散， 各个区间下的分布都比较均匀，minmax是个不错的选择
     * 然而，如果只是极个别数据分布在这种地方的话，会让dynamic range变得比较 稀疏，不适合用minmax
-      * ![image-20240522214748958](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522214748958.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/28b1cfa8-b15e-4515-86b8-38f09799aa87)
+
 * Entropy calibration
   * 通过计算 KL 散度，寻找一种 threashold，能够最小化量化前的 FP32 的浮点数分布于 INT8 的量化后整形分布
     * 目前 TensorRT 使用默认的是 Entropy  calibration。一般来讲使用entropy  calibration精度可以比较好
-    * ![image-20240522214932799](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522214932799.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/df360ff1-88f0-4d74-9fb3-ceb7bbada1d5)
+
 * Percentile calibration
   * 如同字面意思，表示的是FP32中**占据 99.99% 的浮点数**参与量化。
     * 这样可以避免极个别特殊点（误差）参与量化，导出量化出现问题
     * Percentile有99.9%, 99.99%,  99.999%等等
-    * ![image-20240522215123106](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522215123106.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2b7c997e-e4de-4fcd-a38a-dd43f90d23cd)
+
 * 如何选择calibration algorithm
   * **weight** 的calibration，选用 minmax
     * weight权重信息少，并且重要，所以可以全部截取
   * **activation** 的calibration，选用 entropy 或者 percentile
     * 激活值差异很大
-  * ![image-20240522220956702](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522220956702.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3962be26-569c-47c0-8665-63fe589af628)
+
 
 
 
