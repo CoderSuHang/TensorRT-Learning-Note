@@ -692,13 +692,16 @@ Roofline model在模型部署中的意义：
 * **（重点）**从很多实验结果与测试中，对于 weight 和 activation values 的量化方法，一般会选取
   * 对于activation values，选取per-tensor量化
   * 对于weights，选取per-channel量化
-  * ![image-20240522211320875](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522211320875.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3bf54c77-ac47-4894-83f7-85e6e57caa68)
+
 * 为什么**weight**需要per-channel呢？主要是因为
   * BN计算与线性计算的融合（BN folding）
     * 线性变化 𝑦 = 𝑤 ∗ 𝑥 的BN folding可以把BN的参数融合在线性计算中。但是BN的可参数是per-channel的。如果weights用per-tensor的话，会掉精度。
-      * ![image-20240522211920737](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522211920737.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c849382f-3207-402c-8568-386813cbb6f6)
+
   * depthwise convolution
-    * ![image-20240522212218145](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522212218145.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/627edd95-77f0-4fd1-a6b8-7ae8906e567c)
+
     *  depthwise convolution 中 kernel 的 channel size 是1，每一个 kernel 针对输入的对应的 channel 做卷积。
     * 所以每一个 channel 中的参数可能差别会比较大。如果用 per-tensor 的话容易掉精度比较严重
     * 例如下面量化精度效果：
