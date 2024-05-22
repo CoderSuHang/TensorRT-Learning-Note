@@ -621,7 +621,8 @@ Roofline model在模型部署中的意义：
   * 对于一个训练好的模型，**权重是固定**的，所以可以通过一次计算就可以得到每一层的量化参数。
   * 但是activation value(激活值)是**根据输入的改变而改变**的。所以需要通过类似于统计的方式去寻找对于不同类型的输入的不同的dynamic range。这个过程叫做校准。
   * 跟量化粒度一样，不同的校准算法的选择会很大程度影响精度！
-* ![image-20240522205741642](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205741642.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8a6861fb-0194-4fe3-8472-369348d257d5)
+
 
 
 
@@ -633,7 +634,8 @@ Roofline model在模型部署中的意义：
 * PTQ一般是指对于训练好的模型，通过 calibration 算法等来获取 dynamic range 来进行量化。
 * 但PTQ不会更新权重weights，量化普遍上会产生精度下降。所以QAT为了弥补精度下降，在学习过程中通过Fine-tuning权重来适应这种误差，实现精度下降的最小化。
 * 所以一般来讲，QAT的精度会高于PTQ。但并不绝对。详细在下下下一小节讲。
-* ![image-20240522205931385](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205931385.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/67909d1d-4958-4ffb-8d19-c12d77806fd4)
+
 
 
 
