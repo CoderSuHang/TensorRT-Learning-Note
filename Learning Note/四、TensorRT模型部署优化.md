@@ -791,19 +791,24 @@ Roofline model在模型部署中的意义：
 
 在使用calibration dateset中构建histogram是需要注意的一个点：calibration时的batch size（一个batch中有几张图片）会影响精度。 更准确来说会影响histogram的分布，这个跟TensorRT在构建浮点数的histogram的算法有关：
 
-* ![image-20240522221734836](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522221734836.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/28607601-b6ec-421a-8e1e-9f268cc2ad10)
+
 * 上面的说法表明：在创建 histogram 直方图的时候，如果出现了大于当前 histogram 可以表示的最大值的时候，TensorRT会直接平方当前histogram的最大值，来扩大存储空间
   * 如果batchsize=1，最后一个batch的浮点数很大，那么最终的histogram会呈现什么形状？
     * 这里以batchsize=8为例
-      * ![image-20240522222124649](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522222124649.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/eff3d388-cd71-47f5-b27c-14065f1a2215)
+
       * 这时 histogram 的后半段很稀疏，甚至没有数据。
-        * ![image-20240522222150768](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522222150768.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c5fd458d-5583-4bd9-aa91-f3793a6d7d60)
+
       * 在量化的时候会根据这个直方图来将 FP32转为INT8，很显然这块领域是多余的
   * 如果batchsize=16，但每一个batch size的数据分布很均匀，histogram会呈现什么形状？
     * 我们希望每一个batch里面的数据比较均匀， 让比较大的数据出现的时候，histogram的范围已经能够表现它了。
-      * ![image-20240522222218912](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522222218912.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/732a0667-4817-415e-97a7-01dba91325c6)
+
     * 当2.4出现的时候，如果之前已经出现过1.54，那么hisogram的range不需要改变。否则range的最大值会变成5.76
-      * ![image-20240522222328979](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522222328979.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/49e377bc-60c8-41b0-aa35-c8607461b5c0)
+
       * 总的来讲，calibratio的batch size越大越 好，但不是绝对的
   * 如果模型的鲁棒性很强，batchsize=1和 batchsize=16/32/64/128 的区别会有吗
     * 有的，不管鲁棒性强不强，都尽量以大的 batch size 为主
@@ -823,14 +828,16 @@ Roofline model在模型部署中的意义：
     * 所以QAT为了弥补精度下降，在学习过程中通过Fine-tuning权重来适应这种误差，实现精度下降的最小化。
     * 所以一般来讲，QAT的精度会高于PTQ。但并不绝对。
 * PTQ流程
-  * ![image-20240522223121402](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522223121402.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/118e0252-d7ac-49ad-9b7b-dc424eaa4071)
+
     * 1、准备一个校准集，大概是整个数据集的10%左右
     * 2、把数据集放在训练好的模型上
     * 3、统计每一层的信息
     * 4、对每一层进行计算，获得每一层量化的scale
     * 5、最后拿scale进行量化模型
 * QAT流程
-  * ![image-20240522223424454](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522223424454.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d16cd20b-fb5d-48fa-8786-48b852dccb22)
+
     * 1、准备一个训练好的模型
     * 2、对模型添加QDQ的节点（量化和反量化的节点）
     * 3、结合QDQ节点来通过Fine-tuning更新权重
