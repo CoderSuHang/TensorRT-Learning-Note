@@ -572,13 +572,17 @@ Roofline model在模型部署中的意义：
 * Q是一组INT8的数据，只能够表现2^(8)种数据(256)
   * 范围是：-128 ~128 or 0 ~ 255
 * R到Q的映射的**缩放因子scale**的计算公式为
-  * ![image-20240522201759580](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522201759580.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6cd0f02e-c155-4a0b-9d58-00fa95ffaaa0)
+
 * R缩放之后映射到Q时，所需要的**偏移量z**为
-  * ![image-20240522201840495](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522201840495.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bfddf65d-78f8-413e-b34e-f13e4a9e9bd6)
+
 * 这样R中每一个元素转移到Q的过程称为**量化**(Quantization)，公式是
-  * ![image-20240522201906387](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522201906387.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/04d892cd-9313-410e-9d34-dee708345fc0)
+
 * 将Q空间中一个元素转换回R的空间的过程为**反量化**(Dequantization)，公式是
-  * ![image-20240522201931578](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522201931578.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/dd89dc3d-8cd5-44ad-8d21-ba653f0f7b59)
+
 
 
 
