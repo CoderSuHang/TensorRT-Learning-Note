@@ -659,24 +659,29 @@ Roofline model在模型部署中的意义：
 * 指的是对于一个Tensor，以多大的粒度去共享scale和z，或者dynamic range，具体选哪一个粒度好会很大程度影响性能和精度！包括：
   * per-tensor quantization（计算容易）
     * 一个tensor中所有的 element 共享同一个 dynamic range
-    * ![image-20240522205228630](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205228630.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0eaa5ee9-b81c-4c59-af89-e267ecc49d58)
+
   * per-channel quantization（计算中等）
     * 一个tensor中每一个layer都有一个自己的dynamic  range，当我们遇到每一个channel动态范围差别太大的时候就会用到。
-    * ![image-20240522205236293](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205236293.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7f4bede4-0d0f-4521-900a-d0c0faf6b0c6)
+
   * per-element quantization（计算麻烦）
     * 一个tensor中每一个 element 都有一个自己的 dynamic range。 也可以叫做 element-wise  quantization
-    * ![image-20240522205254094](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205254094.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c1b50620-7423-45e2-8bb0-1d52b22123fb)
+
 
 
 
 ##### （2）Per-tensor & Per-channel量化
 
 * Per-tensor量化
-  * ![image-20240522210906022](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522210906022.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/88c09d7a-b87e-4015-8e31-f5612c8fe85f)
+
   *  (优点）低延迟: 一个tensor共享同一个量化参数
   *  (缺点）高错误率: 一个scale很难覆盖所有FP32的 dynamic range
 *  Per-channel (layer)量化
-  * ![image-20240522211007098](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522211007098.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/840cc776-3d9b-4468-b0b5-d2bae675fe47)
+
   *  (优点）低错误率: 每一个channel都有自己的scale
   *  (缺点）高延迟: 需要使用vector来存储每一个channel的scale
 
