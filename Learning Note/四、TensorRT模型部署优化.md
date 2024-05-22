@@ -504,18 +504,21 @@ Roofline model在模型部署中的意义：
 
 3、所以一般来说我们会对**conv**或者**linear**这些计算密集型算子进行量化
 
-* ![image-20240522114732472](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522114732472.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e4fe8faa-6239-4d17-a7cb-a1629a2b3f19)
+
   * 量化和反量化的过程
 
 ##### （2）量化会出现什么问题
 
 数据的动态范围：
 
-* ![image-20240522114914996](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522114914996.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/24a1a671-8073-4af7-bf14-4974e787ada5)
+
 
 仅仅用256种数据去表现FP32的所有可能出现的数据，有可能会造成**表现力下降**。
 
-* ![image-20240522115015268](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522115015268.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2d2b8286-73a3-4ae2-85dd-5dbc80aa174e)
+
 
 如果能够比较完美的用这256个数据去最大限度的表现FP32的 原始数据分布，是量化的一个很大挑战。换句话说，就是如何合理的设计这个**dynamic  range**是量化的**重点**
 
