@@ -384,7 +384,7 @@ Roofline model在模型部署中的意义：
 * **【重点】**到目前讲的是理论值。然而实际上我们会发现
   * 峰值可能会小于22.4TOPS
   * bandwidth可能会小于137GB/s
-  * ![Uploading image.png…]()
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5f0664ae-a047-49ea-92a5-d52137e0ad58)
 
 * **需要根据一系列 benchmark 找到部署架构的真实值。**
   * 比如自己写几个计算密集的核函数（减少作为memory cuppy 数据传输用的算子）
@@ -477,10 +477,12 @@ Roofline model在模型部署中的意义：
 背景
 
 * DNN模型的大小，几乎在以每年**10**倍的FLOPs在增长
-  * ![image-20240522113825013](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522113825013.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8e64966d-d94d-474e-9308-6d9a61f1a3d1)
+
 
 * 相反，硬件的性能却以仅每年0.74倍FLOP/s的速度增长
-  * ![image-20240522113908218](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522113908218.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b9d029cd-3ca8-4a3d-8b6b-95f5918e9c97)
+
 * 相比于模型的发展，硬件的发展速度很慢。即便硬件有了，还需要有相对应的的编译器。有了基本的编译器后，还需要有编译器的优化（TensorRT 3.x~8.x的演变），还需要有一套其他的SDK。
 
 意义：
