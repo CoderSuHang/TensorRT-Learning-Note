@@ -590,10 +590,12 @@ Roofline model在模型部署中的意义：
 
 * 根据R和Q的 dynamic range 的选择以及 mapping 的方式，我们可以分为，对称映射(symmetric  quantization)，以及非对称映射 (asymmetric quantization)
   * 对称映射(symmetric  quantization)
-    * ![image-20240522204904042](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522204904042.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/03198ddd-18d9-4a93-8858-454d529e5c26)
+
     * 对称量化中量化前后的0是对齐的， 所以不会有偏移量(z, shift)的存在， 这个可以让量化过程的计算简单。 NVIDIA默认的mapping就是对称量化，因为快
   * 非对称映射 (asymmetric quantization)
-    * ![image-20240522204923557](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522204923557.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/edcc5f89-757c-45f4-aa41-bf17d0bdc137)
+
 
 
 
