@@ -604,11 +604,14 @@ Roofline model在模型部署中的意义：
 * 量化中非常重要的概念: Quantization Granularity(量化粒度)
   * 指的是对于一个Tensor，以多大的粒度去共享scale和z，或者dynamic range，具体选哪一个粒度好会很大程度影响性能和精度！包括：
     * per-tensor quantization（一个tensor中所有的 element共享同一个 dynamic range）
-      * ![image-20240522205228630](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205228630.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/45ac3e74-6f06-4750-b2cd-54cbc8dfc247)
+
     * per-channel quantization（一个tensor中每一个layer都有一个自己的dynamic  range）
-      * ![image-20240522205236293](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205236293.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a3273e0b-c033-4244-852d-254c63210754)
+
     * per-element quantization（一个tensor中每一个element都有一个自己的dynamic range。 也可以叫做element-wise  quantization）
-      * ![image-20240522205254094](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205254094.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0c3d281e-5c80-4563-a35d-7e8b21f2bc92)
+
 
 
 
