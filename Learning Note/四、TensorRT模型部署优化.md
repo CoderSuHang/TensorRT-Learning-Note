@@ -528,18 +528,23 @@ Roofline model在模型部署中的意义：
 
 倘若想把R中的数据用Q来表示，如何做？
 
-* ![image-20240522195844830](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522195844830.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e3c2487a-eb88-45da-87a3-f2c9796a9916)
+
 
 【方法一】
 
 * 1、根据R和Q中x和y可以取的最大值和最小值，计算得到一个**缩放比**(ratio)：
-  * ![image-20240522195957547](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522195957547.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6a1e412b-cb39-47d8-a818-ae9bc3fe78ee)
+
 * 2、以及缩放后的R要在Q的范围中显示，所需要的偏移量(distance):
-  * ![image-20240522200049508](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200049508.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/900dd738-1775-4095-9b73-97fd7a72f1c3)
+
 * 3、最终，通过ratio和distance的到x和y的关系
-  * ![image-20240522200138420](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200138420.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/30f2f3d9-2b8d-485f-9fad-b8e404bdfdf5)
+
 * 4、演示：
-  * ![image-20240522200229823](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200229823.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/59edf895-daeb-4fa5-b608-14f9d8a236a7)
+
   * 通过ratio和distance我们可以这么理解：
     * Q中每一个元素可以代表R中每5个元素，并且偏移量是20
 * 5、问题：
