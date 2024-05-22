@@ -474,13 +474,361 @@ Roofline model在模型部署中的意义：
 
 #### 4.3.1 理解量化诞生的背景与意义
 
+背景
+
+* DNN模型的大小，几乎在以每年**10**倍的FLOPs在增长
+  * ![image-20240522113825013](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522113825013.png)
+
+* 相反，硬件的性能却以仅每年0.74倍FLOP/s的速度增长
+  * ![image-20240522113908218](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522113908218.png)
+* 相比于模型的发展，硬件的发展速度很慢。即便硬件有了，还需要有相对应的的编译器。有了基本的编译器后，还需要有编译器的优化（TensorRT 3.x~8.x的演变），还需要有一套其他的SDK。
+
+意义：
+
+* 所以，大家一般会考虑如果用现有的硬件基础上**减少模型计算量**、**增大模型计算密度**等等。所以针对 这些需求，就有了**“量化(quantization)”**，“剪枝(Prunning)”等这些优化方法。
+
+
+
 #### 4.3.2 量化的基本算法与对称/非对称量化
+
+##### （1）量化简介
+
+1、模型量化是通过减少模型中计算精度从而**减少模型计算所需要的访存量**，进而进一步提高计算密度的一种方法。计算精度可以分为FP32, FP16, FP8, INT8,  INT32, TF32这些
+
+2、量化针对的是：
+
+* activation value（模型的激活值，例如输入输出这也Tensor value）
+* weight（权重）
+
+3、所以一般来说我们会对**conv**或者**linear**这些计算密集型算子进行量化
+
+* ![image-20240522114732472](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522114732472.png)
+  * 量化和反量化的过程
+
+##### （2）量化会出现什么问题
+
+数据的动态范围：
+
+* ![image-20240522114914996](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522114914996.png)
+
+仅仅用256种数据去表现FP32的所有可能出现的数据，有可能会造成**表现力下降**。
+
+* ![image-20240522115015268](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522115015268.png)
+
+如果能够比较完美的用这256个数据去最大限度的表现FP32的 原始数据分布，是量化的一个很大挑战。换句话说，就是如何合理的设计这个**dynamic  range**是量化的**重点**
+
+
+
+##### （3）量化的基本原理：映射和偏移
+
+倘若想把R中的数据用Q来表示，如何做？
+
+* ![image-20240522195844830](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522195844830.png)
+
+【方法一】
+
+* 1、根据R和Q中x和y可以取的最大值和最小值，计算得到一个**缩放比**(ratio)：
+  * ![image-20240522195957547](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522195957547.png)
+* 2、以及缩放后的R要在Q的范围中显示，所需要的偏移量(distance):
+  * ![image-20240522200049508](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200049508.png)
+* 3、最终，通过ratio和distance的到x和y的关系
+  * ![image-20240522200138420](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200138420.png)
+* 4、演示：
+  * ![image-20240522200229823](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200229823.png)
+  * 通过ratio和distance我们可以这么理解：
+    * Q中每一个元素可以代表R中每5个元素，并且偏移量是20
+* 5、问题：
+  * 如果说可以通过上面的公式将R中的数据映射到Q中的话，那么我们按照下面的公式反着计算的话，是不是就可以通过Q中的数据得到R呢？
+    * ![image-20240522200337477](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200337477.png)
+    * ![image-20240522200356397](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200356397.png)
+      * 相比于原本的101个R中的数据，如今我们只能够得到R中21个数据，比如说-96， -93， -81是无法得到的
+        * ![image-20240522200454582](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200454582.png)
+        * 很明显，虽然下面的4个example中数据都呈现-100~0中，但是由于数据的分布形式不同，如果我们统一都用一种ratio和distance的话，会有很大的误差
+          * ![image-20240522200807784](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522200807784.png)
+        * 所以，为了能够让R到Q的映射合理，以及将Q中的数据还原为R时误差能够控制到最小，我们需要**根据R中的数据分布**合理的**设计这个ratio和distance**
+          * ![image-20240522201105391](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522201105391.png)
+
+
+
+##### （4）基本术语
+
+* R是一组FP32的数据，能够表现的数据种类有很多，大约是 2^(32) 种(4亿):
+  * 范围是: −1.2 ∗ 10^(−38) ~ 3.4 ∗ 10^(38)
+* Q是一组INT8的数据，只能够表现2^(8)种数据(256)
+  * 范围是：-128 ~128 or 0 ~ 255
+* R到Q的映射的**缩放因子scale**的计算公式为
+  * ![image-20240522201759580](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522201759580.png)
+* R缩放之后映射到Q时，所需要的**偏移量z**为
+  * ![image-20240522201840495](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522201840495.png)
+* 这样R中每一个元素转移到Q的过程称为**量化**(Quantization)，公式是
+  * ![image-20240522201906387](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522201906387.png)
+* 将Q空间中一个元素转换回R的空间的过程为**反量化**(Dequantization)，公式是
+  * ![image-20240522201931578](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522201931578.png)
+
+
+
+##### （5）对称映射，非对称映射
+
+* 根据R和Q的 dynamic range 的选择以及 mapping 的方式，我们可以分为，对称映射(symmetric  quantization)，以及非对称映射 (asymmetric quantization)
+  * 对称映射(symmetric  quantization)
+    * ![image-20240522204904042](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522204904042.png)
+    * 对称量化中量化前后的0是对齐的， 所以不会有偏移量(z, shift)的存在， 这个可以让量化过程的计算简单。 NVIDIA默认的mapping就是对称量化，因为快
+  * 非对称映射 (asymmetric quantization)
+    * ![image-20240522204923557](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522204923557.png)
+
+
+
+##### （6）量化粒度
+
+* 量化中非常重要的概念: Quantization Granularity(量化粒度)
+  * 指的是对于一个Tensor，以多大的粒度去共享scale和z，或者dynamic range，具体选哪一个粒度好会很大程度影响性能和精度！包括：
+    * per-tensor quantization（一个tensor中所有的 element共享同一个 dynamic range）
+      * ![image-20240522205228630](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205228630.png)
+    * per-channel quantization（一个tensor中每一个layer都有一个自己的dynamic  range）
+      * ![image-20240522205236293](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205236293.png)
+    * per-element quantization（一个tensor中每一个element都有一个自己的dynamic range。 也可以叫做element-wise  quantization）
+      * ![image-20240522205254094](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205254094.png)
+
+
+
+##### （7）校准
+
+* 量化中另外一个非常重要的概念：Calibration(校准)
+  * 对于一个训练好的模型，**权重是固定**的，所以可以通过一次计算就可以得到每一层的量化参数。
+  * 但是activation value(激活值)是**根据输入的改变而改变**的。所以需要通过类似于统计的方式去寻找对于不同类型的输入的不同的dynamic range。这个过程叫做校准。
+  * 跟量化粒度一样，不同的校准算法的选择会很大程度影响精度！
+* ![image-20240522205741642](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205741642.png)
+
+
+
+##### （8）PTQ, QAT
+
+* 根据量化的时机，一般我们会把量化分为
+  * PTQ(Post-Training Quantization)，训练后量化
+  * QAT(Quantization-Aware Training)，训练时量化
+* PTQ一般是指对于训练好的模型，通过 calibration 算法等来获取 dynamic range 来进行量化。
+* 但PTQ不会更新权重weights，量化普遍上会产生精度下降。所以QAT为了弥补精度下降，在学习过程中通过Fine-tuning权重来适应这种误差，实现精度下降的最小化。
+* 所以一般来讲，QAT的精度会高于PTQ。但并不绝对。详细在下下下一小节讲。
+* ![image-20240522205931385](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205931385.png)
+
+
+
+##### （9）有关量化学习的激活函数
+
+* 量化学习是一个Fine-tuning的过程。那么选取什么样子的激活函数会更好呢？
+  * 我们可以结合量化的特性去思考。我们希望整个学习过程让权重或者激活值控制在某个区域范围内，所以我们需要实现某种Clipping。推荐两个激活函数：
+    * PACT(Paramertized Clipping Activation Function)
+      * 对于PACT的介绍，推荐阅读一下IBM的论文
+    * ReLU6
+      * PACT(Paramertized Clipping Activation Function)
+
+
 
 #### 4.3.3 量化粒度与精度/效率的关系
 
+##### （1）量化粒度
+
+量化中非常重要的概念: Quantization Granularity(量化粒度)
+
+* 指的是对于一个Tensor，以多大的粒度去共享scale和z，或者dynamic range，具体选哪一个粒度好会很大程度影响性能和精度！包括：
+  * per-tensor quantization（计算容易）
+    * 一个tensor中所有的 element 共享同一个 dynamic range
+    * ![image-20240522205228630](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205228630.png)
+  * per-channel quantization（计算中等）
+    * 一个tensor中每一个layer都有一个自己的dynamic  range，当我们遇到每一个channel动态范围差别太大的时候就会用到。
+    * ![image-20240522205236293](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205236293.png)
+  * per-element quantization（计算麻烦）
+    * 一个tensor中每一个 element 都有一个自己的 dynamic range。 也可以叫做 element-wise  quantization
+    * ![image-20240522205254094](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205254094.png)
+
+
+
+##### （2）Per-tensor & Per-channel量化
+
+* Per-tensor量化
+  * ![image-20240522210906022](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522210906022.png)
+  *  (优点）低延迟: 一个tensor共享同一个量化参数
+  *  (缺点）高错误率: 一个scale很难覆盖所有FP32的 dynamic range
+*  Per-channel (layer)量化
+  * ![image-20240522211007098](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522211007098.png)
+  *  (优点）低错误率: 每一个channel都有自己的scale
+  *  (缺点）高延迟: 需要使用vector来存储每一个channel的scale
+
+
+
+##### （3）量化粒度选择的推荐方法
+
+* **（重点）**从很多实验结果与测试中，对于 weight 和 activation values 的量化方法，一般会选取
+  * 对于activation values，选取per-tensor量化
+  * 对于weights，选取per-channel量化
+  * ![image-20240522211320875](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522211320875.png)
+* 为什么**weight**需要per-channel呢？主要是因为
+  * BN计算与线性计算的融合（BN folding）
+    * 线性变化 𝑦 = 𝑤 ∗ 𝑥 的BN folding可以把BN的参数融合在线性计算中。但是BN的可参数是per-channel的。如果weights用per-tensor的话，会掉精度。
+      * ![image-20240522211920737](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522211920737.png)
+  * depthwise convolution
+    * ![image-20240522212218145](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522212218145.png)
+    *  depthwise convolution 中 kernel 的 channel size 是1，每一个 kernel 针对输入的对应的 channel 做卷积。
+    * 所以每一个 channel 中的参数可能差别会比较大。如果用 per-tensor 的话容易掉精度比较严重
+    * 例如下面量化精度效果：
+      * MobileNet: 
+        * MobileNet: (FP32) 71.88
+        * MobileNet: (int8 Per-channel weight quantization)  71.56
+        * MobileNet: (int8 Per-tensor weight quantization)  66.88
+      * EfficientNet: 
+        * EfficientNet: (FP32) 76.85
+        * EfficientNet: (int8 Per-channel weight quantization)  76.72
+        * EfficientNet: (int8 Per-tensor weight quantization)  12.93
+
+* **（重点）**目前的TensorRT已经默认对于Activation values选用Per-tensor，Weights选用 Per-channel，这是他们做了多次实验所得出的结果。很多其他平台的SDK可能不会提供一些默认的量化策略，这是我们需要谨慎选择，尽快找到掉点的原因。
+
+
+
 #### 4.3.4 量化校准算法比较
 
+##### （1）校准简介
+
+* 量化中另外一个非常重要的概念：Calibration(校准)
+  * 对于一个训练好的模型，**weights（权重）是固定**的，所以可以通过一次计算就可以得到每一层的量化参数。
+  * 但是**activation value（激活值）**是**根据输入的改变而改变**的。所以需要通过类似于**统计的方式**去寻找**对于不同类型的输入的不同的dynamic range**。这个过程叫做**校准**。
+  * 跟量化粒度一样，不同的校准算法的选择会很大程度影响精度！
+* ![image-20240522205741642](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522205741642.png)
+  * 横向tensor FP32的值，纵向每个数出现的次数
+  * 做量化的时候，我们一般可以用max、entropy、percen等方法取FP32的动态范围，
+
+
+
+##### （2）Calibration dataset
+
+* 校准一般会在PTQ训练后量化的时候出现，需要用到校准数据集
+  * 针对不同的输入，各层 layer 的 input activation value 都会有不同的分布和取值。大数据集的差别比较大。
+  * 我们需要通过训练数据集中的一部分数据来尝试表征整个数据集的分布。
+  * 这个小数据集就是calibration dataset。一般往往很小，但需要尽量有整体的表征
+
+
+
+##### （3）Calibration algorithm
+
+*  calibration的过程一般是在模型训练以后进行的，所以一般与PTQ(*)搭配使用。整体的流程就是:
+  * 在 calibration dataset 中做一次FP32的推理
+  * 以 histogram 的形式去统计每一层的floating point的分布
+    * ![image-20240522214426187](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522214426187.png)
+    * （注意，因为activation value是per-tensor quantization）
+  * 寻找能够表征当前层的 floating point 分布的 scale
+    * 这里会有几种不同的算法，比较常见的有
+      * Minmax calibration
+      * Entropy calibration
+      * Percentile calibration
+    * (以上这些过程TensorRT都已经帮我们封装好了，可以拿来直接用)
+      * ![image-20240522214607073](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522214607073.png)
+
+* Minmax calibration
+  * 把FP32中的最大值和最小值全部考虑进去
+  *  FP32->INT8的scale需要能够把 FP32 中的最大最小值都给覆盖住。
+    * 如果 floating point 的分布比较离散， 各个区间下的分布都比较均匀，minmax是个不错的选择
+    * 然而，如果只是极个别数据分布在这种地方的话，会让dynamic range变得比较 稀疏，不适合用minmax
+      * ![image-20240522214748958](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522214748958.png)
+* Entropy calibration
+  * 通过计算 KL 散度，寻找一种 threashold，能够最小化量化前的 FP32 的浮点数分布于 INT8 的量化后整形分布
+    * 目前 TensorRT 使用默认的是 Entropy  calibration。一般来讲使用entropy  calibration精度可以比较好
+    * ![image-20240522214932799](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522214932799.png)
+* Percentile calibration
+  * 如同字面意思，表示的是FP32中**占据 99.99% 的浮点数**参与量化。
+    * 这样可以避免极个别特殊点（误差）参与量化，导出量化出现问题
+    * Percentile有99.9%, 99.99%,  99.999%等等
+    * ![image-20240522215123106](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522215123106.png)
+* 如何选择calibration algorithm
+  * **weight** 的calibration，选用 minmax
+    * weight权重信息少，并且重要，所以可以全部截取
+  * **activation** 的calibration，选用 entropy 或者 percentile
+    * 激活值差异很大
+  * ![image-20240522220956702](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522220956702.png)
+
+
+
+##### （4）calibration dataset与batch size的关系
+
+在使用calibration dateset中构建histogram是需要注意的一个点：calibration时的batch size（一个batch中有几张图片）会影响精度。 更准确来说会影响histogram的分布，这个跟TensorRT在构建浮点数的histogram的算法有关：
+
+* ![image-20240522221734836](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522221734836.png)
+* 上面的说法表明：在创建 histogram 直方图的时候，如果出现了大于当前 histogram 可以表示的最大值的时候，TensorRT会直接平方当前histogram的最大值，来扩大存储空间
+  * 如果batchsize=1，最后一个batch的浮点数很大，那么最终的histogram会呈现什么形状？
+    * 这里以batchsize=8为例
+      * ![image-20240522222124649](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522222124649.png)
+      * 这时 histogram 的后半段很稀疏，甚至没有数据。
+        * ![image-20240522222150768](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522222150768.png)
+      * 在量化的时候会根据这个直方图来将 FP32转为INT8，很显然这块领域是多余的
+  * 如果batchsize=16，但每一个batch size的数据分布很均匀，histogram会呈现什么形状？
+    * 我们希望每一个batch里面的数据比较均匀， 让比较大的数据出现的时候，histogram的范围已经能够表现它了。
+      * ![image-20240522222218912](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522222218912.png)
+    * 当2.4出现的时候，如果之前已经出现过1.54，那么hisogram的range不需要改变。否则range的最大值会变成5.76
+      * ![image-20240522222328979](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522222328979.png)
+      * 总的来讲，calibratio的batch size越大越 好，但不是绝对的
+  * 如果模型的鲁棒性很强，batchsize=1和 batchsize=16/32/64/128 的区别会有吗
+    * 有的，不管鲁棒性强不强，都尽量以大的 batch size 为主
+  * 如果模型的鲁棒性很强，calibration dataset = 1000/500/100 的区别会有吗
+    * 关系不大，建议1000起步
+
+
+
 #### 4.3.5 PTQ 量化以及 layer-wise 敏感度分析
+
+##### （1）PTQ, QAT简介
+
+* 根据量化的时机，一般我们会把量化分为
+  * PTQ(Post-Training Quantization)，训练后量化
+    * PTQ一般是指对于训练好的模型，通过 calibration 算法等来获取 dynamic range 来进行量化。但PTQ不会更新权重weights，量化普遍上会产生精度下降。
+  * QAT(Quantization-Aware Training)，训练时量化
+    * 所以QAT为了弥补精度下降，在学习过程中通过Fine-tuning权重来适应这种误差，实现精度下降的最小化。
+    * 所以一般来讲，QAT的精度会高于PTQ。但并不绝对。
+* PTQ流程
+  * ![image-20240522223121402](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522223121402.png)
+    * 1、准备一个校准集，大概是整个数据集的10%左右
+    * 2、把数据集放在训练好的模型上
+    * 3、统计每一层的信息
+    * 4、对每一层进行计算，获得每一层量化的scale
+    * 5、最后拿scale进行量化模型
+* QAT流程
+  * ![image-20240522223424454](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240522223424454.png)
+    * 1、准备一个训练好的模型
+    * 2、对模型添加QDQ的节点（量化和反量化的节点）
+    * 3、结合QDQ节点来通过Fine-tuning更新权重
+    * 4、整个过程存储scale这些信息
+    * 5、最后拿scale进行量化模型
+
+
+
+##### （2）PTQ是什么
+
+* PTQ(Post-training quantization)也被称作隐式量化(implicit quantization)。
+  * 我们并不显式的对算子添加量化节点(Q/DQ)，calibration之后TensorRT根据情况进行量化
+  * 例如：
+    * trtexec在选择参数进行fp16或者int8指定的时候，使用的就是PTQ。(int8的时候需要指定calibration dataset)。很方便使用，但是我们需要先理解PTQ的利弊
+
+
+
+##### （2）PTQ优缺点分析
+
+* 优点：
+  * 方便使用，不需要训练。可以在部署设备上直接跑
+* 缺点
+  * 1、精度下降
+    * 量化过程会导致精度下降。但PTQ没有类似于QAT这种fine-tuning的过程。所以**权重不会更新来吸收这种误差**
+  * 2、量化不可控
+    * TensorRT会权衡量化后所产生的新添的计算或者访存， 是否用INT8还是FP16。
+    * TensorRT中的kernel autotuning会选择核函数来做FP16/INT8的计算。来查看是否在CUDA core上跑还是在Tensor core上跑
+    * 有可能FP16是在Tensor core上，**但转为INT8之后就在CUDA core上了**
+  * 3、层融合问题
+    * 量化后有可能出现之前可以融合的层，不能融合了（因为量化只有有些层不支持FP16或INT8）
+    * 量化会添加reformatter这种更改tensor的格式的算子，如果本来融合的两个算子间添加了这个就不能被融合了
+    * 比如有些算子支持int8，但某些不支持。之前可以融合的，但因为精度不同不能融合了
+  * 如果INT8量化后速度反而会比FP16/FP32要慢，我们可以从以上的2和3去分析并排查原因
+
+
+
+
+
+
 
 #### 4.3.6 QAT 量化以及 Q/DQ 节点与算子的融合
 
