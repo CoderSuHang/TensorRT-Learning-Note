@@ -954,22 +954,29 @@ QAT(Quantization Aware Training)也被称作显式量化。
 **2、Q/DQ节点的插入示意：**
 
 * 没有QAT的默认onnx模型架构
-  * ![image-20240523113004196](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523113004196.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a8c8a6fe-3c7b-4996-bf83-e4b0463ae88a)
+
 * 为带有QAT的onnx模型架构
-  * ![image-20240523113015200](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523113015200.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f00745c7-699c-4f7b-9bf4-719d06efae4e)
+
   * 添加Q/DQ节点模拟量化之后，如果出现误差，会让Conv更行权重weight来适应
 
 **3、Q/DQ公式：**
 
 * 参数说明
-  * ![image-20240523113705168](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523113705168.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9807af5e-95f6-467f-b0bb-92e70c01b71c)
+
+
 * 那么Q的公式可以理解为
-  * ![image-20240523113726194](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523113726194.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/25e5d892-1aaa-414f-90b2-358fbcbba1b3)
+
     * clip是截取功能
-      * ![image-20240523113748817](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523113748817.png)
-    * ![image-20240523113757143](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523113757143.png)
+      * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f31dc1e8-d881-48b2-a3f7-63ecee66f234)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/150318bd-e17c-43cb-b446-195cd3ded64d)
+
 * DQ的公式可以理解为
-  * ![image-20240523113816194](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523113816194.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9334c375-bccb-45af-b1ac-4f3cf9a0e2fb)
+
 
 ##### （3）可量化层的计算
 
@@ -978,16 +985,21 @@ QAT(Quantization Aware Training)也被称作显式量化。
 对于一个线性计算的op(conv或者linear)
 
 * fp32精度的op的计算简化成
-  * ![image-20240523114700958](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523114700958.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5cd1adb4-57e5-4aad-a9d5-ffcc3ffc8338)
+
 * 既然x和w是fp32的，那么我们也可以这么表示
-  * ![image-20240523114723614](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523114723614.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/97d40e3f-80ea-4a92-a77a-fb356f25b013)
+
     * 这里以NVIDIA采用的对称量化量化与反量化计算为例，计算过程没有涉及zero-shift
   * 展开
-    * ![image-20240523114753303](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523114753303.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/222ea089-a299-44ff-b754-5196949bc1fe)
+
 * 因为计算量的主要是𝑤𝑞 ∗ 𝑥𝑞,是int8计算，所以我们可以把这个公式写成：
-  * ![image-20240523114829449](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523114829449.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/025a01b8-cc73-4112-9c5e-d1e9303aaad9)
+
   * 所以我们知道DQ + fp32精度的op可以拼成一个int8精度的op，但输出都是FP32
-    * ![image-20240523115145758](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523115145758.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/70f63bfe-808e-4ea1-a1be-252e1eb084cb)
+
 
 **2、DQ + fp32精度op + Q的融合**
 
