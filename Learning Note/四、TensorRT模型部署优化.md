@@ -1004,16 +1004,20 @@ QAT(Quantization Aware Training)也被称作显式量化。
 **2、DQ + fp32精度op + Q的融合**
 
 * 下一个Q的计算
-  * ![image-20240523115609661](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523115609661.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2a7efabf-1fc2-43dc-95d5-d8d4484187eb)
+
     * 这里的𝑥′是来自于上一 层的输出，是fp32
 * 由于𝑥′是来自于上一层计算，可以把𝑥′展开
-  * ![image-20240523115645557](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523115645557.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/495ae29b-d97a-4df1-9c3e-100acf2f3360)
+
 * 我们可以看到这个依然是一个线性变化。所以说DQ + fp32精度OP + Q可以融合在一起凑成一个int8的op，所以我们可以把这个公式替换成：
-  * ![image-20240523115723393](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523115723393.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/03aab722-f97d-4309-b539-a4077f3436b8)
+
 * 我们称这个op或者layer为quantizable layer，翻译为可量化层
   * 这个可量化层的**输入**和**输出**都是int8
   * 计算的主体也是int8，可以**节省带宽**的同时，**提高计算**效率
-* ![image-20240523115959811](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523115959811.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/11e71f0c-d6b4-49b8-892e-70aa70947e13)
+
 
 
 
