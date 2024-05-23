@@ -1023,15 +1023,18 @@ QAT(Quantization Aware Training)也被称作显式量化。
 
 **3、融合图解**
 
-![image-20240523120536041](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523120536041.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9952a564-910d-4bfc-9acf-625610b2f331)
+
 
 我们知道conv和Relu是可以融合在一起成为ConvReLU算子，同时根据之前的公式和图，我们知道：
 
-* ![image-20240523120614963](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523120614963.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bdbbde39-c8a0-4e64-9304-8824e28de84f)
+
   * DQ和fp32精度的conv组合在一起，可以融合成一个int8精度的conv
   * fp32精度输出的conv和后面的Q也可以融合在一起，输出一个int8精度的activation value
 * 将这些虚线包围起来的算子融合在一起，用一个int8的op来替换后，整个网络就会变成这个样子:
-  * ![image-20240523120637578](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523120637578.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5a53d7a9-f5ba-48eb-9dff-60442824d2b2)
+
   * 新生成的QConvRelu以及Qconv是int8精度的计算，速度很快并且TensorRT会很大几率分配tensor core执行这个计算。这个就是TensorRT中对量化节点的优化方法之一。
 
 
