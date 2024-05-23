@@ -1043,7 +1043,8 @@ QAT(Quantization Aware Training)也被称作显式量化。
 
 理解了Q/DQ再去看QAT就非常容易了。QAT是一种Fine-tuning方式，通常对一个pre-trainedmodel进行添加Q/DQ节点模拟量化，并通过训练来更新权重去吸收量化过程所带来的误差。添加了Q/DQ节点后的算子会以int8精度执行
 
-* ![image-20240523145747737](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523145747737.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7ecdb754-e64a-4f1a-8aab-aeac342d6e2a)
+
 * pytorch支持对已经训练好的模型自动添加Q/DQ节点。
   * 详细可以参考：https://github.com/NVIDlA/TensorRT/tree/main/tools/pytorch-quantization
 
@@ -1057,11 +1058,13 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
 
 * Q/DQ fusion
   * 通过层融合，将Q/DQ中的线性计算与conv或者linear这种线性计算融合在一起，**实现int8计算**
-  * ![image-20240523150828561](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523150828561.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e54c5be2-53c8-4a35-a255-2e88b1fff293)
+
 * Q/DQ Propagation
   * 将Q节点尽量往前挪，将DQ节点尽量往后挪，**让网络中int8计算的部分变得更长**
   * Max Pooling与Q/DQ的propagation：
-    * ![image-20240523151050465](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523151050465.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b74c7527-2863-4a55-a2eb-77782a73f20c)
+
     * 由于maxpooling的结果在量化前后是没有变化，所以我们可以把fp32的maxpool节点转为int8的maxpool，从而达到加速
   * ❗【注意】有的时候我们发现TensorRT并没有帮我们做到最好，这个时候我们可以使用TensorRT API来手动修改
 
@@ -1077,9 +1080,11 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
   * 这个过程是我们看不见的。这就是为什么我们**在pytorch创建QAT模型的时候需要选定calibration algorithm**
     * 如何选最好的calibration：
       * 使用不同的calibration algorithm进行QAT的精度比较。粗体表示使用PTQ中可以达到最好的calibration algorithm
-        * ![image-20240523151559280](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523151559280.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ba971beb-0130-4de0-aff3-d9db202bdb7d)
+
     * 对于activation value的scale进行学习的过程(上为forward，下为backward）
-      *  ![image-20240523151725476](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240523151725476.png)
+      *  ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/61a044f5-21f9-43b5-b954-bf6f542ee837)
+
 
 
 
