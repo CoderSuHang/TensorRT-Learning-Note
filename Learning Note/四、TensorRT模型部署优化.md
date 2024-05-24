@@ -1230,9 +1230,197 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
         * 比如Tensor Core要做sparse的矩阵乘法，用索引选择哪些权重是可以跳过的，就涉及到weights和activation的重编
 
 
+#### 4.4.2 Channel pruning 算法与 L1-Norm 的关系
 
-#### 4.4.2 Channel purning 算法与 L1-Norm 的关系
+##### （1）channel-level pruning
+
+结构化剪枝中比较**常用**以及使用起来比较**简单**的方式是**channel-level pruning**，不依赖于硬件的特性可以简单的实现粗粒度的剪枝。
+
+例如：
+
+* 围绕着通过使用BN中的**scaling factor**，与使用**L1-regularization的训练**可以让权重趋向0这一特点，找到conv中不是很重要的channel，实现channel-level的pruning。
+  * ![image-20240524194620100](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524194620100.png)
+
+这里需要补充一个L1 & L2 regularization的知识
+
+
+
+##### （2）L1 & L2 regularization
+
+两者都是通过在 loss 损失函数中添加 L1/L2范数(L1/L2-norm)，实现对权重学习的惩罚(penalty)来限制权重的更新方式。根据 L1/L2 范数的不同，两者的作用也是不同的
+
+* L1 regularization: 可以用来**稀疏参数，或者说让参数趋向零**。Loss function的公式是：
+  * ![image-20240524200440834](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524200440834.png)
+* L2 regularization: 可以用来**减少参数值的大小**。Loss function的公式是：
+  * ![image-20240524200459903](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524200459903.png)
+
+训练的目的是让loss function逐渐变小：
+
+* ![image-20240524200839106](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524200839106.png)
+
+所以我们可以看看这两个L1/L2-norm在back-propagation中的梯度变化：
+
+* ![image-20240524200922745](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524200922745.png)
+
+
+
+##### （3）BN中的scaling factor
+
+**Batch normalziation**一般放在conv之后，对conv的输出进行**normalization**。
+
+* 整个计算是channel-wise的，所以每一个channel都会有自己的BN参数(均值、方差、缩放因子、偏移因子)。是**Batch normalziation**的四个重要参数：
+  * ![image-20240524201723546](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524201723546.png)
+  * 这里需要注意**γ（缩放因子）**和**β（偏移因子）**
+    * ![image-20240524201950597](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524201950597.png)
+    * ![image-20240524202023127](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524202023127.png)
+* 如果BN之后发现某一个channel的scaling非常小，或者为零：
+  * ![image-20240524202137844](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524202137844.png)
+    * 则可以认为这个channel做参与的计算并**没有**非常大强度的**改变**/**提取特征**
+    * 因此并不是很重要
+
+
+
+##### （4）使用BN和L1-norm对模型的权重进行计算以及重要度排序
+
+在channel-wise pruning中，同样使用L1-norm作为惩罚项添加到loss中，但是L1-norm的参数不再是每一个权重，而是BN中对于conv中每一个channel的scaling factor：
+
+* ![image-20240524202550158](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524202550158.png)
+
+从而在学习过程中让scaling factor趋向零， 并最终变为零。(负的scaling factor会变大，正的scaling factor会变小)：
+
+* ![image-20240524202628250](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524202628250.png)
+
+通过对 scaling factor 进行L1正则，这里面的𝐶𝑖2和𝐶𝑖4会逐渐趋向零，我们可以认为这些channel不是很重要，可以称为pruning的候选：
+
+* ![image-20240524202709990](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524202709990.png)
+
+
 
 #### 4.4.3 Fine-grained structured sparse pruning
 
+##### （1）Pruning和fine-tuning
+
+1、对于scaling factor不是很大的channel，在pruning的时候可以把这些channel直接剪枝掉，但同时也需要把这些channel所对应的**input/outputd**的计算也**skip**掉：
+
+* ![image-20240524204419258](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524204419258.png)
+* 最终得到一个紧凑版的网络。
+
+2、这个方法比较方便去选择剪枝的力度，通过不断的实验找到最好的剪枝百分比：
+
+* 0% pruning
+* 25% pruning
+* 50% pruning
+* 75% pruning
+
+3、但是需要注意：
+
+* 刚剪枝完的网络，由于权重信息很多信息都没了，所以需要fine-tuning来提高精度(**需要使用mask**)
+* 剪枝完的channel size可能会让**计算密度变低**
+  * (64ch通过75% pruning后变成16ch)，这时候原本在Tensor Core中计算的64ch突然变少，导致大量Core闲置
+
+##### （2）pruning具体过程
+
+* 趋近0的channel置为0之后，同时需要weight mask来标记一下：
+  * ![image-20240524205129328](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524205129328.png)
+
+**（3）fine-tuning具体过程**
+
+* 和pruning不同的是在训练更新权重的同时，要乘上标记的weight mask：
+  * 整个fine-tuning的过程是通过sparse计算时得到的各个channel的mask来决定weight的更新方式。最终得到的weight依然是sparse，但已经通过调整过了
+  * ![image-20240524205412869](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524205412869.png)
+
+
+
+##### （4）channel-level pruning中的超参和技巧
+
+整个pruning的过程中𝜆和channel的剪枝力度是超参，需要不断的实验找到最优。
+
+* ![image-20240524205608484](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524205608484.png)
+* 𝜆表示的是在loss中L1-norm这个penalty所占的比重。
+  * 𝜆越大就整个模型就会越趋近稀疏
+    * ![image-20240524205716527](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524205716527.png)
+* 同时，不同力度的channel pruning也会伴随着精度损失的不同。
+  * ![image-20240524210010489](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524210010489.png)
+* pruning经验：
+  * pruning后的channel尽量控制在64的倍数
+    * 要记住最大化tensor core的使用
+  * 对哪些层可以大力度的pruning需要进行sensitive analysis
+    * 要记住DNN中哪些层是敏感层（比如输入输出层附近）
+
+
+
 #### 4.4.4 分析 Sparse Tensor Core 硬件层面处理剪枝
+
+NVIDIA能够使用sparse tensor core来处理带有稀疏性的矩阵乘法。
+
+##### （1）Sparse Tensor Core 简介
+
+在Ampere架构(e.g. A100, Jetson AGX Orin)中的第三代Tensor core支持带有sparsity的matrix计算。
+
+* ![image-20240524211331253](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524211331253.png)
+* ![image-20240524211351749](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524211351749.png)
+
+更准确来说第三代Tensor core：
+
+* 支持Fine-grained（fine tuning） structured（结构化） sparsity（稀疏）
+*  “strctured”表现在，sparsity的pattern是以 1x4 vector的大小进行2:4的归零(vector-wise pruning)
+  * ![image-20240524220059873](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220059873.png)
+* 50%粒度的sparse pruning，理论上可以实现2x的吞吐量的提升
+  * ![image-20240524211552296](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524211552296.png)
+
+
+
+##### （2）Ampere架构中的3rd Generation Tensor core 的 Sparse 工作原理
+
+1、sparsity的pattern是以1x4 vector的大小进行2:4的归零(vector-wise pruning)：
+
+* ![image-20240524215542771](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524215542771.png)
+
+2、对于已经sparse pruning过的matrix，可以进行压缩。在memory中只保存非零的weight，至于哪些weight是零，哪些是非零用一个2-bits indices来保存(可以把它理解为一种索引)
+
+* ![image-20240524215714307](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524215714307.png)
+
+3、这样一来，weight的大小减半。同时对于activation values，可以通过2-bits indices来决定activation values中哪些值是参与计算的，哪些是skip掉的(这个过程需要特殊的硬件unit来实现)，从而实现2x的 计算吞吐量的提升。
+
+* ![image-20240524220333771](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220333771.png)
+
+
+
+##### （3）Sparse tensor core做矩阵乘法
+
+1、Dence Tensor core(FP16)的计算 A(M, K) * B (K, N) = C(M, N)的过程：
+
+* 需要用2 cycle完成一个16x32 * 32x8 = 16 * 8 的矩阵乘法
+  * ![image-20240524220518006](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220518006.png)
+
+2、Sparse Tensor core(FP16)的计算 A(M, K) * B (K, N) = C(M, N)的过程
+
+* 如果说A中的matrix拥有sparsity，是按照2:4的Patten进行pruning，我们可以重构A
+  * ![image-20240524220621401](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220621401.png)
+* 重构后的A的memory占用空间直接减半达到压缩的效果。我们可以把这里的A理解为conv和FC中的weight
+  * ![image-20240524220653113](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220653113.png)
+* 那么对于B，可以通过索引对B中参与计算的值进行筛选(也可以理解为对B的重构)。我们可以把这里的B理解为conv和FC中的activation values
+  * ![image-20240524220753570](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220753570.png)
+
+
+
+3、dence 与 sparse 不同乘法时间对比
+
+* 使用dence tensor core需要用2 cycle完成一个 16x32 * 32x8 = 16 * 8的矩阵乘法
+* 用sparse tensor core值需要用1 cycle就可以完成一个16x32 * 32x8 = 16 * 8的矩阵乘法
+  * ![image-20240524220912936](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220912936.png)
+
+
+
+##### （4）局限性
+
+然而这里面很容易忽视的一点就是，为了实现sparse的计算而添加的额外操作的overhead
+
+* compress weight（压缩权重） 的 overhead
+* reconstruct（重构） activation values的overhead
+
+虽然这些是在硬件上可以完成，从而自动的将0参与的计算全部skip掉，然而这些多余的操作有时会比较凸显，尤其是**当模型并不是很大**，参与sparse的计算的激活值不是很大是，使用sparsity的特性做计算**效果不是那么好**。
+
+目前认为sparse tensor core在NLP领域的加速可能会比较可观
+
+![image-20240524221206647](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524221206647.png)
