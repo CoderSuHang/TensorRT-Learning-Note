@@ -1123,9 +1123,11 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
 * “剪枝”则是直接“删除”掉模型中没有意义的，或者意义较小的权重，来让推理计算量减少的过程。
   * 更准确来说，是skip掉一些没有必要的计算
 * 剪枝和量化是可以相辅相成的：
-  * ![image-20240524114908593](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524114908593.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b172c0bc-71ca-42f1-b8f1-a30e2d20b71b)
+
 * 同时模型剪枝也可以配合量化一起做
-  * ![image-20240524121100479](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524121100479.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/35a2ffad-038c-4087-ac82-885cf2853f79)
+
 
 
 
