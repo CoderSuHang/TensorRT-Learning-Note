@@ -1193,7 +1193,8 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
     * Channel/Kernel Pruning是结构化减枝(Structured pruning)
     * 这个是比较常见的，也就是直接把某些卷积核给去除掉。
     * 比较常见的方法就是通过**L1Norm**寻找权重中影响度比较低的卷积核。
-    * ![image-20240524121858227](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524121858227.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/36571e4e-2b56-4b27-b3ff-bdf922f87697)
+
   * 优势和劣势
     * 优势
       * **不依赖于硬件**，可以在任何硬件（英伟达、高通.......）上跑并且得到性能的提升
@@ -1207,19 +1208,23 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
   * 这里面可以分为**结构化减枝(structed)**与**非结构化减枝(unstructed)**
     * **<u>结构化减枝(structed)</u>**
       * Vector-wise的减枝: 将权重按照4x1的vector进行分组，每四个中减枝两个的方式减枝权重
-        * ![image-20240524122944444](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524122944444.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/256b358a-d8dc-4592-b380-ba4c22003c3e)
+
       * Block-wise的减枝: 将权重按照2x2的block进行分区，block之间进行比较的方式来减枝block
-        * ![image-20240524123005634](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524123005634.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/1f2f7fd1-770b-4ac9-989e-1c0b2fbfb3b1)
+
     * <u>**非结构化减枝(unstructed)**</u>
       * Element-wise的减枝：每一个每一个减枝进行分析，看是不是影响度比较高
-        * ![image-20240524123103397](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524123103397.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c43cda89-9363-4377-aba8-b53548c7422d)
+
   * 优势和劣势：
     * 优势
       * 相比于Coarse Grain Pruning，精度的影响并不是很大
     * 劣势
       * 需要**特殊的硬件**的支持(Tensor Core可以支持sparse)
       * **需要用额外的memory**来存储哪些index是可以保留计算的
-        * ![image-20240524123807415](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524123807415.png)
+        * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b7251ca8-e7fe-4ef4-80ca-4df281779e11)
+
       * memory的访问**不是很效率**(跳着访问)
       * 支持sparse计算的硬件内部会做一些针对sparse的tensor的**重编**，这个会比较耗时
         * 比如Tensor Core要做sparse的矩阵乘法，用索引选择哪些权重是可以跳过的，就涉及到weights和activation的重编
