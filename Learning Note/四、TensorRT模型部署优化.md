@@ -1142,8 +1142,10 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
   * 找权重的方法可以以什么样的**型式**来归0
     * 规范化？随机？
   * 示意图
-    * ![image-20240524115515701](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524115515701.png)
-    * ![image-20240524115602871](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524115602871.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/b00ee386-faee-42fe-ae3a-ab8a8493840b)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c6ee1c5c-ef2d-45d4-8478-0ad3f1dca7d3)
+
 
 
 
