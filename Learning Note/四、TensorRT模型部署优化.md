@@ -1396,15 +1396,18 @@ NVIDIA能够使用sparse tensor core来处理带有稀疏性的矩阵乘法。
 
 1、sparsity的pattern是以1x4 vector的大小进行2:4的归零(vector-wise pruning)：
 
-* ![image-20240524215542771](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524215542771.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/0a85e251-aa61-4081-a52b-83010533447f)
+
 
 2、对于已经sparse pruning过的matrix，可以进行压缩。在memory中只保存非零的weight，至于哪些weight是零，哪些是非零用一个2-bits indices来保存(可以把它理解为一种索引)
 
-* ![image-20240524215714307](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524215714307.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bb914bd8-5bf3-40df-a2d6-1df224b23126)
+
 
 3、这样一来，weight的大小减半。同时对于activation values，可以通过2-bits indices来决定activation values中哪些值是参与计算的，哪些是skip掉的(这个过程需要特殊的硬件unit来实现)，从而实现2x的 计算吞吐量的提升。
 
-* ![image-20240524220333771](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220333771.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2d390044-9d37-4b72-aee8-ee12b6fb2065)
+
 
 
 
