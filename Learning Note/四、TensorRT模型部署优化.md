@@ -1416,16 +1416,20 @@ NVIDIA能够使用sparse tensor core来处理带有稀疏性的矩阵乘法。
 1、Dence Tensor core(FP16)的计算 A(M, K) * B (K, N) = C(M, N)的过程：
 
 * 需要用2 cycle完成一个16x32 * 32x8 = 16 * 8 的矩阵乘法
-  * ![image-20240524220518006](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220518006.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ba7f4bdb-e5eb-4dec-bd64-6a6670cd39eb)
+
 
 2、Sparse Tensor core(FP16)的计算 A(M, K) * B (K, N) = C(M, N)的过程
 
 * 如果说A中的matrix拥有sparsity，是按照2:4的Patten进行pruning，我们可以重构A
-  * ![image-20240524220621401](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220621401.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/22e82826-e9e4-4c30-abd0-7b66b3e93031)
+
 * 重构后的A的memory占用空间直接减半达到压缩的效果。我们可以把这里的A理解为conv和FC中的weight
-  * ![image-20240524220653113](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220653113.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/59b22980-67c8-48ac-b15f-41f67ae2cfeb)
+
 * 那么对于B，可以通过索引对B中参与计算的值进行筛选(也可以理解为对B的重构)。我们可以把这里的B理解为conv和FC中的activation values
-  * ![image-20240524220753570](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220753570.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5f0b939e-a38d-40d4-acdc-b41d481dc98a)
+
 
 
 
@@ -1433,7 +1437,8 @@ NVIDIA能够使用sparse tensor core来处理带有稀疏性的矩阵乘法。
 
 * 使用dence tensor core需要用2 cycle完成一个 16x32 * 32x8 = 16 * 8的矩阵乘法
 * 用sparse tensor core值需要用1 cycle就可以完成一个16x32 * 32x8 = 16 * 8的矩阵乘法
-  * ![image-20240524220912936](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220912936.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/36a7a65e-036a-403a-a4a4-f8d31be02912)
+
 
 
 
@@ -1448,4 +1453,5 @@ NVIDIA能够使用sparse tensor core来处理带有稀疏性的矩阵乘法。
 
 目前认为sparse tensor core在NLP领域的加速可能会比较可观
 
-![image-20240524221206647](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524221206647.png)
+![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8b72d4bc-d9e5-434d-98b8-abf093fe767d)
+
