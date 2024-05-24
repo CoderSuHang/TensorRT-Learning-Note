@@ -1239,7 +1239,8 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
 例如：
 
 * 围绕着通过使用BN中的**scaling factor**，与使用**L1-regularization的训练**可以让权重趋向0这一特点，找到conv中不是很重要的channel，实现channel-level的pruning。
-  * ![image-20240524194620100](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524194620100.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ff5cea43-8c2d-4451-a23a-64565ce4ac8a)
+
 
 这里需要补充一个L1 & L2 regularization的知识
 
@@ -1250,17 +1251,21 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
 两者都是通过在 loss 损失函数中添加 L1/L2范数(L1/L2-norm)，实现对权重学习的惩罚(penalty)来限制权重的更新方式。根据 L1/L2 范数的不同，两者的作用也是不同的
 
 * L1 regularization: 可以用来**稀疏参数，或者说让参数趋向零**。Loss function的公式是：
-  * ![image-20240524200440834](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524200440834.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/7e0f68e5-7b1b-48ba-8945-e172b268dca4)
+
 * L2 regularization: 可以用来**减少参数值的大小**。Loss function的公式是：
-  * ![image-20240524200459903](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524200459903.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/00820823-2af1-4bc6-b723-1f0dcfa0d69d)
+
 
 训练的目的是让loss function逐渐变小：
 
-* ![image-20240524200839106](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524200839106.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/06e6971f-5f05-4b2c-ba02-16076a0eb59f)
+
 
 所以我们可以看看这两个L1/L2-norm在back-propagation中的梯度变化：
 
-* ![image-20240524200922745](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524200922745.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/3a05e536-a3db-4a4c-b407-2a05a008ef07)
+
 
 
 
