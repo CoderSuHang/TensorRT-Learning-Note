@@ -1293,15 +1293,18 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
 
 在channel-wise pruning中，同样使用L1-norm作为惩罚项添加到loss中，但是L1-norm的参数不再是每一个权重，而是BN中对于conv中每一个channel的scaling factor：
 
-* ![image-20240524202550158](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524202550158.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/41e1aef0-88b0-4feb-95d4-3954e2be7340)
+
 
 从而在学习过程中让scaling factor趋向零， 并最终变为零。(负的scaling factor会变大，正的scaling factor会变小)：
 
-* ![image-20240524202628250](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524202628250.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/09be1ffd-9114-48e0-be28-a8832653365d)
+
 
 通过对 scaling factor 进行L1正则，这里面的𝐶𝑖2和𝐶𝑖4会逐渐趋向零，我们可以认为这些channel不是很重要，可以称为pruning的候选：
 
-* ![image-20240524202709990](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524202709990.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6a3d1764-5f84-484f-9f61-377070bdf146)
+
 
 
 
