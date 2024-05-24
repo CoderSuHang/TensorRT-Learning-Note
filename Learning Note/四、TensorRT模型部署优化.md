@@ -1375,16 +1375,20 @@ NVIDIA能够使用sparse tensor core来处理带有稀疏性的矩阵乘法。
 
 在Ampere架构(e.g. A100, Jetson AGX Orin)中的第三代Tensor core支持带有sparsity的matrix计算。
 
-* ![image-20240524211331253](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524211331253.png)
-* ![image-20240524211351749](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524211351749.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/9cadac9a-062a-4629-a449-143302ad254f)
+
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/8014ab2c-3e99-454b-b9d7-b4effba46552)
+
 
 更准确来说第三代Tensor core：
 
 * 支持Fine-grained（fine tuning） structured（结构化） sparsity（稀疏）
 *  “strctured”表现在，sparsity的pattern是以 1x4 vector的大小进行2:4的归零(vector-wise pruning)
-  * ![image-20240524220059873](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524220059873.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e1fb0aa9-edb4-41bd-9f75-fba71a9ef3bc)
+
 * 50%粒度的sparse pruning，理论上可以实现2x的吞吐量的提升
-  * ![image-20240524211552296](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524211552296.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/13d8fe12-dbc1-430e-919c-0d084fa475eb)
+
 
 
 
