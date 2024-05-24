@@ -1274,12 +1274,16 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
 **Batch normalziation**一般放在conv之后，对conv的输出进行**normalization**。
 
 * 整个计算是channel-wise的，所以每一个channel都会有自己的BN参数(均值、方差、缩放因子、偏移因子)。是**Batch normalziation**的四个重要参数：
-  * ![image-20240524201723546](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524201723546.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/d50a477b-815a-4294-a548-02a89536f1b9)
+
   * 这里需要注意**γ（缩放因子）**和**β（偏移因子）**
-    * ![image-20240524201950597](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524201950597.png)
-    * ![image-20240524202023127](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524202023127.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/6d895934-a34d-4c4a-98b7-13a1e27f8b62)
+
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/4cc9f12b-01d1-41e1-959a-70ac8457f25a)
+
 * 如果BN之后发现某一个channel的scaling非常小，或者为零：
-  * ![image-20240524202137844](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524202137844.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/5a486e6a-8f75-48f0-a74e-b7ae4460a992)
+
     * 则可以认为这个channel做参与的计算并**没有**非常大强度的**改变**/**提取特征**
     * 因此并不是很重要
 
