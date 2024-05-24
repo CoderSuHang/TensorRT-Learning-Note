@@ -1111,11 +1111,115 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
    4. (注意，这里同时也需要查看层融合（Q/DQ fusion、Propagation）是否被适用，以及Tensor core是否被用)
 
 
-
 ### 4.4 模型部署优化-剪枝
 
-#### 4.4.1 Channel purning 算法与 L1-Norm 的关系
+#### 4.4.1 模型剪枝的概念
 
-#### 4.4.2 Fine-grained structured sparse pruning
+##### （1）模型剪枝简介
 
-#### 4.4.3 分析 Sparse Tensor Core 硬件层面处理剪枝
+模型剪枝是不同于量化的另外一种**模型压缩**的方式。
+
+* 如果说“量化”是通过改变权重和激活值的表现形式从而让内存占用变小和计算变快的话
+* “剪枝”则是直接“删除”掉模型中没有意义的，或者意义较小的权重，来让推理计算量减少的过程。
+  * 更准确来说，是skip掉一些没有必要的计算
+* 剪枝和量化是可以相辅相成的：
+  * ![image-20240524114908593](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524114908593.png)
+* 同时模型剪枝也可以配合量化一起做
+  * ![image-20240524121100479](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524121100479.png)
+
+
+
+##### （2）模型剪枝的原因
+
+为什么我们需要剪枝？主要是因为学习的过程中会产生**过参数化**导致会产生一些**意义并不是很大的权重**，或者**值为0的权重(ReLU)**。
+
+* 对于这些权重所参与的计算是占用计算资源且没有作用的。
+* 需要**想办法找到这些权重**并让硬件去skip掉这些权重所参与的计算
+  * 找权重的方法可以以什么样的**粒度**来找这个0
+    * per 权重？ per Channel ？
+  * 找权重的方法可以以什么样的**型式**来归0
+    * 规范化？随机？
+  * 示意图
+    * ![image-20240524115515701](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524115515701.png)
+    * ![image-20240524115602871](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524115602871.png)
+
+
+
+##### （3）模型剪枝的流程
+
+* 1、获取一个已经训练好的初始模型
+* 2、对这个模型进行剪枝
+  * 我们可以通过训练的方式让DNN去学习哪些权重是可以**归零**的
+    *  (e.g. 使用L1 regularization和BN中的scaling factor让权重归零)
+    * ![image-20240524120355605](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524120355605.png)
+  * 我们也可以通过自定义一些规则，手动的有规律的去让某些权重**归零**
+    *  (e.g. 对一个1x4的vector进行2:4的weight prunning)
+    * ![image-20240524120411854](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524120411854.png)
+* 3、对剪枝后的模型进行fine-tuning
+  * 有很大的可能性，在剪枝后初期的网络的精度掉点比较严重
+  * 需要fine-tuning这个过程来恢复精度
+  * Fine-tuning后的模型有可能会比之前的精度还要上涨
+    * ![image-20240524120748553](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524120748553.png)
+* 4、获取到一个压缩的模型
+  * 其实如果到这个阶段对模型压缩还不够满足的话，可以回到step2循环
+    * ![image-20240524120953330](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524120953330.png)
+
+
+
+##### （4）模型剪枝的分类
+
+1、模型剪枝可以按照剪枝的方法**按照一定规律与否**可以分为**<u>结构化剪枝</u>**，以及**<u>非结构化剪枝</u>**。
+
+* 【1】**<u>结构化剪枝</u>**
+  * 规定好每n个中删去x个，n和x固定好的
+  * 或者以layer、channel为单位删除
+* 【2】**<u>非结构化剪枝</u>**
+
+
+
+2、同时，模型剪枝也可以按照剪枝的**粒度**与**强度**分为<u>**粗粒度剪枝**</u>，以及**<u>细粒度剪枝</u>**。
+
+* 【1】<u>**粗粒度剪枝**</u>（Coarse Grain Pruning）
+  * 从layer、channel层面剪枝
+  * 这里面包括Channel/Kernel Pruning
+    * Channel/Kernel Pruning是结构化减枝(Structured pruning)
+    * 这个是比较常见的，也就是直接把某些卷积核给去除掉。
+    * 比较常见的方法就是通过**L1Norm**寻找权重中影响度比较低的卷积核。
+    * ![image-20240524121858227](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524121858227.png)
+  * 优势和劣势
+    * 优势
+      * **不依赖于硬件**，可以在任何硬件（英伟达、高通.......）上跑并且得到性能的提升
+    * 劣势
+      * 由于减枝的粒度比较大(卷积核级别的)，所以有潜在的掉精度的风险
+      * 不同DNN的层的影响程度是不一样的
+      * **减枝之后有可能反而不适合硬件加速**(比如Tensor Core的使用条件是channel是8或者16的倍数)
+
+* 【2】**<u>细粒度剪枝</u>**（Fine Grain Pruning）
+  * 主要是对权重的各个元素本身进行分析减枝
+  * 这里面可以分为**结构化减枝(structed)**与**非结构化减枝(unstructed)**
+    * **<u>结构化减枝(structed)</u>**
+      * Vector-wise的减枝: 将权重按照4x1的vector进行分组，每四个中减枝两个的方式减枝权重
+        * ![image-20240524122944444](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524122944444.png)
+      * Block-wise的减枝: 将权重按照2x2的block进行分区，block之间进行比较的方式来减枝block
+        * ![image-20240524123005634](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524123005634.png)
+    * <u>**非结构化减枝(unstructed)**</u>
+      * Element-wise的减枝：每一个每一个减枝进行分析，看是不是影响度比较高
+        * ![image-20240524123103397](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524123103397.png)
+  * 优势和劣势：
+    * 优势
+      * 相比于Coarse Grain Pruning，精度的影响并不是很大
+    * 劣势
+      * 需要**特殊的硬件**的支持(Tensor Core可以支持sparse)
+      * **需要用额外的memory**来存储哪些index是可以保留计算的
+        * ![image-20240524123807415](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524123807415.png)
+      * memory的访问**不是很效率**(跳着访问)
+      * 支持sparse计算的硬件内部会做一些针对sparse的tensor的**重编**，这个会比较耗时
+        * 比如Tensor Core要做sparse的矩阵乘法，用索引选择哪些权重是可以跳过的，就涉及到weights和activation的重编
+
+
+
+#### 4.4.2 Channel purning 算法与 L1-Norm 的关系
+
+#### 4.4.3 Fine-grained structured sparse pruning
+
+#### 4.4.4 分析 Sparse Tensor Core 硬件层面处理剪枝
