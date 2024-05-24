@@ -1314,7 +1314,8 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
 
 1、对于scaling factor不是很大的channel，在pruning的时候可以把这些channel直接剪枝掉，但同时也需要把这些channel所对应的**input/outputd**的计算也**skip**掉：
 
-* ![image-20240524204419258](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524204419258.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/f5ce2b12-93e2-47d0-a4e7-267a3b131a57)
+
 * 最终得到一个紧凑版的网络。
 
 2、这个方法比较方便去选择剪枝的力度，通过不断的实验找到最好的剪枝百分比：
@@ -1333,13 +1334,15 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
 ##### （2）pruning具体过程
 
 * 趋近0的channel置为0之后，同时需要weight mask来标记一下：
-  * ![image-20240524205129328](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524205129328.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/38ed8c3f-4e68-4077-82c6-2b8d2cb8d559)
+
 
 **（3）fine-tuning具体过程**
 
 * 和pruning不同的是在训练更新权重的同时，要乘上标记的weight mask：
   * 整个fine-tuning的过程是通过sparse计算时得到的各个channel的mask来决定weight的更新方式。最终得到的weight依然是sparse，但已经通过调整过了
-  * ![image-20240524205412869](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524205412869.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/12ab23a8-b5e4-4e5f-97d0-9bd33e309340)
+
 
 
 
@@ -1347,12 +1350,15 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
 
 整个pruning的过程中𝜆和channel的剪枝力度是超参，需要不断的实验找到最优。
 
-* ![image-20240524205608484](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524205608484.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/485e9cf7-3ac8-4c21-9605-4d65b5b11290)
+
 * 𝜆表示的是在loss中L1-norm这个penalty所占的比重。
   * 𝜆越大就整个模型就会越趋近稀疏
-    * ![image-20240524205716527](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524205716527.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/935a9558-8f8f-4ba1-abf5-fc08e5a5e49e)
+
 * 同时，不同力度的channel pruning也会伴随着精度损失的不同。
-  * ![image-20240524210010489](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524210010489.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c0321f64-4693-4963-9436-eb4e5bcc7c65)
+
 * pruning经验：
   * pruning后的channel尽量控制在64的倍数
     * 要记住最大化tensor core的使用
