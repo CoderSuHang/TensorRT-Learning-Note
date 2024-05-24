@@ -1155,18 +1155,22 @@ TensorRT对包含Q/DQ节点的onnx模型使用很多图优化，从而提高计�
 * 2、对这个模型进行剪枝
   * 我们可以通过训练的方式让DNN去学习哪些权重是可以**归零**的
     *  (e.g. 使用L1 regularization和BN中的scaling factor让权重归零)
-    * ![image-20240524120355605](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524120355605.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/975f0f24-011e-4ce0-93a1-6ccae99def0b)
+
   * 我们也可以通过自定义一些规则，手动的有规律的去让某些权重**归零**
     *  (e.g. 对一个1x4的vector进行2:4的weight prunning)
-    * ![image-20240524120411854](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524120411854.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/98222eb2-85fc-4b00-a11b-676f05183295)
+
 * 3、对剪枝后的模型进行fine-tuning
   * 有很大的可能性，在剪枝后初期的网络的精度掉点比较严重
   * 需要fine-tuning这个过程来恢复精度
   * Fine-tuning后的模型有可能会比之前的精度还要上涨
-    * ![image-20240524120748553](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524120748553.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ce0a53fc-15ce-407b-b3f9-498c19291847)
+
 * 4、获取到一个压缩的模型
   * 其实如果到这个阶段对模型压缩还不够满足的话，可以回到step2循环
-    * ![image-20240524120953330](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240524120953330.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a4d66053-f456-487e-b6a8-3d9104efe958)
+
 
 
 
