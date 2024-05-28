@@ -395,23 +395,22 @@ Model的构造函数主要是三个功能：1.查看文件路径"mEnginePath"是
 
 #### 5.1.2 正确从 PyTorch 导出权重并C++读取
 
-理解
+
 
 #### 5.1.3 常见的 ILayer 介绍及 ITensor 介绍
 
-理解
+
 
 #### 5.1.4 搭建 ResBlock、bottleneck 等模块
 
-理解
+
 
 #### 5.1.5 搭建 reshape、transpose、C2F 等模块
 
-理解
+
 
 #### 5.1.6 使用原有的 ILayer 搭建 BN 等模块
 
-理解
 
 
 
