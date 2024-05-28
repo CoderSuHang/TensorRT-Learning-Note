@@ -67,7 +67,8 @@
     ```
 
 * 整个过程是读取一个ONNX，之后Parse一个ONNX，生成一个TensorRT的engine，再做个序列化，反序列化之后把模型导出。之后读取模型，做一个前向的推理的流程
-  * ![image-20240528102230527](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240528102230527.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c66cf065-f15c-43ba-ae71-5356aff8ec07)
+
 
 
 
