@@ -216,8 +216,10 @@
 
 执行这个函数要在终端中先`make clean`一下之前生成的内容再`make`，之后删除`【models文件】`夹中`【engine文件】`夹中的`sample.engine`的模型，最后便可以运行可执行文件`./trt-infer`了：
 
-* ![image-20240528201846004](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240528201846004.png)
-* ![image-20240528201944828](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240528201944828.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/c6bb5ce8-87de-4b0c-85d1-18064ee7f95e)
+
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/bbffda12-8829-4914-938c-2864a76a15ff)
+
 
 下面针对代码进行学习，代码见【5.2-load-model】
 
