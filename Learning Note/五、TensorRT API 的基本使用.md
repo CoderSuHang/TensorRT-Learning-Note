@@ -20,7 +20,8 @@
       sorRT-8.5.1.7/samples
       ```
 
-    * ![image-20240528100738896](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240528100738896.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/63b6665f-9298-41af-9967-5de829844587)
+
 
     * 将一个文件夹复制到另一个文件夹下：
 
