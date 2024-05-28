@@ -376,13 +376,14 @@ Model的构造函数主要是三个功能：1.查看文件路径"mEnginePath"是
 
   * 2. 可用从config中创建一些和模型有关的东西：
 
-    * ![image-20240528204913728](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240528204913728.png)
+    * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e26f61fa-f6dc-4e5f-b315-334434aa3354)
 
   * 3. TensorRT C++ API 可以谷歌直接搜索找到：
        1. [Developer Guide :: NVIDIA Deep Learning TensorRT Documentation](https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#overview)
 
 * 创建后的模型结构展示：
-  * ![image-20240528211202664](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240528211202664.png)
+  * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/57613da7-d9a8-42e2-add2-b2ce2c5d8cdf)
+
 
 
 
