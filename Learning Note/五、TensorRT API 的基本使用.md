@@ -388,7 +388,39 @@ Model的构造函数主要是三个功能：1.查看文件路径"mEnginePath"是
 
 
 ##### （4）infer-model
-* 
+
+运行可执行文件报错，显示当前期望算力是8.9，但当前只有8.6的算力：
+
+* ```bash
+  suhang@Y9000P /m/e/S/L/w/t/c/5.3-infer-model (main)> make
+  Compile Dependence CXX build/utils.cpp.mk
+  Compile Dependence CXX build/model.cpp.mk
+  Compile Dependence CXX build/main.cpp.mk
+  make trt-infer
+  make[1]: Entering directory '/mnt/e/Software/LinuxOS/wsl2/tensorrt_starter/chapter5-tensorrt-api-basics/5.3-infer-model'
+  Compile CXX build/main.cpp.o
+  Compile CXX build/model.cpp.o
+  Compile CXX build/utils.cpp.o
+  Package opencv was not found in the pkg-config search path.
+  Perhaps you should add the directory containing `opencv.pc'
+  to the PKG_CONFIG_PATH environment variable
+  No package 'opencv' found
+  finished building trt-infer. Have fun!!
+  make[1]: Leaving directory '/mnt/e/Software/LinuxOS/wsl2/tensorrt_starter/chapter5-tensorrt-api-basics/5.3-infer-model'
+  suhang@Y9000P /m/e/S/L/w/t/c/5.3-infer-model (main)> ./trt-infer
+  [info]: models/engine/sample.engine has been generated!
+  [verb]: Loaded engine size: 0 MiB
+  [verb]: 6: The engine plan file is generated on an incompatible device, expecting compute 8.9 got compute 8.6, please rebuild.
+  [verb]: 4: [runtime.cpp::deserializeCudaEngine::66] Error Code 4: Internal Error (Engine deserialization failed.)
+  fish: Job 1, './trt-infer' terminated by signal SIGSEGV (Address boundary error)
+  ```
+
+* ![image-20240610214059087](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240610214059087.png)
+
+经过查询，我安装的`CUDA`版本是`11.7`，因此需要更新`CUDA`至`11.8`才行：
+
+* ![](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240610214520604.png)
+* ![image-20240223110626493](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110626493.png)
 
 
 
