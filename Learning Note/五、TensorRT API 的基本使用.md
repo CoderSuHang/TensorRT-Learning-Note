@@ -415,12 +415,16 @@ Model的构造函数主要是三个功能：1.查看文件路径"mEnginePath"是
   fish: Job 1, './trt-infer' terminated by signal SIGSEGV (Address boundary error)
   ```
 
-* ![image-20240610214059087](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240610214059087.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/e8118686-d04b-4cee-b2ea-5e2e65ee01bc)
+
+
 
 经过查询，我安装的`CUDA`版本是`11.7`，因此需要更新`CUDA`至`11.8`才行：
 
-* ![](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240610214520604.png)
-* ![image-20240223110626493](C:\Users\10482\AppData\Roaming\Typora\typora-user-images\image-20240223110626493.png)
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/cbc8b599-d82b-44e5-a920-d49d9978046b)
+
+* ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/a60fc656-bde7-4b61-a841-48516ac82816)
+
 
 
 
