@@ -2141,6 +2141,11 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
 
 #### 2.4.2 理解BANK CONFLICT及其缓解策略
 
+**GPU调度执行流程：**
+* SM 调度单位为一个 warp（一个warp内32个Thread）
+* shared_memory 可以被一个 warp 中的所有（32个）线程进行访问
+* shared_memory 映射到大小相等的 32 个 Bank 上，Bank 的数据读取带宽为 32 bit/cycle；
+
 ##### （1）新添加的东西
 
 ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/140e4ab4-cc02-4c29-9621-dbd366780192)
@@ -2155,6 +2160,7 @@ Error Handler能帮我们打印出CUDA程序运行中出现的错误，方便我
   * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/ed106870-7c29-4fd4-ae0c-9305bc57df15)
 
 * bank的宽度，代表的是一个bank所存储的数据的大小宽度。
+  * 【官方】Bank：32 bit/cycle。（8 bit = 1 Byte) 
   * 可以是4个字节(32 bit,  单精度浮点数float)
   * 也可以是8个字节(64bit，双精度浮点数)
 * 每31个bank，就会进行一次stride。
