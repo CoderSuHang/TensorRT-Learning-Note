@@ -33,7 +33,7 @@
 ##### （2）FLOPS 在 CPU 中是如何计算的
 
 * 公式：
-  * FLOPS = 频率 * core数量 * 每个时钟周期可以处理的 FLOPS
+  * FLOPS = $频率 * core数量 * 每个时钟周期可以处理的 FLOPS$
     * 频率：时钟频率
     * Core：硬件核数量
     * 每个时钟周期可以处理的 FLOPS
