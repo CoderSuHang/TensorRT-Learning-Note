@@ -11,7 +11,7 @@
 * 1、FLOPS
   * 指的是一秒钟可以处理的浮动小数点运算次数
   * 是衡量计算机硬件性能、计算能力的一个单位
-  * 常见的FLOPS：
+  * 常见的FLOPS（TFLOPS表示T个FLOPS）：
     * ![image](https://github.com/CoderSuHang/TensorRT-Learning-Note/assets/104765251/2b972a04-baff-49a0-beb9-b269279abfbc)
 
 
