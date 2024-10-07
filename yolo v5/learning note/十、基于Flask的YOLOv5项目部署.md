@@ -43,4 +43,4 @@ cv2.imencode.cv2.imdecode 搭配使用
 cv.2imencode(".jpg", img)[1].tobytes()
 cv.2imdecode(np.frombuffer(xxx, dtype=np.uint8), cv2.IMREAD_COLOR)
 ```
-
+done
